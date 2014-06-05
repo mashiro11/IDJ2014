@@ -1,27 +1,5 @@
 #include "Ally.h"
 
-//inicializa todos os valores dentro de ally
-//Ally::Ally(float x, float y, float defesa, float ataque, int speed, int distance, float hp, int coolDown, TileMap* mapRef):
-//    sp("images/img/minion.png")
-//{
-//    //ver a proporção do personagem em relaçao ao tile do mundopara aplicar na posicao certa
-//    //sp.SetScaleX((float) 2);
-//    //sp.SetScaleY((float) 2);
-//    mapReference = mapRef;
-//    box.h = sp.GetHeight();
-//    box.w = sp.GetWidth();
-//    MapPositionToPixelPosition(x, y);
-//    this->defesa = defesa;
-//    this->ataque = ataque;
-//    this->hp = hp;
-//    this->coolDown = coolDown;
-//    this->speed = speed;
-//    this->distance = distance;
-//    this->rotation = 0;
-//    allyState = REPOUSO;
-//    menuAberto = false;
-//}
-
 //gerencia as modificacoes e os estados  do ally
 void Ally::Update(float dt)
 {
