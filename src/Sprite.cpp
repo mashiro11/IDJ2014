@@ -98,7 +98,8 @@ void Sprite::Open(string file)
         cout << SDL_GetError() << endl;
         cout << "Erro em Sprite::Open(): SDL_QueryTexture() retornou diferente de zero" << endl;
     }
-
+    cout << "currentFrame: " << currentFrame << endl;
+    cout << "currentLine: " << currentLine << endl;
     SetClip( currentFrame , currentLine , dimensions.w/maxFrameCount, dimensions.h/animationLines);
 }
 
@@ -162,13 +163,18 @@ float Sprite::GetScaleY()
 
 void Sprite::Update (float dt)
 {
+    //cout << "currentFrame: " << currentFrame << endl;
+    //cout << "currentLine: " << currentLine << endl;
     timeElapsed.Update(dt);
     if(timeElapsed.Get() > frameTime){
         ++currentFrame;
         timeElapsed.Restart();
     }
     if(currentFrame >= frameCount) currentFrame = 0;
-    SetClip(currentFrame * GetWidth(), currentLine, GetWidth(), GetHeight());
+    SetClip(currentFrame * dimensions.w/maxFrameCount,
+            currentLine * dimensions.h/animationLines,
+            dimensions.w/maxFrameCount,
+            dimensions.h/animationLines);
 }
 
 void Sprite::SetFrame (int frame)
@@ -197,7 +203,7 @@ void Sprite::SetAnimation(int line, int frameCount)
 {
     currentLine = line;
     this->frameCount = frameCount;
-    SetClip(0, currentLine * GetHeight(), clipRect.w, clipRect.h);
+    SetClip(0, currentLine * dimensions.h/animationLines, clipRect.w, clipRect.h);
 }
 
 void Sprite::SetSpriteSheet(int animationLines, int maxFrameCount)

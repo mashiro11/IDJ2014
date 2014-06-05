@@ -3,7 +3,6 @@
 //gerencia as modificacoes e os estados  do ally
 void Ally::Update(float dt)
 {
-    sp.Update(dt);
     if(timer.Get() < coolDown) timer.Update(dt);
     //verifica se houve evento de clique do mouse
     if(InputManager::GetInstance().MouseRelease(LEFT_MOUSE_BUTTON) == true){
@@ -83,6 +82,7 @@ void Ally::Update(float dt)
                 }
                 break;
     }
+    sp.Update(dt);
 }
 
 Point Ally::MapPosition()
@@ -96,13 +96,9 @@ float Ally::TileCenter(int coord)
     return coord * mapReference->GetTileSize() + mapReference->GetTileSize()/2;
 }
 
-void Ally::MapPositionToPixelPosition(int line, int row)
+float Ally::MapPositionToPixelPosition(int coord)
 {
-    if(box.w <= mapReference->GetTileSize()) box.SetRectCenterX(mapReference->GetTileSize() * line + mapReference->GetTileSize()/2.0 );
-    else box.SetRectCenterX(mapReference->GetTileSize() * (line + 1) );
-
-    if(box.h <= mapReference->GetTileSize()) box.SetRectCenterY(mapReference->GetTileSize() * row + mapReference->GetTileSize()/2.0);
-    else box.SetRectCenterY(mapReference->GetTileSize() * (row + 1) );
+    return mapReference->GetTileSize() * coord + mapReference->GetTileSize()/2.0;
 }
 
 int Ally::PixelPositionToMapPosition(int pixels)
@@ -136,26 +132,28 @@ bool Ally::IsDead(){
 
 //movimenta o ally pelo mapa.
 void Ally::Andar(){
-            if( abs(box.RectCenterX() - TileCenter( path.front().x ) ) < 3 &&
-                abs(box.RectCenterY() - TileCenter( path.front().y ) ) < 3){
+            cout << "inicio allyPosition: " << allyPosition << endl;
+            if( abs(box.RectCenterX() - TileCenter( path.front().x ) ) < 0.5 &&
+                abs(box.RectCenterY() - TileCenter( path.front().y ) ) < 0.5){
                     box.SetRectCenterX( TileCenter( path.front().x ) );
                     box.SetRectCenterY( TileCenter( path.front().y ) );
                     path.pop();
-            }
-            if( TileCenter( path.front().x ) > box.RectCenterX() ){
-                box.SetRectCenterX(box.RectCenterX() + speed);
-                allyPosition = RIGHT;
-            }else if( TileCenter( path.front().x ) < box.RectCenterX() ){
-                box.SetRectCenterX(box.RectCenterX() - speed);
-                allyPosition = LEFT;
-            }
+            }else{
+                if( TileCenter( path.front().x ) > box.RectCenterX() ){
+                    box.SetRectCenterX(box.RectCenterX() + speed);
+                    allyPosition = RIGHT;
+                }else if( TileCenter( path.front().x ) < box.RectCenterX() ){
+                    box.SetRectCenterX(box.RectCenterX() - speed);
+                    allyPosition = LEFT;
+                }
 
-            if( TileCenter( path.front().y ) > box.RectCenterY() ){
-                box.SetRectCenterY(box.RectCenterY() + speed);
-                allyPosition = FRONT;
-            }else if( TileCenter( path.front().y ) < box.RectCenterY() ){
-                box.SetRectCenterY(box.RectCenterY() - speed);
-                allyPosition = BACK;
+                if( TileCenter( path.front().y ) > box.RectCenterY() ){
+                    box.SetRectCenterY(box.RectCenterY() + speed);
+                    allyPosition = FRONT;
+                }else if( TileCenter( path.front().y ) < box.RectCenterY() ){
+                    box.SetRectCenterY(box.RectCenterY() - speed);
+                    allyPosition = BACK;
+                }
             }
             OrientarSprite();
 }
@@ -164,15 +162,19 @@ void Ally::OrientarSprite()
 {
     switch(allyPosition){
         case FRONT:
+            cout << "Fica de frente" << endl;
             sp.SetAnimation(0, 4);
             break;
         case BACK:
+            cout << "Fica de costas" << endl;
             sp.SetAnimation(3, 4);
             break;
         case LEFT:
+            cout << "Fica pra esquerda" << endl;
             sp.SetAnimation(1, 4);
             break;
         case RIGHT:
+            cout << "Fica pra direita" << endl;
             sp.SetAnimation(2, 4);
             break;
     }

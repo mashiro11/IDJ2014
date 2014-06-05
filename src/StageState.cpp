@@ -6,17 +6,20 @@ tileSet(64,64, "images/img/tileSet.jpg"),
 tileMap("images/map/tileMap.txt", &tileSet),
 backGroundMusic("images/audio/stageState.ogg")
 {
+    cout << "construi o estagio" << endl;
     backGroundMusic.Play(-1);
     stringstream aux;
     Point position = tileMap.PixelToChessPosition(InputManager::GetInstance().GetMouseX(),
                                                   InputManager::GetInstance().GetMouseY());
     aux << position.x << " x " << position.y;
-    Lider *lider = new Lider(4, 1, 10, 10, 4, 5, 10, 10, &tileMap);
+    Lider *lider = new Lider(6, 3, 10, 10, 4, 5, 10, 10, &tileMap);
     Lider::lider = lider;
     objectArray.emplace_back(lider);
 
+    //cout << "inicia construcao do infoMenu" << endl;
     InfoMenu *infoMenu = new InfoMenu(770, 0, lider);
     objectArray.emplace_back(infoMenu);
+    //cout << "finaliza construcao do infoMenu" << endl;
 
     SDL_Color color;
     color.r = 0;
@@ -26,6 +29,7 @@ backGroundMusic("images/audio/stageState.ogg")
     chessPosition.Initialize("images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, aux.str() , color);
     chessPosition.SetPos( 0, 0);
     chessPosition.SetText(aux.str());
+    cout << "terminei o estagio" << endl;
 }
 
 StageState::~StageState()
@@ -37,6 +41,7 @@ StageState::~StageState()
 
 void StageState::Update(float dt)
 {
+//    cout << "inicia um loop do estagio" << endl;
     Input();
     stringstream aux;
     Point position = tileMap.PixelToChessPosition(InputManager::GetInstance().GetMouseX(),
@@ -64,7 +69,7 @@ void StageState::Update(float dt)
                 }
         }
     }
-    if(/* condicao de vitória*/0){
+    if(/* condicao de vitória*/ false){
         requestDelete = true;
         backGroundMusic.Stop();
         StateData fimDeJogo;
@@ -72,7 +77,7 @@ void StageState::Update(float dt)
         EndState* endGame = new EndState(fimDeJogo);
         Game::GetInstance().Push(endGame);
     }
-    if(/* condicao de derrota */0){
+    if(/* condicao de derrota */ false){
         requestDelete = true;
         backGroundMusic.Stop();
         StateData fimDeJogo;
@@ -80,6 +85,7 @@ void StageState::Update(float dt)
         EndState* endGame = new EndState(fimDeJogo);
         Game::GetInstance().Push(endGame);
     }
+//    cout << "finaliza um loop do estagio" << endl;
 }
 
 void StageState::Render()

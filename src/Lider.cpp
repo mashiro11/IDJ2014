@@ -4,21 +4,21 @@ Lider* Lider::lider;
 
 Lider::Lider(float x, float y, float defesa, float ataque, int speed, int distance, float hp, int coolDown, TileMap* mapRef)
 {
+//    cout << "inicia construcao do lider" << endl;
     //ver a proporção do personagem em relaçao ao tile do mundopara aplicar na posicao certa
-    //sp.SetScaleX((float) 3);
-    //sp.SetScaleY((float) 3);
-    //sp.SetClip(0,0, sp.GetWidth(), 64);
-    //sp.SetFrameCount(4);
+    //sp.SetScaleX((float) 2);
+    //sp.SetScaleY((float) 2);
     sp.SetSpriteSheet(4, 4);
-    sp.SetAnimation(FRONT, 4);
+    sp.SetAnimation(0, 4);
     sp.SetFrameTime(4.0 * 1.0/24.0);
     sp.Open("images/img/robot2iceaxe.png");
-    mapReference = mapRef;
     box.h = sp.GetHeight();
-    cout << "box.h: " << box.h << endl;
     box.w = sp.GetWidth();
-    cout << "box.w: " << box.w << endl;
-    MapPositionToPixelPosition(x, y);
+
+    mapReference = mapRef;
+    box.SetRectCenterX( MapPositionToPixelPosition(x) );
+    box.SetRectCenterY( MapPositionToPixelPosition(y) );
+
     this->defesa = defesa;
     this->ataque = ataque;
     this->hp = hp;
@@ -28,6 +28,7 @@ Lider::Lider(float x, float y, float defesa, float ataque, int speed, int distan
     this->rotation = 0;
     allyState = REPOUSO;
     menuAberto = false;
+//    cout << "finaliza construcao do lider" << endl;
 }
 
 Lider::~Lider(){
@@ -46,9 +47,9 @@ void Lider::Render(int cameraX, int cameraY){
             angulo += 90;
         }
     }else{
-        Sprite* vida = VerificaVida();
-        vida->SetScaleX(0.4);
-        vida->SetScaleY(0.7);
-        vida->Render(box.x - cameraX, box.y - cameraY + 80);
+        //Sprite* vida = VerificaVida();
+//        vida->SetScaleX(0.4);
+//        vida->SetScaleY(0.7);
+//        vida->Render(box.x - cameraX, box.y - cameraY + 80);
     }
 }

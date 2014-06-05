@@ -27,7 +27,7 @@ public:
     virtual void Render(int cameraX, int cameraY) = 0;
     Point MapPosition();
     float TileCenter(int coord);
-    void MapPositionToPixelPosition(int line, int row);
+    float MapPositionToPixelPosition(int coord);
     int PixelPositionToMapPosition(int pixels);
     bool IsDead();
     void NotifyCollision(GameObject& other);
