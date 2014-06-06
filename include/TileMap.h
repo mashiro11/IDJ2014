@@ -27,7 +27,7 @@ class TileMap
         TileMap(string file, TileSet* tileSet = NULL);
         void Load(string file);
         void SetTileSet(TileSet* tileSet);
-        int& At(int x, int y, int z = 0);
+        TileInfo& At(int x, int y, int z = 0);
         void Render (int cameraX = 0, int cameraY = 0);
         void RenderLayer(int layer, int cameraX = 0, int cameraY = 0);
 

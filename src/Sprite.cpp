@@ -98,8 +98,8 @@ void Sprite::Open(string file)
         cout << SDL_GetError() << endl;
         cout << "Erro em Sprite::Open(): SDL_QueryTexture() retornou diferente de zero" << endl;
     }
-    cout << "currentFrame: " << currentFrame << endl;
-    cout << "currentLine: " << currentLine << endl;
+    //cout << "currentFrame: " << currentFrame << endl;
+    //cout << "currentLine: " << currentLine << endl;
     SetClip( currentFrame , currentLine , dimensions.w/maxFrameCount, dimensions.h/animationLines);
 }
 

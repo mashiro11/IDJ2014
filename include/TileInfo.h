@@ -2,8 +2,8 @@
 #define TILEINFO_H
 
 enum TileState{
-            FREE = 0,
-            BLOCKED,
+            BLOCKED = 0,
+            FREE,
             ALLY,
             ENEMY
 };
@@ -11,7 +11,7 @@ enum TileState{
 class TileInfo
 {
     public:
-        TileInfo(int tileType = -1, TileState state = FREE);
+        TileInfo(int tileType = -1, TileState state = BLOCKED);
         ~TileInfo();
 
         TileState state;

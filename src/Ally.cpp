@@ -112,11 +112,14 @@ void Ally::MakePath(int line, int row)
         //esse é o método que irá conter o pathFinding e validar o caminho de destinho.
         //aqui será feita verificação de caminho possível/impossível.
         Point newPoint(line, row);
-        //se nao houver esse ponto no caminho, adiciona
-        if(newPoint.x != path.back().x ||
-           newPoint.y != path.back().y){
-                path.push( newPoint );
-                cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
+        if(mapReference->At(line, row).state == FREE &&
+           mapReference->At(line, row).state == ALLY){
+                    //se nao houver esse ponto no caminho, adiciona
+                    if(newPoint.x != path.back().x ||
+                       newPoint.y != path.back().y){
+                            path.push( newPoint );
+                            cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
+                    }
         }
     }
 }
@@ -132,7 +135,7 @@ bool Ally::IsDead(){
 
 //movimenta o ally pelo mapa.
 void Ally::Andar(){
-            cout << "inicio allyPosition: " << allyPosition << endl;
+            //cout << "inicio allyPosition: " << allyPosition << endl;
             if( abs(box.RectCenterX() - TileCenter( path.front().x ) ) < 0.5 &&
                 abs(box.RectCenterY() - TileCenter( path.front().y ) ) < 0.5){
                     box.SetRectCenterX( TileCenter( path.front().x ) );
@@ -162,19 +165,19 @@ void Ally::OrientarSprite()
 {
     switch(allyPosition){
         case FRONT:
-            cout << "Fica de frente" << endl;
+            //cout << "Fica de frente" << endl;
             sp.SetAnimation(0, 4);
             break;
         case BACK:
-            cout << "Fica de costas" << endl;
+            //cout << "Fica de costas" << endl;
             sp.SetAnimation(3, 4);
             break;
         case LEFT:
-            cout << "Fica pra esquerda" << endl;
+            //cout << "Fica pra esquerda" << endl;
             sp.SetAnimation(1, 4);
             break;
         case RIGHT:
-            cout << "Fica pra direita" << endl;
+            //cout << "Fica pra direita" << endl;
             sp.SetAnimation(2, 4);
             break;
     }

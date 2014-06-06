@@ -39,6 +39,11 @@ void TileMap::Load(string file)
                             fscanf(arquivo, "%d", &num);
                             fscanf(arquivo, "%*c");
                             tileMatrix[ l ].tileType = num - 1;
+
+                            if(tileMatrix[ l ].tileType != -1 &&
+                               tileMatrix[ l ].tileType != 1){
+                                    tileMatrix[ l ].state = FREE;
+                            }
             }
                     //cout << endl;
         }
@@ -53,13 +58,14 @@ void TileMap::SetTileSet(TileSet* tileSet)
     this->tileSet = tileSet;
 }
 
-int& TileMap::At(int x, int y, int z)
+TileInfo& TileMap::At(int x, int y, int z)
 {
     int posInVector = -1;
-    int *endereco = NULL;
+    TileInfo *endereco = NULL;
     if(x > mapWidth || y > mapHeight || z > mapDepth) return *endereco; //fora das dimensões da matriz
     posInVector = z*(mapWidth * mapHeight) + mapWidth * y + x;
-    endereco = &(tileMatrix[posInVector].tileType);
+    //endereco = &(tileMatrix[posInVector].tileType);
+    endereco = &(tileMatrix[posInVector]);
     return *endereco;
 }
 void TileMap::Render(int cameraX, int cameraY)
