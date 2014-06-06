@@ -36,3 +36,13 @@ bool StillAnimation::Is(string type)
     if(type == "StillAnimation") return true;
     return false;
 }
+
+void StillAnimation::SetX(float x)
+{
+    box.SetRectCenterX(x);
+}
+
+void  StillAnimation::SetY(float y)
+{
+    box.SetRectCenterY(y);
+}

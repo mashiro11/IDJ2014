@@ -1,71 +1,69 @@
 #ifndef ALLY_H
 #define ALLY_H
 
-#include <queue>
 #include <vector>
 #include <list>
 
 #include "GameObject.h"
 #include "Sprite.h"
 #include "StillAnimation.h"
-#include "TileMap.h"
-#include "Timer.h"
+#include "BarraVida.h"
 
-enum AllyState{ATACANDO, DEFENDENDO, INATIVO, MOVENDO, AGUARDANDO, REPOUSO};
-enum AllyPosition{FRONT, BACK, LEFT, RIGHT};
+
+enum AllyState{ATACANDO, DEFENDENDO, INATIVO, MOVENDO, AGUARDANDO_ANDAR, AGUARDANDO_EMBARCAR, REPOUSO};
+enum AllyPosition{FRENTE, COSTAS, DIREITA, ESQUERDA};
 
 using std::vector;
 using std::list;
-using std::queue;
 
-class Ally : public GameObject{
+class Ally:public GameObject{
 public:
-    //Ally(float x, float y, float defense, float attack, int speed, int distance, float hp, int coolDown, TileMap* mapRef);
-    Ally(){};
+    Ally();
     ~Ally(){};
-    void Update(float dt);
+    void Update(float dt) = 0;
     virtual void Render(int cameraX, int cameraY) = 0;
-    Point MapPosition();
-    float TileCenter(int coord);
-    float MapPositionToPixelPosition(int coord);
-    int PixelPositionToMapPosition(int pixels);
+    Point MapPosition(int tileWidth, int tileHeight);
+    void MapPositionToPixelPosition(int line, int row, int tileSize);
+    int PixelPositionToMapPosition(int pixels, int tileSize);
+    void SetDestiny(int line, int row);
     bool IsDead();
     void NotifyCollision(GameObject& other);
-    bool Is(string type);
-    Sprite* VerificaVida();
 
-    int GetHitPoint();
     void Danificar(float dano);
     void Defender();
     void Andar();
-    void OrientarSprite();
-    void MakePath(int line, int row);
     void Parar();
-    void Abrir_Menu();
+    virtual void Abrir_Menu() = 0;
     void Fechar_Menu();
-    void Embarcar();
     void Usar_Item();
     void Alocar_Item();
     void Especial();
     void Atacar();
-    void Ejetar();
+    virtual void Ejetar() = 0;
 
 protected:
+    void UpdateAlly(float dt);
     AllyState allyState;
     AllyPosition allyPosition;
+    int tileSize;
     Sprite sp;
-    queue<Point> path;
+    //velocidade de movimentacao (ataque, andar, etc)
+    int speed;
+    Point destiny;
     vector<StillAnimation> buttonArray;
     list<int> closeEnemies;
+    //velocidade que carrega a barra
     int coolDown;
+    //distancia ate onde pode andar
     int distance;
-    int speed;
-    float hp;
     float ataque;
     float defesa;
+    //alcance de ataque
+    int range;
     bool menuAberto;
-    TileMap *mapReference;
-    Timer timer;
+    BarraVida vida;
+
+
 private:
 };
 

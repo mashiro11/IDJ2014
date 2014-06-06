@@ -1,24 +1,19 @@
-#include "Lider.h"
+#include "Robo.h"
 
-Lider* Lider::lider;
-
-Lider::Lider(float tileSize, float x, float y, float defesa, float ataque, float vidaMaxima, int coolDown,
-             int range, int distance, int speed)
+Robo::Robo(float tileSize, float x, float y, float defesa, float ataque, float vidaMaxima, int coolDown,
+           int range, int distance, int speed)
 {
-    //ver a proporção do personagem em relaçao ao tile do mundopara aplicar na posicao certa
+    //ver a proporÐ·Ð³o do personagem em relaÐ·ao ao tile do mundopara aplicar na posicao certa
 //    sp.SetScaleX((float) 2);
 //    sp.SetScaleY((float) 2);
-
-    //SetFrameCount
-    //SetFrameTime
-    vida.Open(this);
-    sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/minion.png");
     this->tileSize = tileSize;
-    this->speed = speed;
+    sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface.png");
+    vida.Open(this);
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
     box.SetRectCenterX(x);
     box.SetRectCenterY(y);
+
     MapPositionToPixelPosition(x, y, tileSize);
     this->defesa = defesa;
     this->ataque = ataque;
@@ -33,11 +28,11 @@ Lider::Lider(float tileSize, float x, float y, float defesa, float ataque, float
     menuAberto = false;
 }
 
-Lider::~Lider(){
-    lider = NULL;
+Robo::~Robo(){
+
 }
 
-void Lider::Update(float dt)
+void Robo::Update(float dt)
 {
     UpdateAlly(dt);
     vida.Update();
@@ -45,7 +40,7 @@ void Lider::Update(float dt)
     vida.SetY(box.RectCenterY());
 }
 
-void Lider::Render(int cameraX, int cameraY){
+void Robo::Render(int cameraX, int cameraY){
     sp.Render(box.x - cameraX, box.y - cameraY);
     if(menuAberto){
         int offSet = 100;
@@ -61,30 +56,29 @@ void Lider::Render(int cameraX, int cameraY){
     }
 }
 
-bool Lider::Is(string type){
-    if(type == "Lider"){
+bool Robo::Is(string type){
+    if(type == "Robo"){
         return true;
     }
     return false;
 }
 
-void Lider::Ejetar()
+void Robo::Ejetar()
 {
-    /*
-    cout << "AQUI" << endl;
-    cout << "AQUI" << endl;
-    cout << "AQUI" << endl;
-    cout << "AQUI" << endl;
-    cout << "AQUI" << endl;
-    cout << "AQUI" << endl;
-    cout << "AQUI" << endl;
+    Piloto* piloto = pilotoArray.back();
+    piloto->Ejetar();
     pilotoArray.pop_back();
     if(pilotoArray.size() == 0){
         allyState = INATIVO;
-    }*/
+    }
 }
 
-void Lider::Abrir_Menu()
+void Robo::InserePiloto(Piloto *piloto)
+{
+    pilotoArray.push_back(piloto);
+}
+
+void Robo::Abrir_Menu()
 {
     float offSet = 125;
     float angulo = 90;
@@ -123,4 +117,5 @@ void Lider::Abrir_Menu()
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
                                                    rotation, botao5, 50, false);
     buttonArray.emplace_back(*botaoAnim5);
+
 }
