@@ -28,7 +28,6 @@ private:
      * characters[1] = Robo
      * */
     //static std::vector<string, bool> charactersInGame;
-    static std::vector<bool> charactersInGame;
     Sprite bg;
     Sprite selecao;
     Sprite selecionado;

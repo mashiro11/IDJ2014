@@ -37,7 +37,7 @@ public:
     void Defender();
     void Andar();
     void Parar();
-    virtual void Abrir_Menu() = 0;
+    void Abrir_Menu();
     void Fechar_Menu();
     void Usar_Item();
     void Alocar_Item();
