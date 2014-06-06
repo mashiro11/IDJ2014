@@ -1,10 +1,10 @@
 #include "StageState.h"
 
 StageState::StageState():
-bg("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/ocean.jpg"),
-tileSet(64,64, "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/tileSet.jpg"),
-tileMap("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/map/tileMap.txt", &tileSet),
-backGroundMusic("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/stageState.ogg")
+bg("images/ocean.jpg"),
+tileSet(64,64, "images/img/tileSet.jpg"),
+tileMap("images/map/tileMap.txt", &tileSet),
+backGroundMusic("images/audio/stageState.ogg")
 {
     backGroundMusic.Play(-1);
     stringstream aux;
@@ -35,7 +35,7 @@ backGroundMusic("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/ima
     color.g = 0;
     color.b = 0;
     color.a = 255;
-    chessPosition.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, aux.str() , color);
+    chessPosition.Initialize("images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, aux.str() , color);
     chessPosition.SetPos( 0, 0);
     chessPosition.SetText(aux.str());
 }

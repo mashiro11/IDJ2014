@@ -2,7 +2,7 @@
 #include <sstream>
 
 InfoMenu::InfoMenu(float x, float y):
-    sp("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/win.jpg"),
+    sp("images/img/win.jpg"),
     cronometro()
 {
     box.x = x;
@@ -18,7 +18,7 @@ InfoMenu::InfoMenu(float x, float y):
     color.g =   0;
     color.a = 255;
 
-    texto.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60,Text::TEXT_SOLID, "Inicio", color);
+    texto.Initialize("images/font/Call me maybe.ttf", 60,Text::TEXT_SOLID, "Inicio", color);
     texto.SetPos(x + 75, y + 550, true, true);
 }
 
@@ -66,12 +66,12 @@ void InfoMenu::Render(int cameraX, int cameraY){
 void InfoMenu::InsereBotao(GameObject* objeto){
     string caminho;
     if(objeto->Is("Lider")){
-        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/minion.png";
+        caminho = "images/img/minion.png";
 
     }else if(objeto->Is("Robo")){
-        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface.png";
+        caminho = "images/img/penguinface.png";
     }else if(objeto->Is("Piloto")){
-        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png";
+        caminho = "images/img/alien.png";
     }
 
     Sprite botao(caminho);

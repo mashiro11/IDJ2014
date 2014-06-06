@@ -1,22 +1,22 @@
 #include "TitleState.h"
 
 TitleState::TitleState():
-    bg("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/title.jpg")
+    bg("images/img/title.jpg")
 {
     SDL_Color color;
     color.r =   0;
     color.b =   0;
     color.g =   0;
     color.a = 255;
-    start.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 90, Text::TEXT_BLENDED, "Jogar", color);
+    start.Initialize("images/font/Call me maybe.ttf", 90, Text::TEXT_BLENDED, "Jogar", color);
     start.SetPos(Game::GetInstance().GetWindowWidth()/2,
                  Game::GetInstance().GetWindowHeight()*1/3, true, true);
 
-    options.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Opcoes", color);
+    options.Initialize("images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Opcoes", color);
     options.SetPos(Game::GetInstance().GetWindowWidth()/2,
                    Game::GetInstance().GetWindowHeight()*1/2, true, true);
 
-    quit.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Sair", color);
+    quit.Initialize("images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Sair", color);
     quit.SetPos(Game::GetInstance().GetWindowWidth()/2,
                 Game::GetInstance().GetWindowHeight()*2/3, true, true);
 }

@@ -1,10 +1,10 @@
-#include "Piloto.h"
+﻿#include "Piloto.h"
 
 Piloto::Piloto(float tileSize, float defesa, float vidaMaxima, int coolDown,
                int range, int distance, GameObject* robo, int speed)
 {
 
-    sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png");
+    sp.Open("images/img/alien.png");
     vida.Open(this);
     this->speed = speed;
     this->robo = robo;
@@ -162,14 +162,14 @@ void Piloto::Abrir_Menu()
     float angulo = 0;
     float angOffset = 180;
 
-    Sprite botao("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botaoMover.png");
+    Sprite botao("images/img/botaoMover.png");
     StillAnimation* botaoAnim = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
                                                    rotation, botao, 50, false);
     buttonArray.emplace_back(*botaoAnim);
     angulo += angOffset;
 
-    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao.png");
+    Sprite botao2("images/img/botao.png");
     StillAnimation* botaoAnim2 = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
                                                    rotation, botao2, 50, false);

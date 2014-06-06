@@ -1,7 +1,7 @@
 #include "OptionsState.h"
 
 OptionsState::OptionsState():
-    bg("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/title.jpg")
+    bg("images/img/title.jpg")
 {
     SDL_Color color;
     color.r =   0;
@@ -9,7 +9,7 @@ OptionsState::OptionsState():
     color.g =   0;
     color.a = 255;
 
-    voltar.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Voltar", color);
+    voltar.Initialize("images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Voltar", color);
     voltar.SetPos(150, 500, true, true);
 }
 
