@@ -1,5 +1,5 @@
 #include "Alien.h"
-
+//a
 const int translationSpeed = 60;
 const int alienSpeed = 150;
 const int coolDownTime = 5;
