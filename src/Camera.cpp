@@ -37,18 +37,18 @@ void Camera::Update (float dt)
     }
     if(focus != NULL){
            //centraliza o foco na tela, movimento independe de dt, depende apenas do tamanho da tela
-           // float angulo = atan2(focus->box.y - pos.y,focus->box.x - pos.x);
+            //float angulo = atan2(focus->box.y - pos.y,focus->box.x - pos.x);
             float angulo = M_PI*45/180;
 
             if(pos.x > focus->box.RectCenterX() - Game::GetInstance().GetWindowWidth()/2 + 5){
-                pos.x -= cos(angulo)*speed/1.2;
+                pos.x -= cos(angulo)*speed*0.8;
             }else if(pos.x < focus->box.RectCenterX() - Game::GetInstance().GetWindowWidth()/2 - 5){
-                pos.x += cos(angulo)*speed/1.2;
+                pos.x += cos(angulo)*speed*0.8;
             }
             if(pos.y > focus->box.RectCenterY() - Game::GetInstance().GetWindowHeight()/2 + 5){
-                pos.y -= sin(angulo)*speed/1.2;
+                pos.y -= sin(angulo)*speed*0.8;
             }else if(pos.y < focus->box.RectCenterY() - Game::GetInstance().GetWindowHeight()/2 - 5){
-                pos.y += sin(angulo)*speed/1.2;
+                pos.y += sin(angulo)*speed*0.8;
             }
             if((pos.x < focus->box.RectCenterX() - Game::GetInstance().GetWindowWidth()/2 + 5)&&
                (pos.x > focus->box.RectCenterX() - Game::GetInstance().GetWindowWidth()/2 - 5)&&

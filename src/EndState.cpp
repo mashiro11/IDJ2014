@@ -3,6 +3,7 @@
 EndState::EndState(StateData stateData)
 {
     wait = false;
+#ifdef ANDRE
     if(stateData.playerVictory == true){
         bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/win.jpg");
         music.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/endStateWin.ogg");
@@ -10,12 +11,27 @@ EndState::EndState(StateData stateData)
         bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/lose.jpg");
         music.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/endStateLose.ogg");
     }
+#endif
+#ifdef MASHIRO
+    if(stateData.playerVictory == true){
+        bg.Open("images/img/win.jpg");
+        music.Open("images/audio/endStateWin.ogg");
+    }else{
+        bg.Open("images/img/lose.jpg");
+        music.Open("images/audio/endStateLose.ogg");
+    }
+#endif
     SDL_Color color;
     color.r =   0;
     color.b =   0;
     color.g =   0;
     color.a = 255;
+#ifdef ANDRE
     instruction.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, "PRESS SPACE TO PLAY AGAIN", color);
+#endif
+#ifdef MASHIRO
+    instruction.Initialize("images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, "PRESS SPACE TO PLAY AGAIN", color);
+#endif
     instruction.SetPos(Game::GetInstance().GetWindowWidth()/2,
                        Game::GetInstance().GetWindowHeight()*5/6,
                        true, true);

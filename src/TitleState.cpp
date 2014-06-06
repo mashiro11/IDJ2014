@@ -1,24 +1,37 @@
 #include "TitleState.h"
 
-TitleState::TitleState():
-    bg("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/title.jpg")
+TitleState::TitleState()
 {
+#ifdef ANDRE
+    bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/title.jpg");
+#endif
+#ifdef MASHIRO
+    bg.Open("images/img/title.jpg");
+#endif
     SDL_Color color;
     color.r =   0;
     color.b =   0;
     color.g =   0;
     color.a = 255;
+#ifdef ANDRE
     start.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 90, Text::TEXT_BLENDED, "Jogar", color);
+    options.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Opcoes", color);
+    quit.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Sair", color);
+#endif
+#ifdef MASHIRO
+    start.Initialize("images/font/Call me maybe.ttf", 90, Text::TEXT_BLENDED, "Jogar", color);
+    options.Initialize("images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Opcoes", color);
+    quit.Initialize("images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Sair", color);
+#endif
     start.SetPos(Game::GetInstance().GetWindowWidth()/2,
                  Game::GetInstance().GetWindowHeight()*1/3, true, true);
 
-    options.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Opcoes", color);
     options.SetPos(Game::GetInstance().GetWindowWidth()/2,
                    Game::GetInstance().GetWindowHeight()*1/2, true, true);
 
-    quit.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60,Text::TEXT_BLENDED, "Sair", color);
     quit.SetPos(Game::GetInstance().GetWindowWidth()/2,
                 Game::GetInstance().GetWindowHeight()*2/3, true, true);
+
 }
 
 void TitleState::Update(float dt)
@@ -44,7 +57,7 @@ void TitleState::Input(){
     }
 
     if(InputManager::GetInstance().KeyPress(SDLK_SPACE) == true){
-        StageState* state = new StageState();
+        CharacterState* state = new CharacterState();
         Game::GetInstance().Push(state);
     }
 
@@ -56,7 +69,7 @@ void TitleState::Input(){
         if(start.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                           InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
             //CharacterState* state = new CharacterState();
-            StageState* state = new StageState();
+            CharacterState* state = new CharacterState();
             Game::GetInstance().Push(state);
 
         }else if(options.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,

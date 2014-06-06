@@ -2,15 +2,23 @@
 
 CharacterState::CharacterState()
 {
+    #ifdef ANDRE
     bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/title.jpg");
     selecao.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/selecao.png");
     selecionado.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/selecionado.png");
+    #endif
+    #ifdef MASHIRO
+    bg.Open("images/img/title.jpg");
+    selecao.Open("images/img/selecao.png");
+    selecionado.Open("images/img/selecionado.png");
+    #endif
 
     SDL_Color color;
     color.r =   0;
     color.b =   0;
     color.g =   0;
     color.a = 255;
+    #ifdef ANDRE
     instruction.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 55, Text::TEXT_BLENDED, "Escolha", color);
     instruction.SetPos(Game::GetInstance().GetWindowWidth()/2,
                  Game::GetInstance().GetWindowHeight()*1/20, true, true);
@@ -18,6 +26,16 @@ CharacterState::CharacterState()
     inicio.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 50, Text::TEXT_BLENDED, "Jogar", color);
     inicio.SetPos(Game::GetInstance().GetWindowWidth()*12/13,
                  Game::GetInstance().GetWindowHeight()*14/15, true, true);
+    #endif
+    #ifdef MASHIRO
+    instruction.Initialize("images/font/Call me maybe.ttf", 55, Text::TEXT_BLENDED, "Escolha", color);
+    instruction.SetPos(Game::GetInstance().GetWindowWidth()/2,
+                 Game::GetInstance().GetWindowHeight()*1/20, true, true);
+
+    inicio.Initialize("images/font/Call me maybe.ttf", 50, Text::TEXT_BLENDED, "Jogar", color);
+    inicio.SetPos(Game::GetInstance().GetWindowWidth()*12/13,
+                 Game::GetInstance().GetWindowHeight()*14/15, true, true);
+    #endif
 
     PopulaArray();
 }
@@ -84,7 +102,12 @@ void CharacterState::Input()
 
 void CharacterState::PopulaArray()
 {
+#ifdef ANDRE
     Sprite botao("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface.png");
+#endif
+#ifdef MASHIRO
+    Sprite botao("images/img/penguinface.png");
+#endif
     StillAnimation* botaoAnim = new StillAnimation(150, 150 + 75*characterArray.size(), 0, botao, 50, false);
     characterArray.emplace_back(*botaoAnim);
 

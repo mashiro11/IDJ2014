@@ -2,9 +2,15 @@
 #include <sstream>
 
 InfoMenu::InfoMenu(float x, float y):
-    sp("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/win.jpg"),
     cronometro()
 {
+    #ifdef ANDRE
+    sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/win.jpg");
+    #endif
+    #ifdef MASHIRO
+    sp.Open("images/img/win.jpg");
+    #endif
+
     box.x = x;
     box.y = y;
     box.h = sp.GetHeight();
@@ -17,8 +23,12 @@ InfoMenu::InfoMenu(float x, float y):
     color.b =   0;
     color.g =   0;
     color.a = 255;
-
+    #ifdef ANDRE
     texto.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60,Text::TEXT_SOLID, "Inicio", color);
+    #endif
+    #ifdef MASHIRO
+    texto.Initialize("images/font/Call me maybe.ttf", 60,Text::TEXT_SOLID, "Inicio", color);
+    #endif
     texto.SetPos(x + 75, y + 550, true, true);
 }
 
@@ -65,14 +75,24 @@ void InfoMenu::Render(int cameraX, int cameraY){
 
 void InfoMenu::InsereBotao(GameObject* objeto){
     string caminho;
+    #ifdef ANDRE
     if(objeto->Is("Lider")){
         caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/minion.png";
-
     }else if(objeto->Is("Robo")){
         caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface.png";
     }else if(objeto->Is("Piloto")){
         caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png";
     }
+    #endif
+    #ifdef MASHIRO
+    if(objeto->Is("Lider")){
+        caminho = "images/img/minion.png";
+    }else if(objeto->Is("Robo")){
+        caminho = "images/img/penguinface.png";
+    }else if(objeto->Is("Piloto")){
+        caminho = "images/img/alien.png";
+    }
+    #endif
 
     Sprite botao(caminho);
     botao.SetScaleX(0.5);

@@ -1,10 +1,18 @@
 #include "StageState.h"
 
 StageState::StageState():
+    #ifdef ANDRE
 bg("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/ocean.jpg"),
 tileSet(64,64, "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/tileSet.jpg"),
 tileMap("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/map/tileMap.txt", &tileSet),
 backGroundMusic("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/stageState.ogg")
+#endif
+#ifdef MASHIRO
+bg("images/ocean.jpg"),
+tileSet(64,64, "images/img/tileSet.jpg"),
+tileMap("images/map/tileMap.txt", &tileSet),
+backGroundMusic("images/audio/stageState.ogg")
+#endif
 {
     backGroundMusic.Play(-1);
     stringstream aux;
@@ -17,18 +25,18 @@ backGroundMusic("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/ima
     objectArray.emplace_back(lider);
 
 
-//    Robo *robo = new Robo(64, 6, 3, 10, 10, 10, 10, 5, 5, 3);
-//    objectArray.emplace_back(robo);
+    Robo *robo = new Robo(7, 8, 10, 10, 4, 7, 10, 10, &tileMap, 5);
+    objectArray.emplace_back(robo);
 
 //    Piloto *piloto = new Piloto(64, 10, 10, 10, 10, 10, robo, 3);
 //    objectArray.emplace_back(piloto);
 //    robo->InserePiloto(piloto);
 
-//    InfoMenu *infoMenu = new InfoMenu(770, 0);
-//    objectArray.emplace_back(infoMenu);
+    InfoMenu *infoMenu = new InfoMenu(770, 0);
+    objectArray.emplace_back(infoMenu);
 
-//    infoMenu->InsereBotao(lider);
-//    infoMenu->InsereBotao(robo);
+      infoMenu->InsereBotao(lider);
+     infoMenu->InsereBotao(robo);
 //    infoMenu->InsereBotao(piloto);
 
     SDL_Color color;
@@ -36,10 +44,14 @@ backGroundMusic("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/ima
     color.g = 0;
     color.b = 0;
     color.a = 255;
+#ifdef ANDRE
     chessPosition.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, aux.str() , color);
+#endif
+#ifdef MASHIRO
+    chessPosition.Initialize("images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, aux.str() , color);
+#endif
     chessPosition.SetPos( 0, 0);
     chessPosition.SetText(aux.str());
-
 }
 
 StageState::~StageState()
@@ -51,6 +63,7 @@ StageState::~StageState()
 
 void StageState::Update(float dt)
 {
+
     Input();
     stringstream aux;
 
@@ -59,14 +72,16 @@ void StageState::Update(float dt)
     aux << position.x << " x " << position.y;
     chessPosition.SetText(aux.str());
 
+
     Camera::Update(Game::GetInstance().GetDeltaTime());
+
     for(int i = 0; i < objectArray.size(); i++){
         objectArray[ i ]->Update(Game::GetInstance().GetDeltaTime());
         if(objectArray[ i ]->IsDead() == true){
+
                 objectArray.erase( objectArray.begin() + i );
         }
     }
-    cout << "AKIAKIAKIAKI" << endl;
     for(int i = 0; i < objectArray.size(); i++){
         for(int j = i + 1; j < objectArray.size(); j++ ){
                 if(objectArray[i]->Is("StillAnimation") == false && objectArray[j]->Is("StillAnimation") == false){

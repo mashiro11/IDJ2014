@@ -1,9 +1,15 @@
 #include "BarraVida.h"
 
-BarraVida::BarraVida(GameObject* objeto):
-    vida("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVida.png"),
-    moldura("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVidaMold.png")
+BarraVida::BarraVida(GameObject* objeto)
 {
+    #ifdef ANDRE
+    vida.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVida.png");
+    moldura.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVidaMold.png");
+    #endif
+    #ifdef MASHIRO
+    vida.Open("images/img/barraVida.png");
+    moldura.Open("images/img/barraVidaMold.png");
+    #endif
     this->objeto = objeto;
     box.w = vida.GetWidth();
     box.h = vida.GetHeight();
@@ -15,8 +21,14 @@ BarraVida::BarraVida(GameObject* objeto):
 
 void BarraVida::Open(GameObject *alvo)
 {
+    #ifdef ANDRE
     vida.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVida.png");
     moldura.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVidaMold.png");
+    #endif
+    #ifdef MASHIRO
+    vida.Open("images/img/barraVida.png");
+    moldura.Open("images/img/barraVidaMold.png");
+    #endif;
     this->objeto = alvo;
 
     box.w = vida.GetWidth();
@@ -27,6 +39,7 @@ void BarraVida::Open(GameObject *alvo)
 
 void BarraVida::Update()
 {
+
     int max = objeto->GetLife();
     int atual = objeto->GetHitPoint();
     float porCento = 100*atual/max - 50;

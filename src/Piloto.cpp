@@ -43,35 +43,7 @@
 //void Piloto::Update(float dt)
 //{
 //    if(robo == NULL){
-//        switch(allyState){
-//                case MOVENDO:
-//                    if( PixelPositionToMapPosition(box.x, tileSize) == destiny.x &&
-//                        PixelPositionToMapPosition(box.y, tileSize) == destiny.y){
-//                        allyState = REPOUSO;
-//                        break;
-//                    }
-//                    break;
-
-//                case REPOUSO:
-//                    break;
-
-//                case AGUARDANDO_ANDAR:
-//                    if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
-//                            SetDestiny(PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x, tileSize ),
-//                                       PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y, tileSize ));
-//                            cout << "destino: " << destiny.x << "x" << destiny.y << endl;
-//                            allyState = MOVENDO;
-//                    }
-//                    break;
-//                case AGUARDANDO_EMBARCAR:
-//                    if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
-//                        //tem que ser aliado, robo ou lider, ter espaco e estar proximo.
-//                        allyState = REPOUSO;
-//                        //this->Embarcar(alvo);
-//                    }
-
-//                    break;
-//        }
+//        if(timer.Get() < coolDown) timer.Update(dt);
 //        //verifica se houve evento de clique do mouse
 //        if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
 //            //se o mouse estiver dentro do personagem, o menu é aberto e recebe true se nao existir.
@@ -94,23 +66,69 @@
 //                if(buttonArray[i].box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
 //                                               InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
 //                    switch(i){
-//                            case(0):
-//                                cout << "esse botao pede para andar" << endl;
-//                                allyState = AGUARDANDO_ANDAR;
-//                                break;
-//                            case(1):
-//                                cout << "esse botao pede para ejetar/embarcar" << endl;
-//                                allyState = AGUARDANDO_EMBARCAR;
-//                                break;
-//                    }
+//                    case(0):
+//                       cout << "esse botao pede para andar" << endl;
+//                       allyState = AGUARDANDO_ANDAR;
+//                       break;
+//                   case(1):
+//                       cout << "esse botao pede para defender" << endl;
+//                       allyState = DEFENDENDO;
+//                       break;
+//                   case(2):
+//                       cout << "esse botao pede para usar item" << endl;
+//                       allyState = AGUARDANDO_ITEM;
+//                       break;
+//                   case(3):
+//                       cout << "esse botao pede para ejetar" << endl;
+//                       allyState = AGUARDANDO_EMBARCAR;
+//                       break;
+//                   }
 //                }
-//            }
-//            //se a flag estiver como falsa, fecha o menu
-//            if (menuAberto == false){
-//                Fechar_Menu();
+
+//                //se a flag estiver como falsa, fecha o menu
+//                if (menuAberto == false){
+//                    Fechar_Menu();
+//                }
 //            }
 //        }
 
+//        switch(allyState){
+//                case MOVENDO:
+//                    if( path.empty() == true){
+//                        cout << "Path vazio" << endl;
+//                        allyState = REPOUSO;
+//                        break;
+//                    }else{
+//                        Andar();
+//                    }
+//                    break;
+
+//                case DEFENDENDO:
+//                    break;
+
+//                case INATIVO:
+//                    break;
+
+//                case ATACANDO:
+//                    break;
+
+//                case REPOUSO:
+//                    break;
+//                case AGUARDANDO_ANDAR:
+
+//                //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
+
+//                       MakePath(PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x ),
+//                                     PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y ));
+//                    //}
+//                    if(InputManager::GetInstance().MousePress(RIGHT_MOUSE_BUTTON) == true){
+//                            allyState = MOVENDO;
+//                    }
+
+//                    break;
+//        }
+
+//        sp.Update(dt);
 //        vida.Update();
 //        vida.SetX(box.RectCenterX());
 //        vida.SetY(box.RectCenterY());
