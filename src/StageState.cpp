@@ -16,6 +16,10 @@ backGroundMusic("images/audio/stageState.ogg")
     Lider::lider = lider;
     objectArray.emplace_back(lider);
 
+//    Lider *lider2 = new Lider(2, 5, 10, 10, 4, 7, 10, 10, &tileMap);
+//    Lider::lider = lider2;
+//    objectArray.emplace_back(lider2);
+
     //cout << "inicia construcao do infoMenu" << endl;
     InfoMenu *infoMenu = new InfoMenu(770, 0, lider);
     objectArray.emplace_back(infoMenu);

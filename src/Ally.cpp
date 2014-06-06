@@ -109,8 +109,6 @@ int Ally::PixelPositionToMapPosition(int pixels)
 void Ally::MakePath(int line, int row)
 {
     if(path.size() < distance){
-        Point newPoint(line, row);
-
         //se a posicao no mapa é acessivel
         if(mapReference->At(line, row).state == FREE ||
            mapReference->At(line, row).state == ALLY){
@@ -119,10 +117,12 @@ void Ally::MakePath(int line, int row)
 
                     //se a lista de pontos estiver vazia ou
                     //se o novo ponto for vizinho do ponto anterior
+                    Point newPoint(line, row);
                     if( path.empty() == true ||
                        (newPoint.x == path.back().x && abs(newPoint.y - path.back().y) == 1) ||
                        (newPoint.y == path.back().y && abs(newPoint.x - path.back().x) == 1) ){
 
+                            //se o novo ponto for diferente do ponto anterior
                             if(newPoint.x != path.back().x ||
                                newPoint.y != path.back().y){
                                     path.push( newPoint );
