@@ -43,8 +43,8 @@ class TileMap
     private:
         //vector<int> tileMatrix;
         vector<TileInfo> tileMatrix;
-        //O mapa nao pode conter só ints, deverá conter informação de estar ou nao ocupado, além de quais
-        //tiles são seus vizinhos
+        //O mapa nao pode conter s? ints, dever? conter informa??o de estar ou nao ocupado, al?m de quais
+        //tiles s?o seus vizinhos
         TileSet* tileSet;
         int mapWidth;
         int mapHeight;

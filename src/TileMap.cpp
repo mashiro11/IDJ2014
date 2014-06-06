@@ -63,7 +63,7 @@ TileInfo& TileMap::At(int x, int y, int z)
 {
     int posInVector = -1;
     TileInfo *endereco = NULL;
-    if(x > mapWidth || y > mapHeight || z > mapDepth) return *endereco; //fora das dimensões da matriz
+    if(x > mapWidth || y > mapHeight || z > mapDepth) return *endereco; //fora das dimens?es da matriz
     posInVector = z*(mapWidth * mapHeight) + mapWidth * y + x;
     //endereco = &(tileMatrix[posInVector].tileType);
     endereco = &(tileMatrix[posInVector]);
@@ -83,7 +83,7 @@ void TileMap::Render(int cameraX, int cameraY)
 }
 void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 {
-    //Faz o mesmo que Render, mas para uma layer só.
+    //Faz o mesmo que Render, mas para uma layer s?.
     int k = layer * mapWidth * mapHeight;
     for(int i = 0; i < mapWidth; i++){
             for(int j = 0; j < mapHeight; j++, k++){

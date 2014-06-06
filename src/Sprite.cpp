@@ -79,8 +79,8 @@ Sprite::~Sprite()
 void Sprite::Open(string file)
 {
     if ( assetTable.find(file) != assetTable.end()){//existe uma textura com esse endereco
-            texture = assetTable.find(file)->second;//usa ela própria
-    }else{//se não existe ainda
+            texture = assetTable.find(file)->second;//usa ela pr?pria
+    }else{//se n?o existe ainda
         texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str() );//carrega
         if(texture == NULL){
             cout << SDL_GetError() << endl;
@@ -105,7 +105,7 @@ void Sprite::Open(string file)
 
 void Sprite::SetClip(int x, int y, int w, int h)
 {
-    /* Seta clipRect com os parâmetros dados. */
+    /* Seta clipRect com os par?metros dados. */
     clipRect.x = x;
     clipRect.y = y;
     clipRect.w = w;

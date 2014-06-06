@@ -71,10 +71,10 @@ void Camera::Update (float dt)
                 pos.x += speed;
         }
     }
-//    if(pos.x > MaxX) pos.x = MaxX;
-//    if(pos.x < MinX) pos.x = MinX;
-//    if(pos.y > MaxY) pos.y = MaxY;
-//    if(pos.y < MinY) pos.y = MinY;
+    if(pos.x > MaxX) pos.x = MaxX;
+    if(pos.x < MinX) pos.x = MinX;
+    if(pos.y > MaxY) pos.y = MaxY;
+    if(pos.y < MinY) pos.y = MinY;
 }
 
 GameObject* Camera::GetFocus()

@@ -1,8 +1,8 @@
 #include "BarraVida.h"
 
 BarraVida::BarraVida(GameObject* objeto):
-    vida("images/img/barraVida.png"),
-    moldura("images/img/barraVidaMold.png")
+    vida("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVida.png"),
+    moldura("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVidaMold.png")
 {
     this->objeto = objeto;
     box.w = vida.GetWidth();
@@ -15,8 +15,8 @@ BarraVida::BarraVida(GameObject* objeto):
 
 void BarraVida::Open(GameObject *alvo)
 {
-    vida.Open("images/img/barraVida.png");
-    moldura.Open("images/img/barraVidaMold.png");
+    vida.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVida.png");
+    moldura.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVidaMold.png");
     this->objeto = alvo;
 
     box.w = vida.GetWidth();

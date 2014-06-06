@@ -1,55 +1,63 @@
 #include "Ally.h"
 
-//gerencia as modificacoes e os estados  do ally
-void Ally::Update(float dt)
+Ally::Ally()
 {
-    if(timer.Get() < coolDown) timer.Update(dt);
-    //verifica se houve evento de clique do mouse
-    if(InputManager::GetInstance().MouseRelease(LEFT_MOUSE_BUTTON) == true){
-        //se o mouse estiver dentro do personagem, o menu é aberto e recebe true se nao existir.
-        //se o menu ja existir, recebe falso, pois sera fechado mais para frente.
-        if(this->box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
-                              InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
-                                            if(menuAberto == false){
-                                                Camera::Follow(this);
-                                                Abrir_Menu();
-                                                menuAberto = true;
-                                            }else{
-                                                menuAberto = false;
-                                            }
-        //se o clique for fora do personagem, menu recebe falso para ser fechado mais a frente
-        }else{
-            menuAberto = false;
-        }
-        for(int i = 0; i < buttonArray.size(); i++){
-            //verifica qual o botao que foi clicado, se algum deles for clicado.
-            if(buttonArray[i].box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
-                                           InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
-                switch(i){
-                        case(0):
-                            cout << "esse botao pede para andar" << endl;
-                            allyState = AGUARDANDO;
-                            break;
-                        case(1):
-                            cout << "esse botao pede para defender" << endl;
-                            allyState = DEFENDENDO;
-                            break;
-                        case(2):
-                            cout << "esse botao pede para usar item" << endl;
-                            allyState = AGUARDANDO;
-                            break;
-                        case(3):
-                            cout << "esse botao pede para ejetar" << endl;
-                            allyState = AGUARDANDO;
-                            break;
-                        }
+
+}
+
+//gerencia as modificacoes e os estados  do ally
+void Ally::UpdateAlly(float dt)
+{
+    if(allyState != INATIVO){
+        if(timer.Get() < coolDown) timer.Update(dt);
+        //verifica se houve evento de clique do mouse
+        if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
+            //se o mouse estiver dentro do personagem, o menu é aberto e recebe true se nao existir.
+            //se o menu ja existir, recebe falso, pois sera fechado mais para frente.
+            if(this->box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
+                                  InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
+                                                if(menuAberto == false){
+                                                    Camera::Follow(this);
+                                                    Abrir_Menu();
+                                                    menuAberto = true;
+                                                }else{
+                                                    menuAberto = false;
+                                                }
+            //se o clique for fora do personagem, menu recebe falso para ser fechado mais a frente
+            }else{
+                menuAberto = false;
+            }
+            for(int i = 0; i < buttonArray.size(); i++){
+                //verifica qual o botao que foi clicado, se algum deles for clicado.
+                if(buttonArray[i].box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
+                                               InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
+                    switch(i){
+                    case(0):
+                       cout << "esse botao pede para andar" << endl;
+                       allyState = AGUARDANDO_ANDAR;
+                       break;
+                   case(1):
+                       cout << "esse botao pede para defender" << endl;
+                       allyState = DEFENDENDO;
+                       break;
+                   case(2):
+                       cout << "esse botao pede para usar item" << endl;
+                       allyState = AGUARDANDO_ITEM;
+                       break;
+                   case(3):
+                       cout << "esse botao pede para ejetar" << endl;
+                       allyState = AGUARDANDO_EMBARCAR;
+                       break;
+                   }
+                }
+            }
+            //se a flag estiver como falsa, fecha o menu
+            if (menuAberto == false){
+                Fechar_Menu();
             }
         }
-        //se a flag estiver como falsa, fecha o menu
-        if (menuAberto == false){
-            Fechar_Menu();
-        }
     }
+
     switch(allyState){
             case MOVENDO:
                 if( path.empty() == true){
@@ -72,17 +80,20 @@ void Ally::Update(float dt)
 
             case REPOUSO:
                 break;
-            case AGUARDANDO:
-                //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
-                        MakePath(PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x ),
+            case AGUARDANDO_ANDAR:
+            //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
+
+                   MakePath(PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x ),
                                  PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y ));
                 //}
+                 //  cout << "HOU" << endl;
                 if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
                         allyState = MOVENDO;
                 }
+
                 break;
-    }
-    sp.Update(dt);
+        }
+
 }
 
 Point Ally::MapPosition()
@@ -106,36 +117,9 @@ int Ally::PixelPositionToMapPosition(int pixels)
     return pixels/mapReference->GetTileSize();
 }
 
-void Ally::MakePath(int line, int row)
-{
-    if(path.size() < distance){
-        //se a posicao no mapa é acessivel
-        if(mapReference->At(line, row).state == FREE ||
-           mapReference->At(line, row).state == ALLY){
-                    //cout << "ponto ( " << line << ", " << row << ") adicionado" << endl;
-                    //cout << "mapStateAt( " << line << ", " << row << "): " << mapReference->At(line, row).state << endl;
-
-                    //se a lista de pontos estiver vazia ou
-                    //se o novo ponto for vizinho do ponto anterior
-                    Point newPoint(line, row);
-                    if( path.empty() == true ||
-                       (newPoint.x == path.back().x && abs(newPoint.y - path.back().y) == 1) ||
-                       (newPoint.y == path.back().y && abs(newPoint.x - path.back().x) == 1) ){
-
-                            //se o novo ponto for diferente do ponto anterior
-                            if(newPoint.x != path.back().x ||
-                               newPoint.y != path.back().y){
-                                    path.push( newPoint );
-                                    cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
-                            }
-                    }
-        }
-    }
-}
-
 //verifica se ally esta morto
 bool Ally::IsDead(){
-    if(this->hp <= 0){
+    if(this->vidaAtual <= 0){
         if(Camera::GetFocus() == this) Camera::Unfollow();
         return true;
     }
@@ -170,6 +154,86 @@ void Ally::Andar(){
             OrientarSprite();
 }
 
+//para a movimentacao do ally caso este encontre um obstaculo pelo caminho.
+void Ally::Parar(){
+
+}
+
+//reduz a vida do ally
+void Ally::Danificar(float dano){
+    this->vidaAtual -= dano - defesa/10;
+}
+
+//notifica as colisoes de ally
+void Ally::NotifyCollision(GameObject &other)
+{
+
+}
+
+//anima o personagem com seu ataque basico.
+void Ally::Atacar(){
+
+}
+
+//gerencia o ally em seu modo de defesa.
+void Ally::Defender(){
+
+}
+
+//abre o menu de personagem
+
+
+//fecha o menu de personagem
+void Ally::Fechar_Menu(){
+    buttonArray.clear();
+}
+
+//coloca um item no vetor de itens do ally
+void Ally::Alocar_Item()
+{
+
+}
+
+void Ally::Usar_Item()
+{
+
+}
+
+
+
+//gerencia o uso de especial
+void Ally::Especial()
+{
+
+}
+
+void Ally::MakePath(int line, int row)
+{
+    if(path.size() < distance){
+        //se a posicao no mapa é acessivel
+        if(mapReference->At(line, row).state == FREE ||
+           mapReference->At(line, row).state == ALLY){
+                    //cout << "ponto ( " << line << ", " << row << ") adicionado" << endl;
+                    //cout << "mapStateAt( " << line << ", " << row << "): " << mapReference->At(line, row).state << endl;
+
+                    //se a lista de pontos estiver vazia ou
+                    //se o novo ponto for vizinho do ponto anterior
+                    Point newPoint(line, row);
+                    if( path.empty() == true ||
+                       (newPoint.x == path.back().x && abs(newPoint.y - path.back().y) == 1) ||
+                       (newPoint.y == path.back().y && abs(newPoint.x - path.back().x) == 1) ){
+
+                            //se o novo ponto for diferente do ponto anterior
+                            if(newPoint.x != path.back().x ||
+                               newPoint.y != path.back().y){
+                                    path.push( newPoint );
+                                    cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
+                            }
+                    }
+        }
+    }
+}
+
 void Ally::OrientarSprite()
 {
     switch(allyPosition){
@@ -192,129 +256,6 @@ void Ally::OrientarSprite()
     }
 }
 
-//para a movimentacao do ally caso este encontre um obstaculo pelo caminho.
-void Ally::Parar(){
 
-}
 
-//reduz a vida do ally
-void Ally::Danificar(float dano){
-    this->hp -= dano - defesa/10;
-}
 
-//notifica as colisoes de ally
-void Ally::NotifyCollision(GameObject &other)
-{
-
-}
-
-//retorna true se o tipo passado for Ally
-bool Ally::Is(string type){
-    if(type == "Ally"){
-        return true;
-    }
-    return false;
-}
-
-//anima o personagem com seu ataque basico.
-void Ally::Atacar(){
-
-}
-
-//gerencia o ally em seu modo de defesa.
-void Ally::Defender(){
-
-}
-
-////abre o menu de personagem
-void Ally::Abrir_Menu(){
-    float offSet = 125;
-    float angulo = 0;
-    Sprite botao("images/img/botaoMover.png");
-    StillAnimation* botaoAnim = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
-                                                   box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
-                                                   rotation, botao, 50, false);
-    buttonArray.emplace_back(*botaoAnim);
-    angulo += 90;
-    Sprite botao2("images/img/botaoDefender.png");
-    StillAnimation* botaoAnim2 = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
-                                                   box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
-                                                   rotation, botao2, 50, false);
-    buttonArray.emplace_back(*botaoAnim2);
-    angulo += 90;
-    Sprite botao3("images/img/botaoItens.png");
-    StillAnimation* botaoAnim3 = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
-                                                   box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
-                                                   rotation, botao3, 50, false);
-    buttonArray.emplace_back(*botaoAnim3);
-    angulo += 90;
-    Sprite botao4("images/img/botaoEspecial.png");
-    StillAnimation* botaoAnim4 = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
-                                                   box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
-                                                   rotation, botao4, 50, false);
-    buttonArray.emplace_back(*botaoAnim4);
-    angulo += 90;
-}
-
-int Ally::GetHitPoint()
-{
-    return hp;
-}
-
-//fecha o menu de personagem
-void Ally::Fechar_Menu(){
-    buttonArray.clear();
-}
-
-//coloca um item no vetor de itens do ally
-void Ally::Alocar_Item(){
-
-}
-
-void Ally::Usar_Item(){
-
-}
-
-//ejeta o piloto do robo
-void Ally::Ejetar(){
-
-}
-
-//embarca um piloto no robo
-void Ally::Embarcar(){
-
-}
-
-//gerencia o uso de especial
-void Ally::Especial(){
-
-}
-
-Sprite* Ally::VerificaVida(){
-    string path;
-    if(hp > 90){
-        path = "images/img/hpbar100.png";
-    }else if(hp > 80){
-        path = "images/img/hpbar90.png";
-    }else if(hp > 70){
-        path = "images/img/hpbar80.png";
-    }else if(hp > 60){
-        path = "images/img/hpbar70.png";
-    }else if(hp > 50){
-        path = "images/img/hpbar60.png";
-    }else if(hp > 40){
-        path = "images/img/hpbar50.png";
-    }else if(hp > 30){
-        path = "images/img/hpbar40.png";
-    }else if(hp > 20){
-        path = "images/img/hpbar30.png";
-    }else if(hp > 10){
-        path = "images/img/hpbar20.png";
-    }else if(hp > 0){
-        path = "images/img/hpbar10.png";
-    }else{
-        path = "images/img/hpbar0.png";
-    }
-    Sprite* vida = new Sprite(path);
-    return vida;
-}
