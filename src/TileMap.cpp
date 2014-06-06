@@ -40,9 +40,10 @@ void TileMap::Load(string file)
                             fscanf(arquivo, "%*c");
                             tileMatrix[ l ].tileType = num - 1;
 
-                            if(tileMatrix[ l ].tileType != -1 &&
-                               tileMatrix[ l ].tileType != 1){
-                                    tileMatrix[ l ].state = FREE;
+                            if(tileMatrix[ l ].tileType == 1 ||
+                               tileMatrix[ l ].tileType == -1){
+                                    //cout << "tile bloqueado" << endl;
+                                    tileMatrix[ l ].state = BLOCKED;
                             }
             }
                     //cout << endl;

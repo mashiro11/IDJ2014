@@ -44,7 +44,7 @@ void TitleState::Input(){
     }
 
     if(InputManager::GetInstance().KeyPress(SDLK_SPACE) == true){
-        CharacterState* state = new CharacterState();
+        StageState* state = new StageState();
         Game::GetInstance().Push(state);
     }
 
@@ -55,7 +55,7 @@ void TitleState::Input(){
     if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON)){
         if(start.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                           InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
-            CharacterState* state = new CharacterState();
+            StageState* state = new StageState();
             Game::GetInstance().Push(state);
 
         }else if(options.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,

@@ -1,13 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#define DEBUG
+//#define DEBUG
 
 #include <iostream>
 #include <vector>
 #include <memory>
 #include <time.h>
-//#include <stdlib.h>
 #include <stack>
 
 

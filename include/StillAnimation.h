@@ -16,10 +16,9 @@ class StillAnimation : public GameObject
         bool IsDead ();
         void NotifyCollision (GameObject& other){};
         bool Is (string type);
-        void SetX(float x);
-        void SetY(float y);
         int GetHitPoint(){ return endTimer.Get(); };
-
+        void SetX(float x){ this->box.x = x; };
+        void SetY(float y){ this->box.y = y; };
     protected:
         /* vazio */
     private:

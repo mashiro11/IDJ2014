@@ -11,7 +11,8 @@ enum TileState{
 class TileInfo
 {
     public:
-        TileInfo(int tileType = -1, TileState state = BLOCKED);
+        TileInfo(int tileType = -1, TileState state = FREE);
+        TileInfo(){tileType = -1; state = FREE;}
         ~TileInfo();
 
         TileState state;

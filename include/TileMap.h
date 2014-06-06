@@ -9,6 +9,7 @@
 
 #include "MultiTileSet.h"
 #include "Point.h"
+#include "TileInfo.h"
 
 
 using std::vector;
@@ -40,7 +41,8 @@ class TileMap
     protected:
         /* vazio */
     private:
-        vector<int> tileMatrix;
+        //vector<int> tileMatrix;
+        vector<TileInfo> tileMatrix;
         //O mapa nao pode conter só ints, deverá conter informação de estar ou nao ocupado, além de quais
         //tiles são seus vizinhos
         TileSet* tileSet;

@@ -1,4 +1,3 @@
-//colocar vetor dos personagens
 #ifndef STAGESTATE_H
 #define STAGESTATE_H
 
@@ -13,9 +12,6 @@
 #include "Text.h"
 #include "Lider.h"
 #include "InfoMenu.h"
-#include "Robo.h"
-#include "Piloto.h"
-
 
 class StageState : public State
 {
@@ -35,6 +31,7 @@ class StageState : public State
         TileMap tileMap;
         Music backGroundMusic;
         Text chessPosition;
+        //Ally personagem;
 };
 
 #endif // STAGESTATE_H

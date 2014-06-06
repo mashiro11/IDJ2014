@@ -109,16 +109,25 @@ int Ally::PixelPositionToMapPosition(int pixels)
 void Ally::MakePath(int line, int row)
 {
     if(path.size() < distance){
-        //esse é o método que irá conter o pathFinding e validar o caminho de destinho.
-        //aqui será feita verificação de caminho possível/impossível.
         Point newPoint(line, row);
-        if(mapReference->At(line, row).state == FREE &&
+
+        //se a posicao no mapa é acessivel
+        if(mapReference->At(line, row).state == FREE ||
            mapReference->At(line, row).state == ALLY){
-                    //se nao houver esse ponto no caminho, adiciona
-                    if(newPoint.x != path.back().x ||
-                       newPoint.y != path.back().y){
-                            path.push( newPoint );
-                            cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
+                    //cout << "ponto ( " << line << ", " << row << ") adicionado" << endl;
+                    //cout << "mapStateAt( " << line << ", " << row << "): " << mapReference->At(line, row).state << endl;
+
+                    //se a lista de pontos estiver vazia ou
+                    //se o novo ponto for vizinho do ponto anterior
+                    if( path.empty() == true ||
+                       (newPoint.x == path.back().x && abs(newPoint.y - path.back().y) == 1) ||
+                       (newPoint.y == path.back().y && abs(newPoint.x - path.back().x) == 1) ){
+
+                            if(newPoint.x != path.back().x ||
+                               newPoint.y != path.back().y){
+                                    path.push( newPoint );
+                                    cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
+                            }
                     }
         }
     }

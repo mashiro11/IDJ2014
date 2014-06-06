@@ -1,6 +1,7 @@
 #ifndef TITLESTATE_H
 #define TITLESTATE_H
 
+
 #include "State.h"
 #include "Game.h"
 #include "Sprite.h"
@@ -8,7 +9,6 @@
 #include "InputManager.h"
 #include "Text.h"
 #include "OptionsState.h"
-#include "CharacterState.h"
 
 
 class TitleState : public State
