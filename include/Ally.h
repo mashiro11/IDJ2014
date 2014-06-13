@@ -45,6 +45,7 @@ public:
     void Atacar();
     virtual void Ejetar() = 0;
     void MakePath(int line, int row);
+    bool ValidPath();
     void OrientarSprite();
 
 protected:

@@ -12,7 +12,7 @@ Lider::Lider(float x, float y, float defesa, float ataque, int speed, int distan
     //SetFrameCount
     //SetFrameTime
 
-    vida.Open(this);    
+    vida.Open(this);
     sp.SetSpriteSheet(4, 4);
     sp.SetAnimation(0, 4);
     sp.SetFrameTime(4.0 * 1.0/24.0);
@@ -28,6 +28,9 @@ Lider::Lider(float x, float y, float defesa, float ataque, int speed, int distan
     box.w = sp.GetWidth();
     box.SetRectCenterX( MapPositionToPixelPosition(x) );
     box.SetRectCenterY( MapPositionToPixelPosition(y) );
+
+    mapReference->At(PixelPositionToMapPosition( box.RectCenterX() ),
+                     PixelPositionToMapPosition( box.RectCenterY() ) ).state = ALLY;
 
     this->defesa = defesa;
     this->ataque = ataque;
