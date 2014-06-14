@@ -110,3 +110,18 @@ Point TileMap::PixelToChessPosition(int x, int y)
     else               return Point( (int)(x + Camera::pos.x)/tileSet->GetTileWidth(),
                                      (int)(y + Camera::pos.y)/tileSet->GetTileHeight() );
 }
+
+float TileMap::TileCenter(int coord)
+{
+    return coord * GetTileSize() + GetTileSize()/2;
+}
+
+float TileMap::MapPositionToPixelPosition(int coord)
+{
+    return GetTileSize() * coord + GetTileSize()/2.0;
+}
+
+int TileMap::PixelPositionToMapPosition(int pixels)
+{
+    return pixels/GetTileSize();
+}
