@@ -1,21 +1,24 @@
 #include "Robo.h"
 
 Robo::Robo(float x, float y, float defesa, float ataque, int speed, int distance, float vidaMaxima,
-           int coolDown, TileMap* mapRef, int range)
+           int coolDown, TileMap* mapRef, int range, bool lider, Sprite sprite, string nome)
 {
     //ver a proporзгo do personagem em relaзao ao tile do mundopara aplicar na posicao certa
 //    sp.SetScaleX((float) 2);
 //    sp.SetScaleY((float) 2);
+    sp = sprite;
     vida.Open(this);
     sp.SetSpriteSheet(4, 4);
     sp.SetAnimation(0, 4);
     sp.SetFrameTime(4.0 * 1.0/24.0);
 #ifdef ANDRE
-    sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/robot2iceaxe.png");
+    //sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/robot2iceaxe.png");
 #endif
 #ifdef MASHIRO
-    sp.Open("images/img/robot2iceaxe.png");
+    //sp.Open("images/img/robot2iceaxe.png");
 #endif
+    this->lider = lider;
+    this->nome = nome;
 
     mapReference = mapRef;
     box.h = sp.GetHeight();

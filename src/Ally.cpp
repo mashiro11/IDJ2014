@@ -8,7 +8,6 @@ Ally::Ally()
 //gerencia as modificacoes e os estados  do ally
 void Ally::UpdateAlly(float dt)
 {
-
     switch(allyState){
         case MOVENDO:
             if( path.empty() == true){
@@ -33,22 +32,23 @@ void Ally::UpdateAlly(float dt)
             break;
         case AGUARDANDO_ANDAR:
 
-            //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
+        //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
 
                MakePath(PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x ),
-                        PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y ));
+                             PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y ));
             //}
-            if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
-                    if(ValidPath() == true){
-                            allyState = MOVENDO;
-                    }else{
-                            while(path.empty() == false) path.pop();
-                            allyState = REPOUSO;
-                    }
-            }
+               if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
+                       if(ValidPath() == true){
+                               allyState = MOVENDO;
+                       }else{
+                               while(path.empty() == false) path.pop();
+                               allyState = REPOUSO;
+                       }
+               }
 
             break;
     }
+
     if(timer.Get() < coolDown) timer.Update(dt);
     //verifica se houve evento de clique do mouse
     if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
@@ -97,6 +97,7 @@ void Ally::UpdateAlly(float dt)
             }
         }
     }
+
     sp.Update(dt);
 }
 
@@ -132,16 +133,13 @@ bool Ally::IsDead(){
 
 //movimenta o ally pelo mapa.
 void Ally::Andar(){
-            //IMPORTANTE: No construtor de Ally, deverá ser inicializada
-            //            o estado da posição em que ele se encontra no mapa como ALLY
+            //cout << "inicio allyPosition: " << allyPosition << endl;
             if( abs(box.RectCenterX() - TileCenter( path.front().x ) ) < 0.5 &&
                 abs(box.RectCenterY() - TileCenter( path.front().y ) ) < 0.5){
                     box.SetRectCenterX( TileCenter( path.front().x ) );
                     box.SetRectCenterY( TileCenter( path.front().y ) );
                     path.pop();
             }else{
-                Point pastPosition(PixelPositionToMapPosition( box.RectCenterX() ),
-                                   PixelPositionToMapPosition( box.RectCenterY() ));
                 if( TileCenter( path.front().x ) > box.RectCenterX() ){
                     box.SetRectCenterX(box.RectCenterX() + speed);
                     allyPosition = RIGHT;
@@ -157,23 +155,8 @@ void Ally::Andar(){
                     box.SetRectCenterY(box.RectCenterY() - speed);
                     allyPosition = BACK;
                 }
-
-                Point currentPosition(PixelPositionToMapPosition( box.RectCenterX() ),
-                                      PixelPositionToMapPosition( box.RectCenterY() ));
-
-                if(pastPosition.x != currentPosition.x ||
-                   pastPosition.y != currentPosition.y){
-                            mapReference->At(pastPosition.x, pastPosition.y).state = FREE;
-                            mapReference->At(currentPosition.x, currentPosition.y).state = ALLY;
-                            cout << "pasPosition: " << endl;
-                            cout << "mapStateAt( " << pastPosition.x << ", " << pastPosition.y << "): " << mapReference->At(pastPosition.x, pastPosition.y).state << endl;
-
-                            cout << "currentPosition: " << endl;
-                            cout << "mapStateAt( " << currentPosition.x << ", " << currentPosition.y << "): " << mapReference->At(currentPosition.x, currentPosition.y).state << endl;
-
-                }
-            OrientarSprite();
             }
+            OrientarSprite();
 }
 
 //para a movimentacao do ally caso este encontre um obstaculo pelo caminho.
@@ -231,9 +214,8 @@ void Ally::Especial()
 
 void Ally::MakePath(int line, int row)
 {
-    if(path.size() < distance && //ainda pode andar E
-       line < mapReference->GetHeight() && //está dentro das linhas do mapa E
-       row < mapReference->GetWidth()){ //está dentro das colunas do mapa
+    if(path.size() < distance){
+        //se a posicao no mapa é acessivel
 
         if(mapReference->At(line, row).state == FREE ||
            mapReference->At(line, row).state == ALLY){
@@ -253,12 +235,14 @@ void Ally::MakePath(int line, int row)
                //se o novo ponto for diferente do ponto anterior
                if(newPoint.x != path.back().x ||
                   newPoint.y != path.back().y){
+                    cout << "ENTREEEEEI" << endl;
                     path.push( newPoint );
                     cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
                 }
             }
         }
     }
+
 }
 
 bool Ally::ValidPath()
@@ -328,5 +312,11 @@ void Ally::Abrir_Menu(){
     buttonArray.emplace_back(*botaoAnim4);
     angulo += 90;
 }
+
+bool Ally::IsLider()
+{
+    return lider;
+}
+
 
 
