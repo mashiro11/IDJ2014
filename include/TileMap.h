@@ -38,6 +38,10 @@ class TileMap
         Point PixelToChessPosition(int x, int y);
         int GetTileSize();
         int GetSize();
+
+        float TileCenter(int coord);
+        float MapPositionToPixelPosition(int coord);
+        int PixelPositionToMapPosition(int pixels);
     protected:
         /* vazio */
     private:
