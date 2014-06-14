@@ -5,6 +5,9 @@
 #include "Text.h"
 #include "InputManager.h"
 #include "StageState.h"
+#include "CharacterData.h"
+#include "Robo.h"
+#include "Piloto.h"
 
 class CharacterState:public State{
 public:
@@ -13,6 +16,9 @@ public:
     void Update(float dt);
     void Render();
     void PopulaArray();
+    void InserePersonagem(int index);
+    void DeletaPersonagem(int index);
+    bool NaoDentro(int index);
 
 protected:
 
@@ -23,17 +29,13 @@ private:
     //unordered_map<string, StillAnimation> characterArray;
     std::vector<StillAnimation> characterArray;
     std::vector<StillAnimation> selecionadoArray;
-    /*
-     * characters[0] = Lider
-     * characters[1] = Robo
-     * */
-    //static std::vector<string, bool> charactersInGame;
     Sprite bg;
     Sprite selecao;
     Sprite selecionado;
     Music music;
     Text instruction;
     Text inicio;
+    CharacterData characters;
 };
 
 #endif // CHARACTERSTATE_H

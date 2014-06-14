@@ -45,13 +45,16 @@ public:
     void Atacar();
     virtual void Ejetar() = 0;
     void MakePath(int line, int row);
-    bool ValidPath();
     void OrientarSprite();
+    bool IsLider();
+    bool ValidPath();
 
 protected:
     void UpdateAlly(float dt);
+    bool lider;
     AllyState allyState;
     AllyPosition allyPosition;
+    string nome;
     int tileSize;
     Sprite sp;
     //velocidade de movimentacao (ataque, andar, etc)

@@ -15,12 +15,14 @@
 #include "InfoMenu.h"
 #include "Robo.h"
 #include "Piloto.h"
+#include "CharacterData.h"
 
+using std::find;
 
 class StageState : public State
 {
     public:
-        StageState();
+        StageState(CharacterData characters);
         ~StageState();
         void Update(float dt);
         void Render();
