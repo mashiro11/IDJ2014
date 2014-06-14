@@ -39,6 +39,13 @@ backGroundMusic("images/audio/stageState.ogg")
         infoMenu->InsereBotao(piloto);
     }
 
+    Enemy *enemy = new Enemy(6, 5, &tileMap);
+    objectArray.emplace_back(enemy);
+
+
+//    Piloto *piloto = new Piloto(64, 10, 10, 10, 10, 10, robo, 3);
+//    objectArray.emplace_back(piloto);
+//    robo->InserePiloto(piloto);
     if(find(characters.robo.begin(), characters.robo.end(), "Joana") != characters.robo.end()){
     //Joana
         #ifdef ANDRE
