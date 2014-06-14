@@ -16,6 +16,7 @@
 #include "Robo.h"
 #include "Piloto.h"
 #include "CharacterData.h"
+#include "Enemy.h"
 
 using std::find;
 
