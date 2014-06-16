@@ -77,7 +77,7 @@ void InfoMenu::InsereBotao(GameObject* objeto){
     string caminho;
     #ifdef ANDRE
     if(objeto->Is("Robo")){
-        cout << objeto->GetNome() << endl;
+        //cout << objeto->GetNome() << endl;
         if(objeto->GetNome() == "Robotinic"){
             caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface.png";
         }else if(objeto->GetNome() == "Roboboy"){
@@ -97,19 +97,19 @@ void InfoMenu::InsereBotao(GameObject* objeto){
     #endif
     #ifdef MASHIRO
     if(objeto->Is("Robo")){
-        cout << objeto->GetNome() << endl;
+        //cout << objeto->GetNome() << endl;
         if(objeto->GetNome() == "Robotinic"){
-            caminho = "/images/img/penguinface.png";
+            caminho = "images/img/penguinface.png";
         }else if(objeto->GetNome() == "Roboboy"){
-            caminho = "/images/img/penguinface2.png";
+            caminho = "images/img/penguinface2.png";
         }else if(objeto->GetNome() == "Blitzcrank"){
-            caminho = "/images/img/penguinface3.png";
+            caminho = "images/img/penguinface3.png";
         }else if(objeto->GetNome() == "OptimusPrime"){
-            caminho = "/images/img/penguinface4.png";
+            caminho = "images/img/penguinface4.png";
         }else if(objeto->GetNome() == "Bamboubi"){
-            caminho = "/images/img/penguinface5.png";
+            caminho = "images/img/penguinface5.png";
         }else if(objeto->GetNome() == "Walle"){
-            caminho = "/images/img/penguinface6.png";
+            caminho = "images/img/penguinface6.png";
         }
     }else if(objeto->Is("Piloto")){
         caminho = "images/img/alien.png";

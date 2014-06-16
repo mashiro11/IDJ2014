@@ -24,6 +24,10 @@ backGroundMusic("images/audio/stageState.ogg")
     objectArray.emplace_back(infoMenu);
 
     InicializaPersonagens(characters, infoMenu);
+    Enemy *enemy = new Enemy(6, 4, &tileMap, "Robotinic");
+    enemy->SetStatus(10, 10, 2, 5, 7, 5);
+    enemy->MakeRangeArea();
+    objectArray.emplace_back(enemy);
 
 
     SDL_Color color;
@@ -157,12 +161,17 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp1("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png");
         #endif
         #ifdef MASHIRO
+        Sprite sp("images/img/robot2iceaxe.png");
+        Sprite pilotoSp1("images/img/alien.png");
         #endif
-        Robo *robo = new Robo(7, 7, 10, 10, 4, 7, 10, 10, &tileMap, 5, true, sp, "Robotinic");
+        Robo *robo = new Robo(0, 0, &tileMap, true, sp, "Robotinic");
+        robo->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        robo->MakeRangeArea();
         objectArray.emplace_back(robo);
         infoMenu->InsereBotao(robo);
 
-        Piloto *piloto = new Piloto(10, 10, 10, 2, 3, robo, 5, "Joao", pilotoSp1, true, &tileMap);
+        Piloto *piloto = new Piloto(robo, "Joao", pilotoSp1, true, &tileMap);
+        piloto->SetStatus(10, 5, 1, 3, 4, 4, 10);
         infoMenu->InsereBotao(piloto);
         robo->InserePiloto(piloto);
     }
@@ -174,14 +183,17 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png");
         #endif
         #ifdef MASHIRO
-        Sprite sp2("/images/img/roboRosa.png");
-        Sprite pilotoSp2("/images/img/alien.png");
+        Sprite sp2("images/img/roboRosa.png");
+        Sprite pilotoSp2("images/img/alien.png");
         #endif
-        Robo *robo2 = new Robo(5, 5, 10, 10, 4, 7, 10, 10, &tileMap, 5, true, sp2, "Roboboy");
+        Robo *robo2 = new Robo(5, 5, &tileMap, true, sp2, "Roboboy");
+        robo2->SetStatus(100, 10, 2, 5, 7, 5, 10);
+        robo2->MakeRangeArea();
         objectArray.emplace_back(robo2);
         infoMenu->InsereBotao(robo2);
 
-        Piloto *piloto2 = new Piloto(10, 10, 10, 2, 3, robo2, 5, "Joana", pilotoSp2, true, &tileMap);
+        Piloto *piloto2 = new Piloto(robo2, "Joana", pilotoSp2, true, &tileMap);
+        piloto2->SetStatus(10, 5, 1, 3, 4, 4, 10);
         infoMenu->InsereBotao(piloto2);
         robo2->InserePiloto(piloto2);
 
@@ -194,14 +206,17 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp3("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png");
         #endif
         #ifdef MASHIRO
-        Sprite sp3("/images/img/roboVerde.png");
-        Sprite pilotoSp3("/images/img/alien.png");
+        Sprite sp3("images/img/roboVerde.png");
+        Sprite pilotoSp3("images/img/alien.png");
         #endif
-        Robo *robo3 = new Robo(6, 6, 10, 10, 4, 7, 10, 10, &tileMap, 5, true, sp3, "Blitzcrank");
+        Robo *robo3 = new Robo(6, 6, &tileMap, true, sp3, "Blitzcrank");
+        robo3->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        robo3->MakeRangeArea();
         objectArray.emplace_back(robo3);
         infoMenu->InsereBotao(robo3);
 
-        Piloto *piloto3 = new Piloto(10, 10, 10, 2, 3, robo3, 5, "Maria", pilotoSp3, true, &tileMap);
+        Piloto *piloto3 = new Piloto(robo3, "Maria", pilotoSp3, true, &tileMap);
+        piloto3->SetStatus(10, 5, 1, 3, 4, 4, 10);
         infoMenu->InsereBotao(piloto3);
         robo3->InserePiloto(piloto3);
     }
@@ -213,14 +228,17 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp4("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png");
         #endif
         #ifdef MASHIRO
-        Sprite sp4("/images/img/roboPreto.png");
-        Sprite pilotoSp4("/images/img/alien.png");
+        Sprite sp4("images/img/roboPreto.png");
+        Sprite pilotoSp4("images/img/alien.png");
         #endif
-        Robo *robo4 = new Robo(3, 3, 10, 10, 4, 7, 10, 10, &tileMap, 5, true, sp4, "OptimusPrime");
+        Robo *robo4 = new Robo(3, 3, &tileMap, true, sp4, "OptimusPrime");
+        robo4->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        robo4->MakeRangeArea();
         objectArray.emplace_back(robo4);
         infoMenu->InsereBotao(robo4);
 
-        Piloto *piloto4 = new Piloto(10, 10, 10, 2, 3, robo4, 5, "Joao", pilotoSp4, true, &tileMap);
+        Piloto *piloto4 = new Piloto(robo4, "Joao", pilotoSp4, true, &tileMap);
+        piloto4->SetStatus(10, 5, 1, 3, 4, 4, 10);
         infoMenu->InsereBotao(piloto4);
         robo4->InserePiloto(piloto4);
     }
@@ -232,14 +250,17 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp5("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png");
         #endif
         #ifdef MASHIRO
-        Sprite sp5("/images/img/roboAmarelo.png");
-        Sprite pilotoSp5("/images/img/alien.png");
+        Sprite sp5("images/img/roboAmarelo.png");
+        Sprite pilotoSp5("images/img/alien.png");
         #endif
-        Robo *robo5 = new Robo(8, 8, 10, 10, 4, 7, 10, 10, &tileMap, 5, true, sp5, "Bamboubi");
+        Robo *robo5 = new Robo(8, 8, &tileMap, true, sp5, "Bamboubi");
+        robo5->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        robo5->MakeRangeArea();
         objectArray.emplace_back(robo5);
         infoMenu->InsereBotao(robo5);
 
-        Piloto *piloto5 = new Piloto(10, 10, 10, 2, 3, robo5, 5, "Joao", pilotoSp5, true, &tileMap);
+        Piloto *piloto5 = new Piloto(robo5, "Joao", pilotoSp5, true, &tileMap);
+        piloto5->SetStatus(10, 5, 1, 3, 4, 4, 10);
         infoMenu->InsereBotao(piloto5);
         robo5->InserePiloto(piloto5);
     }
@@ -251,14 +272,17 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp6("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png");
         #endif
         #ifdef MASHIRO
-        Sprite sp6("/images/img/roboAzul.png");
-        Sprite pilotoSp6("/images/img/alien.png");
+        Sprite sp6("images/img/roboAzul.png");
+        Sprite pilotoSp6("images/img/alien.png");
         #endif
-        Robo *robo6 = new Robo(4, 4, 10, 10, 4, 7, 10, 10, &tileMap, 5, true, sp6, "Walle");
+        Robo *robo6 = new Robo(4, 4, &tileMap, true, sp6, "Walle");
+        robo6->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        robo6->MakeRangeArea();
         objectArray.emplace_back(robo6);
         infoMenu->InsereBotao(robo6);
 
-        Piloto *piloto6 = new Piloto(10, 10, 10, 2, 3, robo6, 5, "Joao", pilotoSp6, true, &tileMap);
+        Piloto *piloto6 = new Piloto(robo6, "Joao", pilotoSp6, true, &tileMap);
+        piloto6->SetStatus(10, 5, 1, 3, 4, 4, 10);
         infoMenu->InsereBotao(piloto6);
         robo6->InserePiloto(piloto6);
     }

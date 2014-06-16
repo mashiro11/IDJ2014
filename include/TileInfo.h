@@ -1,6 +1,8 @@
 #ifndef TILEINFO_H
 #define TILEINFO_H
 
+#include "GameObject.h"
+
 enum TileState{
             BLOCKED = 0,
             FREE,
@@ -16,6 +18,7 @@ class TileInfo
         ~TileInfo();
 
         TileState state;
+        GameObject* occuper;
         int tileType;
     protected:
     private:

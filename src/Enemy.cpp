@@ -3,38 +3,26 @@
 
 Enemy::Enemy(float x, float y, TileMap* mapRef, string nome)
 {
+    #ifdef ANDRE
+        sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/robotRosa.png");
+    #endif
+    #ifdef MASHIRO
+        sp.Open("images/img/roboRosa.png");
+    #endif
 
-    //ver a proporção do personagem em relaçao ao tile do mundopara aplicar na posicao certa
-    //sp.SetScaleX((float) 2);
-    //sp.SetScaleY((float) 2);
-
-    //SetFrameCount
-    //SetFrameTime
-
-    //vida.Open(this);
     sp.SetSpriteSheet(4, 4);
     sp.SetAnimation(0, 4);
     sp.SetFrameTime(4.0 * 1.0/24.0);
     charPosition = FRONT;
-    charState = REPOUSO;
-    this->nome = nome;
-
-#ifdef ANDRE
-    sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/robotRosa.png");
-#endif
-#ifdef MASHIRO
-    sp.Open("images/img/roboRosa.png");
-#endif
 
     mapReference = mapRef;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
-    this->defesa = defesa;
-    this->ataque = ataque;
+    box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x) );
+    box.SetRectCenterY( mapReference->MapPositionToPixelPosition(y) );
     this->vida = vida;
-    enemyState = MOVENDO;
-    enemyPosition = FRENTE;
-
+    charState = REPOUSO;
+    this->nome = nome;
 }
 
 void Enemy::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int speed, int coolDown)
@@ -99,22 +87,21 @@ void Enemy::NotifyCollision(GameObject &other)
 
 void StateMachine()
 {
-    switch(charState){
-        case REPOUSO:
-            cout << "Inimigo em repouso" << endl;
-            break;
-        case ANDANDO:
-            cout << "Inimigo andando" << endl;
-            break;
-        case ATACANDO:
-            cout << "Inimigo atacando" << endl;
-            break;
-        case ():
-            break;
+//    switch(charState){
+//        case REPOUSO:
+//            cout << "Inimigo em repouso" << endl;
+//            break;
+//        case ANDANDO:
+//            cout << "Inimigo andando" << endl;
+//            break;
+//        case ATACANDO:
+//            cout << "Inimigo atacando" << endl;
+//            break;
+//        case ():
+//            break;
 //        case ():
 //            break;
 //        case ():
 //            break;
-
-    }
+//    }
 }

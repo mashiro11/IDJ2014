@@ -61,9 +61,10 @@ protected:
     bool lider;
     CharState allyState;
     CharacterPosition allyPosition;
+    vector<StillAnimation> buttonArray;
+
 
     //alcance de ataque
-    bool lider;
     bool menuAberto;
 
     queue<Point> path;

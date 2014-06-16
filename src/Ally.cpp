@@ -83,9 +83,7 @@ void Ally::Input()
                    break;
                }
             }
-            
-            //se a flag estiver como falsa, fecha o menu
-        
+        }
         if (menuAberto == false){
             Fechar_Menu();
         }
@@ -157,7 +155,7 @@ bool Ally::Is(string type)
 
 //movimenta o ally pelo mapa.
 void Ally::Andar(){
-            
+
             //cout << "inicio allyPosition: " << allyPosition << endl;
             if( abs(box.RectCenterX() - mapReference->TileCenter( path.front().x ) ) < 5 &&
                 abs(box.RectCenterY() - mapReference->TileCenter( path.front().y ) ) < 5){

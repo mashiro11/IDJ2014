@@ -24,6 +24,7 @@ class StageState : public State
 {
     public:
         StageState(CharacterData characters);
+        void InicializaPersonagens(CharacterData characters, InfoMenu *infoMenu);
         ~StageState();
         void Update(float dt);
         void Render();

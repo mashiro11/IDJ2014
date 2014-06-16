@@ -2,8 +2,8 @@
 #define GAME_H
 
 #define DEBUG
-#define ANDRE
-//#define MASHIRO
+//#define ANDRE
+#define MASHIRO
 
 #include <iostream>
 #include <vector>
