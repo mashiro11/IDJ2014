@@ -8,6 +8,7 @@
 #include "Rect.h"
 #include "Camera.h"
 
+#define SPACE_KEY          SDLK_SPACE
 #define LEFT_ARROW_KEY     SDLK_LEFT
 #define RIGHT_ARROW_KEY    SDLK_RIGHT
 #define UP_ARROW_KEY       SDLK_UP

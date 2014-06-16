@@ -4,7 +4,6 @@
 #include <queue>
 #include <vector>
 #include <list>
-#include <sstream>
 
 #include "GameObject.h"
 #include "Sprite.h"
@@ -14,7 +13,6 @@
 #include "Timer.h"
 #include "Character.h"
 
-
 enum AllyState{ATACANDO, DEFENDENDO, INATIVO, MOVENDO, AGUARDANDO_ANDAR, AGUARDANDO_EMBARCAR, AGUARDANDO_ITEM, REPOUSO};
 
 using std::vector;
@@ -22,8 +20,7 @@ using std::list;
 using std::queue;
 using std::stringstream;
 
-class Ally:  public Character //public GameObject
-{
+class Ally:public Character{
 public:
     Ally();
     ~Ally(){};
@@ -34,6 +31,14 @@ public:
     void Input();
     bool IsDead();
     void NotifyCollision(GameObject& other);
+
+    Point MapPosition();
+    float TileCenter(int coord);
+    float MapPositionToPixelPosition(int coord);
+    int PixelPositionToMapPosition(int pixels);
+
+    bool AreaRespiro();
+    bool AreaMapa();
 
     void SetStatus(int vidaMaxima, float ataque, int renge, float defesa, int speed, int distance, int coolDown);
     void Danificar(float dano);
@@ -53,28 +58,33 @@ public:
     void OrientarSprite();
     bool IsLider();
     bool ValidPath();
+    string GetNome();
 
 protected:
     void UpdateAlly(float dt);
-    bool lider;
+
     AllyState allyState;
     CharacterPosition allyPosition;
-    string nome;
-    int tileSize;
+
     Sprite sp;
-    //velocidade de movimentacao (ataque, andar, etc)
-    vector<StillAnimation> buttonArray;
-    //list<int> closeEnemies;
+    BarraVida vida;
+    Timer timer;
+    //TileMap *mapReference;
+
     //velocidade que carrega a barra
     int coolDown;
     //distancia ate onde pode andar
     int distance;
-    //alcance de ataque
+    bool lider;
     bool menuAberto;
-    BarraVida vida;
+    string nome;
+    int tileSize;
+
+    //list<int> closeEnemies;
     queue<Point> path;
-    //TileMap *mapReference;
-    Timer timer;
+    vector<StillAnimation> buttonArray;
+
+
 private:
 };
 

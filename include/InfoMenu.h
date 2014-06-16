@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include "Text.h"
 #include "BarraVida.h"
+#include "Ally.h"
 
 class InfoMenu:public GameObject{
 public:

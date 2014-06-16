@@ -18,6 +18,7 @@ class GameObject
         virtual int GetLife(){return vidaMaxima;};
         virtual void NotifyCollision(GameObject& other) = 0;
         virtual bool Is(string type) = 0;
+        virtual string GetNome(){};
         Rect box;
         float rotation;
 
