@@ -2,10 +2,9 @@
 #define PILOTO_H
 #include "Ally.h"
 
-class Piloto:public Ally{
+class Piloto: public Ally{
 public:
-    Piloto(float defesa, float vidaMaxima, int coolDown, int range, int distance, GameObject* robo,
-           int speed, string nome, Sprite sprite, bool lider, TileMap* mapRef);
+    Piloto(GameObject* robo, string nome, Sprite sprite, bool lider, TileMap* mapRef);
     ~Piloto();
     void Render(int cameraX, int cameraY);
     bool Is(string type);

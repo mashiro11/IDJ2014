@@ -4,10 +4,9 @@
 #include "Piloto.h"
 #include <iostream>
 
-class Robo:public Ally{
+class Robo: public Ally{
 public:
-    Robo(float x, float y, float defesa, float ataque, int speed, int distance, float vidaMaxima,
-         int coolDown, TileMap* mapRef, int range, bool lider, Sprite sprite, string nome);
+    Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string nome);
     ~Robo();
     void Render(int cameraX, int cameraY);
     bool Is(string type);

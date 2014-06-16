@@ -15,6 +15,7 @@ public:
     void SetX(float x);
     void SetY(float y);
     void Open(GameObject* alvo);
+    bool IsDead();
 protected:
     /*vazio*/
 private:
@@ -22,6 +23,8 @@ private:
     Sprite vida;
     Sprite moldura;
     GameObject* objeto;
+    int vidaMaxima;
+    int vidaAtual;
 
 };
 

@@ -25,6 +25,7 @@ backGroundMusic("images/audio/stageState.ogg")
 
     InicializaPersonagens(characters, infoMenu);
 
+
     SDL_Color color;
     color.r = 0;
     color.g = 0;

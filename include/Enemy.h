@@ -2,29 +2,25 @@
 #define ENEMY_H
 #include "GameObject.h"
 #include "Sprite.h"
+#include "Character.h"
 
-enum EnemyState{MOVENDO, ATACANDO, AGUARDANDO};
-enum EnemyPosition{FRENTE, COSTAS, DIREITA, ESQUERDA};
-class Enemy:public GameObject{
-public:
-    Enemy(float tileSize, float x, float y, float defesa, float ataque, float vida);
-    ~Enemy();
-    void NotifyCollision(GameObject &other);
-    bool Is(string type);
-    bool IsDead();
-    void Render(int cameraX, int cameraY);
-    void Update(float dt);
+//enum EnemyState{MOVENDO, ATACANDO, AGUARDANDO};
+class Enemy: public Character
+{
+        public:
+            Enemy(float x, float y, TileMap* mapRef, string nome);
+            ~Enemy();
+            void SetStatus(int vidaMaxima, float ataque, int range, float defesa, int speed, int coolDown);
+            void NotifyCollision(GameObject &other);
+            bool Is(string type);
+            bool IsDead();
+            //void Render(int cameraX, int cameraY);
+            void Update(float dt);
+            void Input();
+            void Especial(){};
 
-private:
-    EnemyState enemyState;
-    EnemyPosition enemyPosition;
-    Sprite sp;
-    Point speed;
-    Point destiny;
-    float vida;
-    int tileSize;
-    float ataque;
-    float defesa;
+        private:
+            int vida;
 };
 
 #endif // ENEMY_H

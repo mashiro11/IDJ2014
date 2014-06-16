@@ -13,16 +13,17 @@
 #include "Timer.h"
 #include "Character.h"
 
-enum AllyState{ATACANDO, DEFENDENDO, INATIVO, MOVENDO, AGUARDANDO_ANDAR, AGUARDANDO_EMBARCAR, AGUARDANDO_ITEM, REPOUSO};
 
 using std::vector;
 using std::list;
 using std::queue;
 using std::stringstream;
 
+
 class Ally:public Character{
 public:
-    Ally();
+
+    //Ally();
     ~Ally(){};
     void Update(float dt) = 0;
     virtual void Render(int cameraX, int cameraY) = 0;
@@ -31,11 +32,8 @@ public:
     void Input();
     bool IsDead();
     void NotifyCollision(GameObject& other);
+    bool Is(string type);
 
-    Point MapPosition();
-    float TileCenter(int coord);
-    float MapPositionToPixelPosition(int coord);
-    int PixelPositionToMapPosition(int pixels);
 
     bool AreaRespiro();
     bool AreaMapa();
@@ -52,9 +50,7 @@ public:
     void Especial();
     void Atacar();
     virtual void Ejetar() = 0;
-    //void MakePath(int line, int row);
     void MakePath();
-    void MakeRangeArea();
     void OrientarSprite();
     bool IsLider();
     bool ValidPath();
@@ -62,29 +58,30 @@ public:
 
 protected:
     void UpdateAlly(float dt);
-
-    AllyState allyState;
+    bool lider;
+    CharState allyState;
     CharacterPosition allyPosition;
 
-    Sprite sp;
-    BarraVida vida;
-    Timer timer;
-    //TileMap *mapReference;
-
-    //velocidade que carrega a barra
-    int coolDown;
-    //distancia ate onde pode andar
-    int distance;
+    //alcance de ataque
     bool lider;
     bool menuAberto;
-    string nome;
-    int tileSize;
 
-    //list<int> closeEnemies;
     queue<Point> path;
-    vector<StillAnimation> buttonArray;
+    Timer timer;
 
 
+    /**
+        STATUS
+    **/
+    //herança de Character
+    //int speed;//velocidade de movimentação no mapa
+    //float ataque;//poder de ataque
+    //float defesa;//poder de defesa
+    //int range;//alcance de ataque
+    BarraVida vida;
+    int coolDown;//tempo de espera para novo movimento
+    int distance;//quantas células do grid pode andar
+    //alcance de ataque
 private:
 };
 

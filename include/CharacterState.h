@@ -1,5 +1,6 @@
 #ifndef CHARACTERSTATE_H
 #define CHARACTERSTATE_H
+
 #include "Sprite.h"
 #include "Music.h"
 #include "Text.h"

@@ -1,21 +1,18 @@
 #include "Piloto.h"
 
-Piloto::Piloto(float defesa, float vidaMaxima, int coolDown, int range, int distance, GameObject* robo,
-               int speed, string nome, Sprite sprite, bool lider, TileMap* mapRef)
+Piloto::Piloto(GameObject* robo, string nome, Sprite sprite, bool lider, TileMap* mapRef)
 {
 
     sp = sprite;
     vida.Open(this);
     this->speed = speed;
     this->robo = robo;
-    this->tileSize = tileSize;
     this->nome = nome;
     this->lider = lider;
     box.SetRectCenterX(robo->box.RectCenterX());
     box.SetRectCenterY(robo->box.RectCenterY());
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
-    //MapPositionToPixelPosition(box.x, box.y, tileSize);
 
     this->defesa = defesa;
     this->vidaMaxima = vidaMaxima;
@@ -37,7 +34,7 @@ Piloto::~Piloto()
 
 bool Piloto::Is(string type)
 {
-    if(type == "Piloto"){
+    if(type == "Piloto" || type == "Ally"){
         return true;
     }
     return false;
@@ -120,10 +117,8 @@ void Piloto::Update(float dt)
                 case AGUARDANDO_ANDAR:
 
                 //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
-
-                       MakePath(/*PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x ),
-                                     PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y )*/);
-                    //}
+                       MakePath();
+                //}
                     if(InputManager::GetInstance().MousePress(RIGHT_MOUSE_BUTTON) == true){
                             allyState = MOVENDO;
                     }

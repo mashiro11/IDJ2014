@@ -1,7 +1,6 @@
 #include "Robo.h"
 
-Robo::Robo(float x, float y, float defesa, float ataque, int speed, int distance, float vidaMaxima,
-           int coolDown, TileMap* mapRef, int range, bool lider, Sprite sprite, string nome)
+Robo::Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string nome)
 {
     //ver a proporзгo do personagem em relaзao ao tile do mundopara aplicar na posicao certa
 //    sp.SetScaleX((float) 2);
@@ -18,23 +17,15 @@ Robo::Robo(float x, float y, float defesa, float ataque, int speed, int distance
     mapReference = mapRef;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
-    box.SetRectCenterX( MapPositionToPixelPosition(x) );
-    box.SetRectCenterY( MapPositionToPixelPosition(y) );
-
-    this->defesa = defesa;
-    this->ataque = ataque;
-    this->vidaMaxima = vidaMaxima;
-    this->vidaAtual = vidaMaxima;
-    this->range = range;
-    this->distance = distance;
-    this->speed = speed;
-    this->rotation = 0;
-    this->coolDown = coolDown;
+    box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x) );
+    box.SetRectCenterY( mapReference->MapPositionToPixelPosition(y) );
     this->rotation = 0;
 
     allyPosition = FRONT;
     allyState = REPOUSO;
     menuAberto = false;
+    mapReference->At(x, y).state = ALLY;
+    mapReference->At(x, y).occuper = this;
 }
 
 Robo::~Robo(){
@@ -67,7 +58,7 @@ void Robo::Render(int cameraX, int cameraY){
 }
 
 bool Robo::Is(string type){
-    if(type == "Robo"){
+    if(type == "Robo" || type == "Ally"){
         return true;
     }
     return false;

@@ -12,6 +12,7 @@ class EndState : public State
         EndState(StateData stateData);
         void Update(float dt);
         void Render();
+        void StateMachine();
 
     protected:
     private:

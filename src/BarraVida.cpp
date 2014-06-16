@@ -16,8 +16,6 @@ BarraVida::BarraVida(GameObject* objeto)
     box.h = vida.GetHeight();
     box.SetRectCenterX(objeto->box.RectCenterX());
     box.SetRectCenterY(objeto->box.RectCenterY());
-
-
 }
 
 void BarraVida::Open(GameObject *alvo)
@@ -40,53 +38,18 @@ void BarraVida::Open(GameObject *alvo)
 
 void BarraVida::Update()
 {
-    int max = objeto->GetLife();
-    int atual = objeto->GetHitPoint();
-    float porCento = 100*atual/max - 50;
+    //Nessas buscas que a barra de vida faz, dá erro quando o personagem morre!!
+        vidaMaxima = objeto->GetLife();
+        vidaAtual = objeto->GetHitPoint();
+        float porCento = 100*vidaAtual/vidaMaxima;
+        if(porCento > 100) porCento = 100;
+        vida.SetClip(0, 0, box.w*porCento/100, box.h);
+}
 
-    if(porCento == 100){
-
-    }else if(porCento >= 95){
-        vida.SetClip(0, 0, box.w*0.95, box.h);
-    }else if(porCento >= 90){
-        vida.SetClip(0, 0, box.w*0.9, box.h);
-    }else if(porCento >= 85){
-        vida.SetClip(0, 0, box.w*0.85, box.h);
-    }else if(porCento >= 80){
-        vida.SetClip(0, 0, box.w*0.8, box.h);
-    }else if(porCento >= 75){
-        vida.SetClip(0, 0, box.w*0.75, box.h);
-    }else if(porCento >= 70){
-        vida.SetClip(0, 0, box.w*0.7, box.h);
-    }else if(porCento >= 65){
-        vida.SetClip(0, 0, box.w*0.65, box.h);
-    }else if(porCento >= 60){
-        vida.SetClip(0, 0, box.w*0.6, box.h);
-    }else if(porCento >= 55){
-        vida.SetClip(0, 0, box.w*0.55, box.h);
-    }else if(porCento >= 50){
-        vida.SetClip(0, 0, box.w*0.5, box.h);
-    }else if(porCento >= 45){
-        vida.SetClip(0, 0, box.w*0.45, box.h);
-    }else if(porCento >= 40){
-        vida.SetClip(0, 0, box.w*0.4, box.h);
-    }else if(porCento >= 35){
-        vida.SetClip(0, 0, box.w*035., box.h);
-    }else if(porCento >= 30){
-        vida.SetClip(0, 0, box.w*0.3, box.h);
-    }else if(porCento >= 25){
-        vida.SetClip(0, 0, box.w*0.25, box.h);
-    }else if(porCento >= 20){
-        vida.SetClip(0, 0, box.w*0.2, box.h);
-    }else if(porCento >= 15){
-        vida.SetClip(0, 0, box.w*0.15, box.h);
-    }else if(porCento >= 10){
-        vida.SetClip(0, 0, box.w*0.1, box.h);
-    }else if(porCento >= 5){
-        vida.SetClip(0, 0, box.w*0.5, box.h);
-    }else if(porCento <= 0){
-        vida.SetClip(0, 0, box.w*0.0, box.h);
-    }
+bool BarraVida::IsDead()
+{
+    if(vidaAtual <= 0) return true;
+    return false;
 }
 
 void BarraVida::Render(int cameraX, int cameraY)
