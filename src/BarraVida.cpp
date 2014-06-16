@@ -10,6 +10,7 @@ BarraVida::BarraVida(GameObject* objeto)
     vida.Open("images/img/barraVida.png");
     moldura.Open("images/img/barraVidaMold.png");
     #endif
+
     this->objeto = objeto;
     box.w = vida.GetWidth();
     box.h = vida.GetHeight();
@@ -39,7 +40,6 @@ void BarraVida::Open(GameObject *alvo)
 
 void BarraVida::Update()
 {
-
     int max = objeto->GetLife();
     int atual = objeto->GetHitPoint();
     float porCento = 100*atual/max - 50;

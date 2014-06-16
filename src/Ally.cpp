@@ -23,7 +23,7 @@ void Ally::UpdateAlly(float dt)
     Input();
     Point currentPosition(mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
                           mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
-    stringstream keyPoint;
+//    stringstream keyPoint;
     //verifica se existem inimigos dentro do alcance de ataque
 
     /**
@@ -33,8 +33,8 @@ void Ally::UpdateAlly(float dt)
 
     if(timer.Get() < coolDown) timer.Update(dt);
     sp.Update(dt);
-}
 
+}
 
 void Ally::Input()
 {
@@ -78,12 +78,13 @@ void Ally::Input()
                }
             }
             //se a flag estiver como falsa, fecha o menu
-            if (menuAberto == false){
-                Fechar_Menu();
-            }
+        }
+        if (menuAberto == false){
+            Fechar_Menu();
         }
     }
 }
+
 
 void Ally::StateMachine()
 {
@@ -130,6 +131,27 @@ void Ally::StateMachine()
     }
 }
 
+Point Ally::MapPosition()
+{
+    return Point( (int)(box.x + Camera::pos.x)/mapReference->GetTileSize(),
+                  (int)(box.y + Camera::pos.y)/mapReference->GetTileSize());
+}
+
+float Ally::TileCenter(int coord)
+{
+    return coord * mapReference->GetTileSize() + mapReference->GetTileSize()/2;
+}
+
+float Ally::MapPositionToPixelPosition(int coord)
+{
+    return mapReference->GetTileSize() * coord + mapReference->GetTileSize()/2.0;
+}
+
+int Ally::PixelPositionToMapPosition(int pixels)
+{
+    return pixels/mapReference->GetTileSize();
+}
+
 //verifica se ally esta morto
 bool Ally::IsDead(){
     if(this->vidaAtual <= 0){
@@ -141,51 +163,52 @@ bool Ally::IsDead(){
 
 //movimenta o ally pelo mapa.
 void Ally::Andar(){
-            //cout << "inicio allyPosition: " << allyPosition << endl;
-            if( abs(box.RectCenterX() - mapReference->TileCenter( path.front().x ) ) < 0.5 &&
-                abs(box.RectCenterY() - mapReference->TileCenter( path.front().y ) ) < 0.5){
-                    box.SetRectCenterX( mapReference->TileCenter( path.front().x ) );
-                    box.SetRectCenterY( mapReference->TileCenter( path.front().y ) );
-                    path.pop();
-            }else{
+    //cout << "inicio allyPosition: " << allyPosition << endl;
+    if( abs(box.RectCenterX() - mapReference->TileCenter( path.front().x ) ) < 0.5 &&
+        abs(box.RectCenterY() - mapReference->TileCenter( path.front().y ) ) < 0.5){
+            box.SetRectCenterX( mapReference->TileCenter( path.front().x ) );
+            box.SetRectCenterY( mapReference->TileCenter( path.front().y ) );
+            path.pop();
+    }else{
 
-                Point pastPosition(mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
-                                   mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
-                if( mapReference->TileCenter( path.front().x ) > box.RectCenterX() ){
-                    box.SetRectCenterX(box.RectCenterX() + speed);
-                    allyPosition = RIGHT;
-                }else if( mapReference->TileCenter( path.front().x ) < box.RectCenterX() ){
-                    box.SetRectCenterX(box.RectCenterX() - speed);
-                    allyPosition = LEFT;
-                }
+        Point pastPosition(mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
+                           mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
+        if( mapReference->TileCenter( path.front().x ) > box.RectCenterX() ){
+            box.SetRectCenterX(box.RectCenterX() + speed);
+            allyPosition = RIGHT;
+        }else if( mapReference->TileCenter( path.front().x ) < box.RectCenterX() ){
+            box.SetRectCenterX(box.RectCenterX() - speed);
+            allyPosition = LEFT;
+        }
 
-                if( mapReference->TileCenter( path.front().y ) > box.RectCenterY() ){
-                    box.SetRectCenterY(box.RectCenterY() + speed);
-                    allyPosition = FRONT;
-                }else if( mapReference->TileCenter( path.front().y ) < box.RectCenterY() ){
-                    box.SetRectCenterY(box.RectCenterY() - speed);
-                    allyPosition = BACK;
-                }
+        if( mapReference->TileCenter( path.front().y ) > box.RectCenterY() ){
+            box.SetRectCenterY(box.RectCenterY() + speed);
+            allyPosition = FRONT;
+        }else if( mapReference->TileCenter( path.front().y ) < box.RectCenterY() ){
+            box.SetRectCenterY(box.RectCenterY() - speed);
+            allyPosition = BACK;
+        }
 
 
-                Point currentPosition(mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
-                                      mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
+        Point currentPosition(mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
+                              mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
 
-                if(pastPosition.x != currentPosition.x ||
-                   pastPosition.y != currentPosition.y){
-                            mapReference->At(pastPosition.x, pastPosition.y).state = FREE;
-                            mapReference->At(currentPosition.x, currentPosition.y).state = ALLY;
-                            #ifdef DEBUG
-                            cout << "pasPosition: " << endl;
-                            cout << "mapStateAt( " << pastPosition.x << ", " << pastPosition.y << "): " << mapReference->At(pastPosition.x, pastPosition.y).state << endl;
+        if(pastPosition.x != currentPosition.x ||
+           pastPosition.y != currentPosition.y){
+                    mapReference->At(pastPosition.x, pastPosition.y).state = FREE;
+                    mapReference->At(currentPosition.x, currentPosition.y).state = ALLY;
+                    #ifdef DEBUG
+                    cout << "pasPosition: " << endl;
+                    cout << "mapStateAt( " << pastPosition.x << ", " << pastPosition.y << "): " << mapReference->At(pastPosition.x, pastPosition.y).state << endl;
 
-                            cout << "currentPosition: " << endl;
-                            cout << "mapStateAt( " << currentPosition.x << ", " << currentPosition.y << "): " << mapReference->At(currentPosition.x, currentPosition.y).state << endl;
-                            #endif // DEBUG
-                }
-            OrientarSprite();
-            }
+                    cout << "currentPosition: " << endl;
+                    cout << "mapStateAt( " << currentPosition.x << ", " << currentPosition.y << "): " << mapReference->At(currentPosition.x, currentPosition.y).state << endl;
+                    #endif // DEBUG
+        }
+    OrientarSprite();
+    }
 }
+
 //para a movimentacao do ally caso este encontre um obstaculo pelo caminho.
 void Ally::Parar(){
 
@@ -241,7 +264,6 @@ void Ally::Especial()
 
 void Ally::MakePath(/*int line, int row*/)
 {
-
     int line = mapReference->PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x );
     int row = mapReference->PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y );
     if(path.size() < distance && //ainda pode andar E
@@ -273,7 +295,6 @@ void Ally::MakePath(/*int line, int row*/)
             }
         }
     }
-
 }
 
 void Ally::MakeRangeArea()
@@ -353,5 +374,26 @@ bool Ally::IsLider()
     return lider;
 }
 
+string Ally::GetNome()
+{
+    return this->nome;
+}
 
+bool Ally::AreaRespiro()
+{
+//    if((box.RectCenterX() > 500 && box.RectCenterX() < 770) && (box.RectCenterY() > 100 && box.RectCenterY() < 300)){
+//        return true;
+//    }
+
+    return false;
+}
+
+bool Ally::AreaMapa()
+{
+    if(box.RectCenterX() > 730){
+        return false;
+    }
+
+    return true;
+}
 

@@ -38,6 +38,10 @@ void OptionsState::Input(){
         requestQuit = true;
     }
 
+    if( InputManager::GetInstance().KeyPress(SDLK_ESCAPE) == true ){
+            requestDelete = true;
+    }
+
     if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON)){
         if(voltar.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                                     InputManager::GetInstance().GetMouseY() + Camera::pos.y)){

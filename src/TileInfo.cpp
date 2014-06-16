@@ -1,10 +1,9 @@
 #include "TileInfo.h"
 
-TileInfo::TileInfo(int tileType, TileState state, GameObject* occuper)
+TileInfo::TileInfo(int tileType, TileState state)
 {
     this->tileType = tileType;
     this->state = state;
-    this->occuper = occuper;
 }
 
 TileInfo::~TileInfo()

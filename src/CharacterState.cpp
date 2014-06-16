@@ -143,6 +143,11 @@ void CharacterState::PopulaArray()
 #endif
 #ifdef MASHIRO
     Sprite botao("images/img/penguinface.png");
+    Sprite botao2("images/img/penguinface2.png");
+    Sprite botao3("images/img/penguinface3.png");
+    Sprite botao4("images/img/penguinface4.png");
+    Sprite botao5("images/img/penguinface5.png");
+    Sprite botao6("images/img/penguinface6.png");
 #endif
 
     StillAnimation* botaoAnim = new StillAnimation(150, 150 + 75*characterArray.size(), 0, botao, 50, false);

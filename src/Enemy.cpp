@@ -1,37 +1,19 @@
 #include "Enemy.h"
 
-Enemy::Enemy(float x, float y, TileMap* mapRef)
+Enemy::Enemy(float tileSize, float x, float y, float defesa, float ataque, float vida):
+    sp("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/cubngun.png")
 {
-    //ver a proporção do personagem em relaçao ao tile do mundopara aplicar na posicao certa
-    //sp.SetScaleX((float) 2);
-    //sp.SetScaleY((float) 2);
-
-    //SetFrameCount
-    //SetFrameTime
-
-    //vida.Open(this);
-    sp.SetSpriteSheet(4, 4);
-    sp.SetAnimation(0, 4);
-    sp.SetFrameTime(4.0 * 1.0/24.0);
-    charPosition = FRONT;
-
-#ifdef ANDRE
-    sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/robotRosa.png");
-#endif
-#ifdef MASHIRO
-    sp.Open("images/img/roboRosa.png");
-#endif
-
-    mapReference = mapRef;
+    this->tileSize = tileSize;
+    box.SetRectCenterX(x);
+    box.SetRectCenterY(y);
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
-    box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x) );
-    box.SetRectCenterY( mapReference->MapPositionToPixelPosition(y) );
+    this->defesa = defesa;
+    this->ataque = ataque;
+    this->vida = vida;
+    enemyState = MOVENDO;
+    enemyPosition = FRENTE;
 
-    mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
-                      mapReference->PixelPositionToMapPosition( box.RectCenterY() ) ).state = ENEMY;
-    //enemyState = AGUARDANDO;
-    vida = 5;
 }
 
 Enemy::~Enemy()
@@ -41,13 +23,13 @@ Enemy::~Enemy()
 
 void Enemy::Update(float dt)
 {
-    sp.Update(dt);
+
 }
 
-//void Enemy::Render(int cameraX, int cameraY)
-//{
-//    sp.Render(box.x - cameraX, box.y - cameraY);
-//}
+void Enemy::Render(int cameraX, int cameraY)
+{
+    sp.Render(cameraX, cameraY);
+}
 
 bool Enemy::IsDead()
 {

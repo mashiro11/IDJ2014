@@ -76,10 +76,21 @@ void InfoMenu::Render(int cameraX, int cameraY){
 void InfoMenu::InsereBotao(GameObject* objeto){
     string caminho;
     #ifdef ANDRE
-    if(objeto->Is("Lider")){
-        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/minion.png";
-    }else if(objeto->Is("Robo")){
-        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface.png";
+    if(objeto->Is("Robo")){
+        cout << objeto->GetNome() << endl;
+        if(objeto->GetNome() == "Robotinic"){
+            caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface.png";
+        }else if(objeto->GetNome() == "Roboboy"){
+            caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface2.png";
+        }else if(objeto->GetNome() == "Blitzcrank"){
+            caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface3.png";
+        }else if(objeto->GetNome() == "OptimusPrime"){
+            caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface4.png";
+        }else if(objeto->GetNome() == "Bamboubi"){
+            caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface5.png";
+        }else if(objeto->GetNome() == "Walle"){
+            caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface6.png";
+        }
     }else if(objeto->Is("Piloto")){
         caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/alien.png";
     }
@@ -97,8 +108,9 @@ void InfoMenu::InsereBotao(GameObject* objeto){
     Sprite botao(caminho);
     botao.SetScaleX(0.5);
     botao.SetScaleY(0.5);
-    StillAnimation* botaoAnim = new StillAnimation(box.x + 30, box.y + 30 + 75*buttonArray.size(), rotation, botao, 50, false);
+    StillAnimation* botaoAnim = new StillAnimation(box.x + 30, box.y + 30 + 50*buttonArray.size(), rotation, botao, 50, false);
     buttonArray.emplace_back(*botaoAnim);
+
 
     BarraVida vida(objeto);
 

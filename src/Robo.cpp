@@ -11,12 +11,7 @@ Robo::Robo(float x, float y, float defesa, float ataque, int speed, int distance
     sp.SetSpriteSheet(4, 4);
     sp.SetAnimation(0, 4);
     sp.SetFrameTime(4.0 * 1.0/24.0);
-#ifdef ANDRE
-    //sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/robot2iceaxe.png");
-#endif
-#ifdef MASHIRO
-    //sp.Open("images/img/robot2iceaxe.png");
-#endif
+
     this->lider = lider;
     this->nome = nome;
 
@@ -48,6 +43,7 @@ Robo::~Robo(){
 
 void Robo::Update(float dt)
 {
+
     UpdateAlly(dt);
     vida.Update();
     vida.SetX(box.RectCenterX());
@@ -79,17 +75,17 @@ bool Robo::Is(string type){
 
 void Robo::Ejetar()
 {
-//    Piloto* piloto = pilotoArray.back();
-//    piloto->Ejetar();
-//    pilotoArray.pop_back();
-//    if(pilotoArray.size() == 0){
-//        allyState = INATIVO;
-//    }
+    Piloto* piloto = pilotoArray.back();
+    piloto->Ejetar();
+    pilotoArray.pop_back();
+    if(pilotoArray.size() == 0){
+        allyState = INATIVO;
+    }
 }
 
-//void Robo::InserePiloto(Piloto *piloto)
-//{
-//    pilotoArray.push_back(piloto);
-//}
+void Robo::InserePiloto(Piloto *piloto)
+{
+    pilotoArray.push_back(piloto);
+}
 
 

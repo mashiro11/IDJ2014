@@ -27,6 +27,7 @@ Piloto::Piloto(float defesa, float vidaMaxima, int coolDown, int range, int dist
     allyPosition = FRONT;
     allyState = REPOUSO;
     menuAberto = false;
+
 }
 
 Piloto::~Piloto()
@@ -120,8 +121,8 @@ void Piloto::Update(float dt)
 
                 //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
 
-                       MakePath(PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x ),
-                                     PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y ));
+                       MakePath(/*PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x ),
+                                     PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y )*/);
                     //}
                     if(InputManager::GetInstance().MousePress(RIGHT_MOUSE_BUTTON) == true){
                             allyState = MOVENDO;
