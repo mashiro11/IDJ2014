@@ -24,7 +24,7 @@ backGroundMusic("images/audio/stageState.ogg")
     objectArray.emplace_back(infoMenu);
 
     InicializaPersonagens(characters, infoMenu);
-    Enemy *enemy = new Enemy(6, 4, &tileMap, "Robotinic");
+    Enemy *enemy = new Enemy(6, 4, &tileMap, "UNICORN");
     enemy->SetStatus(10, 10, 2, 1, 7, 5);
     enemy->MakeRangeArea();
     objectArray.emplace_back(enemy);
@@ -165,7 +165,7 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp1("images/img/alien.png");
         #endif
         Robo *robo = new Robo(0, 0, &tileMap, true, sp, "Robotinic");
-        robo->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        robo->SetStatus(100, 10, 2, 5, 7, 5, 10);
         robo->MakeRangeArea();
         objectArray.emplace_back(robo);
         infoMenu->InsereBotao(robo);
@@ -210,7 +210,7 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp3("images/img/alien.png");
         #endif
         Robo *robo3 = new Robo(6, 6, &tileMap, true, sp3, "Blitzcrank");
-        robo3->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        robo3->SetStatus(100, 10, 2, 5, 7, 5, 10);
         robo3->MakeRangeArea();
         objectArray.emplace_back(robo3);
         infoMenu->InsereBotao(robo3);
@@ -231,8 +231,8 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite sp4("images/img/roboPreto.png");
         Sprite pilotoSp4("images/img/alien.png");
         #endif
-        Robo *robo4 = new Robo(3, 3, &tileMap, true, sp4, "OptimusPrime");
-        robo4->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        Robo *robo4 = new Robo(5, 3, &tileMap, true, sp4, "OptimusPrime");
+        robo4->SetStatus(100, 10, 2, 5, 7, 5, 10);
         robo4->MakeRangeArea();
         objectArray.emplace_back(robo4);
         infoMenu->InsereBotao(robo4);
@@ -254,7 +254,7 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp5("images/img/alien.png");
         #endif
         Robo *robo5 = new Robo(8, 8, &tileMap, true, sp5, "Bamboubi");
-        robo5->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        robo5->SetStatus(100, 10, 2, 5, 7, 5, 10);
         robo5->MakeRangeArea();
         objectArray.emplace_back(robo5);
         infoMenu->InsereBotao(robo5);
@@ -276,7 +276,7 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp6("images/img/alien.png");
         #endif
         Robo *robo6 = new Robo(4, 4, &tileMap, true, sp6, "Walle");
-        robo6->SetStatus(10, 10, 2, 5, 7, 5, 10);
+        robo6->SetStatus(100, 10, 2, 5, 7, 5, 10);
         robo6->MakeRangeArea();
         objectArray.emplace_back(robo6);
         infoMenu->InsereBotao(robo6);

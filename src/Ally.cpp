@@ -25,6 +25,12 @@ void Ally::UpdateAlly(float dt)
     CloseEnemiesUpdate();
     //if(timer.Get() < coolDown) timer.Update(dt);
     sp.Update(dt);
+    if(IsDead() == true){
+        cout << this->nome <<": Fui destruido!! Noooooooo.... D: " << endl;
+        mapReference->At( currentPosition.x, currentPosition.y ).state = FREE;
+        mapReference->At( currentPosition.x , currentPosition.y ).occuper = NULL;
+
+    }
 }
 
 void Ally::Input()

@@ -59,20 +59,32 @@ void Character::RangeAreaUpdate(int x, int y)
 
 void Character::CloseEnemiesUpdate()
 {
-    //if(this->nome == "Roboboy") cout << "inicio do loop" << endl;
-    for(unordered_map<GameObject*, Point>::iterator aux = closeEnemies.begin(); aux != closeEnemies.end();){
-        //if(this->nome == "Roboboy")cout << "(" <<  aux->second.x << "," << aux->second.y << ")" << endl;
+    //cout << this->nome << ": inicio do loop. closeEnemies.size(): " << closeEnemies.size() << endl;
+    bool itemRemovido = false;
+    int i = 0;
+    for(unordered_map<GameObject*, Point>::iterator aux = closeEnemies.begin(); aux != closeEnemies.end(); i++){
+        //cout << "testando: (" << aux->second.x << ", " << aux->second.y << ")" << endl;
         if(mapReference->At(aux->second.x, aux->second.y).occuper == NULL ||
            (abs(aux->second.x - currentPosition.x) + abs(aux->second.y - currentPosition.y) ) > range){
                 closeEnemies.erase( aux );
+                itemRemovido = true;
+
         }
         if(closeEnemies.empty() == true){
                 aux = closeEnemies.end();
         }else{
                 aux++;
+                if(itemRemovido == true ){
+                    if(i < closeEnemies.size()){
+                        aux++;
+                        itemRemovido = false;
+                    }else{
+                        aux = closeEnemies.end();
+                    }
+                }
         }
     }
-    //if(this->nome == "Roboboy")cout << "fim do loop" << endl;
+    //cout << "fim do loop" << endl;
 }
 void Character::IdentifyOpponent()
 {
