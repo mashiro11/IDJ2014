@@ -16,6 +16,7 @@ Enemy::Enemy(float x, float y, TileMap* mapRef, string nome)
     charPosition = FRONT;
 
     mapReference = mapRef;
+    mapReference->At(x, y).state = ENEMY;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
     box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x) );
@@ -32,13 +33,13 @@ void Enemy::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int
     this->vida = vidaMaxima;
     this->range = range;
     this->speed = speed;
-//    this->coolDown = coolDown;
 }
 
 
 Enemy::~Enemy()
 {
-
+    mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
+                      mapReference->PixelPositionToMapPosition( box.RectCenterY() ) ).state = FREE;
 }
 
 void Enemy::Update(float dt)
@@ -68,7 +69,7 @@ void Enemy::Input()
 
 bool Enemy::IsDead()
 {
-    if(vida <= 0) return true;
+    if(vida <= 0)return true;
     return false;
 }
 

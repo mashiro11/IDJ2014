@@ -56,12 +56,11 @@ void Character::RangeAreaUpdate(int x, int y)
             rangeMap[i].y += y;
         }
     }
-//    for(unordered_map<GameObject*, Point>::iterator aux = closeEnemies.begin(); aux != closeEnemies.end(); aux++){
-//        cout << "Quem me chamou foi " << this->nome << endl;
-//        if(mapReference->At(aux->second.x, aux->second.y).state == FREE){
-//                closeEnemies.erase( aux );
-//        }
-//    }
+    for(unordered_map<GameObject*, Point>::iterator aux = closeEnemies.begin(); aux != closeEnemies.end(); aux++){
+        if(mapReference->At(aux->second.x, aux->second.y).state == FREE){
+                closeEnemies.erase( aux );
+        }
+    }
 }
 
 void Character::IdentifyOpponent()
@@ -73,7 +72,7 @@ void Character::IdentifyOpponent()
 
                 Point enemyPosition(rangeMap[i].x, rangeMap[i].y);
                 closeEnemies[ mapReference->At( rangeMap[i].x, rangeMap[i].y ).occuper ] = enemyPosition;
-                //cout << "Inimigos proximos de " << this->nome << ": " << closeEnemies.size() << "||" << endl;
+                cout << "Inimigos proximos de " << this->nome << ": " << closeEnemies.size() << " -#" << endl;
             }
         }
     }else if(Is("Enemy") == true){
@@ -82,7 +81,7 @@ void Character::IdentifyOpponent()
 
                 Point enemyPosition(rangeMap[i].x, rangeMap[i].y);
                 closeEnemies[ mapReference->At( rangeMap[i].x, rangeMap[i].y ).occuper ] = enemyPosition;
-                //cout << "Aliados proximos de " << this->nome << ": " << closeEnemies.size() << "||" << endl;
+                cout << "Aliados proximos de " << this->nome << ": " << closeEnemies.size() << " -#" << endl;
             }
         }
     }

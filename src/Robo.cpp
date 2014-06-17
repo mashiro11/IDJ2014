@@ -28,8 +28,10 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string 
     mapReference->At(x, y).occuper = this;
 }
 
-Robo::~Robo(){
-
+Robo::~Robo()
+{
+     mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
+                      mapReference->PixelPositionToMapPosition( box.RectCenterY() ) ).state = FREE;
 }
 
 void Robo::Update(float dt)
