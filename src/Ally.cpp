@@ -19,15 +19,12 @@ void Ally::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int 
 //gerencia as modificacoes e os estados  do ally
 void Ally::UpdateAlly(float dt)
 {
-    StateMachine();
+    StateMachine(dt);
     Input();
-    Point currentPosition(mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
-                          mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
-
     IdentifyOpponent();
-    if(timer.Get() < coolDown) timer.Update(dt);
+    CloseEnemiesUpdate();
+    //if(timer.Get() < coolDown) timer.Update(dt);
     sp.Update(dt);
-
 }
 
 void Ally::Input()
@@ -67,19 +64,19 @@ void Ally::Input()
                 switch(i){
                 case(0):
                    cout << "esse botao pede para andar" << endl;
-                   allyState = AGUARDANDO_ANDAR;
+                   charState = AGUARDANDO_ANDAR;
                    break;
                case(1):
                    cout << "esse botao pede para defender" << endl;
-                   allyState = DEFENDENDO;
+                   charState = DEFENDENDO;
                    break;
                case(2):
                    cout << "esse botao pede para usar item" << endl;
-                   allyState = AGUARDANDO_ITEM;
+                   charState = AGUARDANDO_ITEM;
                    break;
                case(3):
                    cout << "esse botao pede para ejetar" << endl;
-                   allyState = AGUARDANDO_EMBARCAR;
+                   charState = AGUARDANDO_EMBARCAR;
                    break;
                }
             }
@@ -91,15 +88,16 @@ void Ally::Input()
 }
 
 
-void Ally::StateMachine()
+void Ally::StateMachine(float dt)
 {
-    switch(allyState){
+    switch(charState){
         case MOVENDO:
             if( path.empty() == true){
-                cout << "Path vazio" << endl;
-                allyState = REPOUSO;
+                cout << endl << "*" << this->nome << " parou*" << endl;
+                charState = REPOUSO;
                 break;
             }else{
+                cout << "*" << this->nome << " esta andando*\r";
                 Andar();
             }
             break;
@@ -111,27 +109,36 @@ void Ally::StateMachine()
             break;
 
         case ATACANDO:
+            timer.Update(dt);
+            if(timer.Get() > coolDown){
+                Atacar();
+                timer.Restart();
+            }
+            if(closeEnemies.size() == 0){
+                cout << this-> nome <<": Vencemos! \\o/" << endl;
+                charState = REPOUSO;
+            }
             break;
 
         case REPOUSO:
+            if(closeEnemies.size() > 0){
+                cout << this->nome << ": Inimigos proximos!! Atacaaaaar! >xO" << endl;
+                charState = ATACANDO;
+            }
             break;
         case AGUARDANDO_ANDAR:
 
             //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
-
-//               MakePath(mapReference->PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x ),
-//                        mapReference->PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y ));
             //}
             MakePath();
             if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
                     if(ValidPath() == true){
-                            allyState = MOVENDO;
+                            charState = MOVENDO;
                     }else{
                             while(path.empty() == false) path.pop();
-                            allyState = REPOUSO;
+                            charState = REPOUSO;
                     }
             }
-
             break;
     }
 }
@@ -163,8 +170,7 @@ void Ally::Andar(){
                     box.SetRectCenterY( mapReference->TileCenter( path.front().y ) );
                     path.pop();
             }else{
-        Point pastPosition(mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
-                           mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
+        Point pastPosition( currentPosition.x, currentPosition.y );
         if( mapReference->TileCenter( path.front().x ) > box.RectCenterX() ){
             box.SetRectCenterX(box.RectCenterX() + speed);
             allyPosition = RIGHT;
@@ -179,8 +185,8 @@ void Ally::Andar(){
             box.SetRectCenterY(box.RectCenterY() - speed);
             allyPosition = BACK;
         }
-        Point currentPosition(mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
-                              mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
+        currentPosition.SetPoint( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
+                                  mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
                 if(pastPosition.x != currentPosition.x ||
                    pastPosition.y != currentPosition.y){
                             mapReference->At(pastPosition.x, pastPosition.y).state = FREE;
@@ -230,7 +236,11 @@ void Ally::NotifyCollision(GameObject &other)
 //anima o personagem com seu ataque basico.
 void Ally::Atacar()
 {
-
+    if(closeEnemies.size() > 0){
+        cout << this->nome <<": Yaah! >=O" << endl;
+        Enemy* enemyTarget = (Enemy*) closeEnemies.begin()->first;
+        enemyTarget->Danificar( ataque );
+    }
 }
 
 //gerencia o ally em seu modo de defesa.
@@ -286,7 +296,7 @@ void Ally::MakePath(/*int line, int row*/)
 
            if( path.empty() == true){
                path.push( newPoint );
-               cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
+               //cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
            }else if( (newPoint.x == path.back().x && abs(newPoint.y - path.back().y) == 1) ||
                      (newPoint.y == path.back().y && abs(newPoint.x - path.back().x) == 1) ){
                //se o novo ponto for diferente do ponto anterior
@@ -294,7 +304,7 @@ void Ally::MakePath(/*int line, int row*/)
                   newPoint.y != path.back().y){
                     //cout << "ENTREEEEEI" << endl;
                     path.push( newPoint );
-                    cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
+                    //cout << "ponto ( " << newPoint.x << ", " << newPoint.y << ") adicionado" << endl;
                 }
             }
         }

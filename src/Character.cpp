@@ -17,8 +17,6 @@ void Character::Render(int cameraX, int cameraY)
 
 void Character::MakeRangeArea()
 {
-    Point currentPosition( mapReference->PixelPositionToMapPosition( this->box.RectCenterX() ),
-                           mapReference->PixelPositionToMapPosition( this->box.RectCenterY() ) );
     for(int i = 0; i < range; i++){
         int contX = 0;
         int contY = i - range;
@@ -56,32 +54,48 @@ void Character::RangeAreaUpdate(int x, int y)
             rangeMap[i].y += y;
         }
     }
-    for(unordered_map<GameObject*, Point>::iterator aux = closeEnemies.begin(); aux != closeEnemies.end(); aux++){
-        if(mapReference->At(aux->second.x, aux->second.y).state == FREE){
-                closeEnemies.erase( aux );
-        }
-    }
+    CloseEnemiesUpdate();
 }
 
+void Character::CloseEnemiesUpdate()
+{
+    //if(this->nome == "Roboboy") cout << "inicio do loop" << endl;
+    for(unordered_map<GameObject*, Point>::iterator aux = closeEnemies.begin(); aux != closeEnemies.end();){
+        //if(this->nome == "Roboboy")cout << "(" <<  aux->second.x << "," << aux->second.y << ")" << endl;
+        if(mapReference->At(aux->second.x, aux->second.y).occuper == NULL ||
+           (abs(aux->second.x - currentPosition.x) + abs(aux->second.y - currentPosition.y) ) > range){
+                closeEnemies.erase( aux );
+        }
+        if(closeEnemies.empty() == true){
+                aux = closeEnemies.end();
+        }else{
+                aux++;
+        }
+    }
+    //if(this->nome == "Roboboy")cout << "fim do loop" << endl;
+}
 void Character::IdentifyOpponent()
 {
     //cout << this->nome << " entrou no Identify" << endl;
     if(Is("Ally") == true){
+        //cout << "inicio do loop" << endl;
         for(int i = 0; i < rangeMap.size(); i++){
+            //cout << "(" <<  rangeMap[i].x << "," << rangeMap[i].y << ")" << endl;
             if(mapReference->At( rangeMap[i].x, rangeMap[i].y ).state ==  ENEMY){
 
                 Point enemyPosition(rangeMap[i].x, rangeMap[i].y);
                 closeEnemies[ mapReference->At( rangeMap[i].x, rangeMap[i].y ).occuper ] = enemyPosition;
-                cout << "Inimigos proximos de " << this->nome << ": " << closeEnemies.size() << " -#" << endl;
+                //cout << "Inimigos proximos de " << this->nome << ": " << closeEnemies.size() << " -#" << endl;
             }
         }
+        //cout << "fim do loop" << endl;
     }else if(Is("Enemy") == true){
         for(int i = 0; i < rangeMap.size(); i++){
             if(mapReference->At( rangeMap[i].x, rangeMap[i].y ).state ==  ALLY ){
-
+                //cout << "Sei que tem um ally perto >=)" << endl;
                 Point enemyPosition(rangeMap[i].x, rangeMap[i].y);
                 closeEnemies[ mapReference->At( rangeMap[i].x, rangeMap[i].y ).occuper ] = enemyPosition;
-                cout << "Aliados proximos de " << this->nome << ": " << closeEnemies.size() << " -#" << endl;
+                //cout << "Aliados proximos de " << this->nome << ": " << closeEnemies.size() << " -#" << endl;
             }
         }
     }

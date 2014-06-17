@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#define DEBUG
+//#define DEBUG
 //#define ANDRE
 #define MASHIRO
 

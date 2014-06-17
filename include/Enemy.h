@@ -1,8 +1,10 @@
 #ifndef ENEMY_H
 #define ENEMY_H
+
 #include "GameObject.h"
 #include "Sprite.h"
 #include "Character.h"
+#include "Ally.h"
 
 //enum EnemyState{MOVENDO, ATACANDO, AGUARDANDO};
 class Enemy: public Character
@@ -18,9 +20,14 @@ class Enemy: public Character
             void Update(float dt);
             void Input();
             void Especial(){};
+            void StateMachine(float dt);
+
+            void Atacar();
+            void Danificar(float dano);
 
         private:
             int vida;
+            int coolDown;
 };
 
 #endif // ENEMY_H

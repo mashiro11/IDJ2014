@@ -17,10 +17,12 @@ Enemy::Enemy(float x, float y, TileMap* mapRef, string nome)
 
     mapReference = mapRef;
     mapReference->At(x, y).state = ENEMY;
+    mapReference->At(x, y).occuper = this;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
     box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x) );
     box.SetRectCenterY( mapReference->MapPositionToPixelPosition(y) );
+    currentPosition.SetPoint(x, y);
     this->vida = vida;
     charState = REPOUSO;
     this->nome = nome;
@@ -33,20 +35,29 @@ void Enemy::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int
     this->vida = vidaMaxima;
     this->range = range;
     this->speed = speed;
+    this->coolDown = coolDown;
 }
 
 
 Enemy::~Enemy()
 {
-    mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
-                      mapReference->PixelPositionToMapPosition( box.RectCenterY() ) ).state = FREE;
 }
 
 void Enemy::Update(float dt)
 {
     Input();
+    StateMachine(dt);
     IdentifyOpponent();
+    CloseEnemiesUpdate();
     sp.Update(dt);
+    if(IsDead() == true){
+        cout << this->nome <<": Fui destruido!! Noooooooo.... D: " << endl;
+        mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
+                          mapReference->PixelPositionToMapPosition( box.RectCenterY() ) ).state = FREE;
+        mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
+                          mapReference->PixelPositionToMapPosition( box.RectCenterY() ) ).occuper = NULL;
+
+    }
 }
 
 void Enemy::Input()
@@ -54,8 +65,6 @@ void Enemy::Input()
     if(box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                     InputManager::GetInstance().GetMouseY() + Camera::pos.y) == true){
                     if(InputManager::GetInstance().KeyPress(SDLK_d) == true ){
-                        cout << "Minha vida era: " << vida << endl;
-                        cout << "Levei destroy! IsDead: " << IsDead() << endl;
                         vida = 0;
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_t) == true ){
@@ -86,23 +95,48 @@ void Enemy::NotifyCollision(GameObject &other)
 
 }
 
-void StateMachine()
+void Enemy::StateMachine(float dt)
 {
-//    switch(charState){
-//        case REPOUSO:
-//            cout << "Inimigo em repouso" << endl;
-//            break;
-//        case ANDANDO:
-//            cout << "Inimigo andando" << endl;
-//            break;
-//        case ATACANDO:
-//            cout << "Inimigo atacando" << endl;
-//            break;
+    switch(charState){
+        case REPOUSO:
+            if(closeEnemies.size() > 0){
+                cout << this->nome << ": Haha! Vau te encher de porrada >=D" << endl;
+                charState = ATACANDO;
+            }
+            break;
+        case MOVENDO:
+            cout << "*" <<this->nome <<" esta andando*" << endl;
+            break;
+        case ATACANDO:
+            timer.Update(dt);
+            if(timer.Get() > coolDown){
+                Atacar();
+                timer.Restart();
+            }
+            if(closeEnemies.empty() == true){
+                cout << this->nome << ": Chutamos a bunda deles! >xD" << endl;
+                charState = REPOUSO;
+            }
+            break;
 //        case ():
 //            break;
 //        case ():
 //            break;
 //        case ():
 //            break;
-//    }
+    }
+}
+
+void Enemy::Atacar()
+{
+    cout << this->nome << ": TOMA ISSO!! >=O" << endl;
+    if(closeEnemies.size() > 0){
+        Ally* allyTarget = (Ally*) closeEnemies.begin()->first;
+        allyTarget->Danificar( ataque );
+    }
+}
+
+void Enemy::Danificar(float dano)
+{
+    this->vida -= dano - defesa/10;
 }

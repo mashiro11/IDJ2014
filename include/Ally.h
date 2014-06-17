@@ -12,6 +12,7 @@
 #include "TileMap.h"
 #include "Timer.h"
 #include "Character.h"
+#include "Enemy.h"
 
 
 using std::vector;
@@ -28,7 +29,7 @@ public:
     void Update(float dt) = 0;
     virtual void Render(int cameraX, int cameraY) = 0;
 
-    void StateMachine();
+    void StateMachine(float dt);
     void Input();
     bool IsDead();
     void NotifyCollision(GameObject& other);
@@ -59,7 +60,7 @@ public:
 protected:
     void UpdateAlly(float dt);
     bool lider;
-    CharState allyState;
+    //CharState allyState;
     CharacterPosition allyPosition;
     vector<StillAnimation> buttonArray;
 

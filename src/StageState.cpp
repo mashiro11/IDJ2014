@@ -25,7 +25,7 @@ backGroundMusic("images/audio/stageState.ogg")
 
     InicializaPersonagens(characters, infoMenu);
     Enemy *enemy = new Enemy(6, 4, &tileMap, "Robotinic");
-    enemy->SetStatus(10, 10, 2, 5, 7, 5);
+    enemy->SetStatus(10, 10, 2, 1, 7, 5);
     enemy->MakeRangeArea();
     objectArray.emplace_back(enemy);
 
@@ -187,7 +187,7 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
         Sprite pilotoSp2("images/img/alien.png");
         #endif
         Robo *robo2 = new Robo(5, 5, &tileMap, true, sp2, "Roboboy");
-        robo2->SetStatus(100, 10, 2, 5, 7, 5, 10);
+        robo2->SetStatus(100, 5, 2, 5, 7, 5, 8);
         robo2->MakeRangeArea();
         objectArray.emplace_back(robo2);
         infoMenu->InsereBotao(robo2);

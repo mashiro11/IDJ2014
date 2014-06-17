@@ -28,7 +28,7 @@ Text::Text(string fontFile, int fontSize, TextStyle style,
             font = assetTable.find( aux.str() )->second;
     }else{
             font = TTF_OpenFont( fontFile.c_str(), fontSize);
-            cout << "cheguei aqui font: " << font << " " <<  fontFile << endl;
+            //cout << "cheguei aqui font: " << font << " " <<  fontFile << endl;
             assetTable.emplace( aux.str(), font);
     }
     RemakeTexture();
@@ -57,7 +57,7 @@ void Text::Initialize(string fontFile, int fontSize, TextStyle style,
             font = assetTable.find( aux.str() )->second;
     }else{
             font = TTF_OpenFont( fontFile.c_str(), fontSize);
-            cout << "cheguei aqui font: " << font << " " <<  fontFile << endl;
+            //cout << "cheguei aqui font: " << font << " " <<  fontFile << endl;
             assetTable.emplace( aux.str(), font);
     }
     RemakeTexture();

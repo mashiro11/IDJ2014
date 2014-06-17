@@ -40,6 +40,7 @@ class Character: public GameObject{
 
             void MakeRangeArea();
             void RangeAreaUpdate(int x, int y);
+            void CloseEnemiesUpdate();
             void IdentifyOpponent();
             void GraphDepht(int x, int y, int depth);
             void Danificar(float dano);
@@ -54,7 +55,7 @@ class Character: public GameObject{
             Sprite sp;
             CharacterPosition charPosition;
             CharState charState;
-            //Point currentPosition;
+            Point currentPosition;
 
             unordered_map<GameObject*, Point> closeEnemies;
             TileMap *mapReference;

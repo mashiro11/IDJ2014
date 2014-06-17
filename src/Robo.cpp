@@ -19,11 +19,14 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string 
     box.w = sp.GetWidth();
     box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x) );
     box.SetRectCenterY( mapReference->MapPositionToPixelPosition(y) );
+    currentPosition.SetPoint( x, y );
+
     this->rotation = 0;
 
     allyPosition = FRONT;
-    allyState = REPOUSO;
+    charState = REPOUSO;
     menuAberto = false;
+    //cout << "(" << x << ", " << y << ")" << endl;
     mapReference->At(x, y).state = ALLY;
     mapReference->At(x, y).occuper = this;
 }
@@ -72,7 +75,7 @@ void Robo::Ejetar()
     piloto->Ejetar();
     pilotoArray.pop_back();
     if(pilotoArray.size() == 0){
-        allyState = INATIVO;
+        charState = INATIVO;
     }
 }
 

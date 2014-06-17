@@ -22,7 +22,7 @@ Piloto::Piloto(GameObject* robo, string nome, Sprite sprite, bool lider, TileMap
     this->coolDown = coolDown;
     this->rotation = 0;
     allyPosition = FRONT;
-    allyState = REPOUSO;
+    charState = REPOUSO;
     menuAberto = false;
 
 }
@@ -68,19 +68,19 @@ void Piloto::Update(float dt)
                     switch(i){
                     case(0):
                        cout << "esse botao pede para andar" << endl;
-                       allyState = AGUARDANDO_ANDAR;
+                       charState = AGUARDANDO_ANDAR;
                        break;
                    case(1):
                        cout << "esse botao pede para defender" << endl;
-                       allyState = DEFENDENDO;
+                       charState = DEFENDENDO;
                        break;
                    case(2):
                        cout << "esse botao pede para usar item" << endl;
-                       allyState = AGUARDANDO_ITEM;
+                       charState = AGUARDANDO_ITEM;
                        break;
                    case(3):
                        cout << "esse botao pede para ejetar" << endl;
-                       allyState = AGUARDANDO_EMBARCAR;
+                       charState = AGUARDANDO_EMBARCAR;
                        break;
                    }
                 }
@@ -92,11 +92,11 @@ void Piloto::Update(float dt)
             }
         }
 
-        switch(allyState){
+        switch(charState){
                 case MOVENDO:
                     if( path.empty() == true){
                         cout << "Path vazio" << endl;
-                        allyState = REPOUSO;
+                        charState = REPOUSO;
                         break;
                     }else{
                         Andar();
@@ -120,7 +120,7 @@ void Piloto::Update(float dt)
                        MakePath();
                 //}
                     if(InputManager::GetInstance().MousePress(RIGHT_MOUSE_BUTTON) == true){
-                            allyState = MOVENDO;
+                            charState = MOVENDO;
                     }
 
                     break;
