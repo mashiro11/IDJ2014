@@ -48,6 +48,9 @@ void Ally::Input()
                     }
     }
     if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
+        Sound soundFX("images/audio/boom.wav");
+        soundFX.Play(0);
+
         //se o mouse estiver dentro do personagem, o menu é aberto e recebe true se nao existir.
         //se o menu ja existir, recebe falso, pois sera fechado mais para frente.
         if(this->box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
@@ -67,23 +70,26 @@ void Ally::Input()
             //verifica qual o botao que foi clicado, se algum deles for clicado.
             if(buttonArray[i].box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                                            InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
+                Sound soundFX("images/audio/boom.wav");
+                soundFX.Play(0);
+
                 switch(i){
-                case(0):
-                   cout << "esse botao pede para andar" << endl;
-                   charState = AGUARDANDO_ANDAR;
-                   break;
-               case(1):
-                   cout << "esse botao pede para defender" << endl;
-                   charState = DEFENDENDO;
-                   break;
-               case(2):
-                   cout << "esse botao pede para usar item" << endl;
-                   charState = AGUARDANDO_ITEM;
-                   break;
-               case(3):
-                   cout << "esse botao pede para ejetar" << endl;
-                   charState = AGUARDANDO_EMBARCAR;
-                   break;
+                    case(0):
+                       cout << "esse botao pede para andar" << endl;
+                       charState = AGUARDANDO_ANDAR;
+                       break;
+                    case(1):
+                       cout << "esse botao pede para defender" << endl;
+                       charState = DEFENDENDO;
+                       break;
+                    case(2):
+                       cout << "esse botao pede para usar item" << endl;
+                       charState = AGUARDANDO_ITEM;
+                       break;
+                    case(3):
+                       cout << "esse botao pede para ejetar" << endl;
+                       charState = AGUARDANDO_EMBARCAR;
+                       break;
                }
             }
         }
@@ -169,13 +175,17 @@ bool Ally::Is(string type)
 //movimenta o ally pelo mapa.
 void Ally::Andar(){
 
-            //cout << "inicio allyPosition: " << allyPosition << endl;
-            if( abs(box.RectCenterX() - mapReference->TileCenter( path.front().x ) ) < 5 &&
-                abs(box.RectCenterY() - mapReference->TileCenter( path.front().y ) ) < 5){
-                    box.SetRectCenterX( mapReference->TileCenter( path.front().x ) );
-                    box.SetRectCenterY( mapReference->TileCenter( path.front().y ) );
-                    path.pop();
-            }else{
+        Sound soundFX("images/audio/boom.wav");
+        //cout << "inicio allyPosition: " << allyPosition << endl;
+        if( abs(box.RectCenterX() - mapReference->TileCenter( path.front().x ) ) < 5 &&
+            abs(box.RectCenterY() - mapReference->TileCenter( path.front().y ) ) < 5){
+                box.SetRectCenterX( mapReference->TileCenter( path.front().x ) );
+                box.SetRectCenterY( mapReference->TileCenter( path.front().y ) );
+                path.pop();
+                //teste de posicionamento de som
+                soundFX.Play(0);
+
+        }else{
         Point pastPosition( currentPosition.x, currentPosition.y );
         if( mapReference->TileCenter( path.front().x ) > box.RectCenterX() ){
             box.SetRectCenterX(box.RectCenterX() + speed);
@@ -200,6 +210,8 @@ void Ally::Andar(){
 
                             mapReference->At(currentPosition.x, currentPosition.y).state = ALLY;
                             mapReference->At(currentPosition.x, currentPosition.y).occuper = this;
+                            //teste de posicionamento de som
+                            soundFX.Play(0);
 
                             #ifdef DEBUG
                             cout << "pasPosition: " << endl;
@@ -246,13 +258,17 @@ void Ally::Atacar()
         cout << this->nome <<": Yaah! >=O" << endl;
         Enemy* enemyTarget = (Enemy*) closeEnemies.begin()->first;
         enemyTarget->Danificar( ataque );
+        //teste de posicionamento de som
+        Sound soundFX("images/audio/boom.wav");
+        soundFX.Play(0);
+
     }
 }
 
 //gerencia o ally em seu modo de defesa.
 void Ally::Defender()
 {
-
+    charState = DEFENDENDO;
 }
 
 //abre o menu de personagem
