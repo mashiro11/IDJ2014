@@ -56,6 +56,7 @@ public:
     bool IsLider();
     bool ValidPath();
     string GetNome();
+    int GetVida();
 
 protected:
     void UpdateAlly(float dt);

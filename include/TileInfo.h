@@ -13,8 +13,8 @@ enum TileState{
 class TileInfo
 {
     public:
-        TileInfo(int tileType = -1, TileState state = FREE);
-        TileInfo(){tileType = -1; state = FREE;}
+        TileInfo(int tileType = -1, TileState state = FREE, GameObject* occuper = NULL);
+        TileInfo(){tileType = -1; state = FREE; this->occuper = NULL;}
         ~TileInfo();
 
         TileState state;

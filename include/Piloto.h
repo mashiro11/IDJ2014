@@ -4,23 +4,25 @@
 
 class Piloto: public Ally{
 public:
-    Piloto(GameObject* robo, string nome, Sprite sprite, bool lider, TileMap* mapRef);
+    Piloto(Character* robo, string nome, Sprite sprite, bool lider, TileMap* mapRef);
     ~Piloto();
     void Render(int cameraX, int cameraY);
     bool Is(string type);
-    void Embarcar(GameObject* alvo);
+    void Embarcar(Character* alvo);
     void Update(float dt);
     void SetX(float x);
     void SetY(float y);
-    void Abrir_Menu();
+    void Abrir_Menu_Piloto();
     void Ejetar();
+    void StateMachine(float dt);
+    void Input();
+    void Encontrar_Robo(Character* alvo);
 
 protected:
     /*vazio*/
 
 private:
-    GameObject* robo;
-    BarraVida vida;
+    Character* robo;
 };
 
 #endif // PILOTO_H

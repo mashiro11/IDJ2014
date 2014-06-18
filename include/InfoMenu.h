@@ -5,7 +5,7 @@
 #include "Timer.h"
 #include "Text.h"
 #include "BarraVida.h"
-#include "Ally.h"
+#include "Piloto.h"
 
 class InfoMenu:public GameObject{
 public:
@@ -19,6 +19,9 @@ public:
     int GetHitPoint(){};
     int GetLife(){};
     void InsereBotao(GameObject* objeto);
+    void NotificarMorte(GameObject& objeto);
+    void Reordenar();
+    void RefazBotao(GameObject* objeto, int index);
 
 private:
     int minutos;

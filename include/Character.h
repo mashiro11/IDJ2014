@@ -50,6 +50,9 @@ class Character: public GameObject{
             virtual void Especial() = 0;
             void Atacar();
             void OrientarSprite();
+            CharacterPosition GetCharacterPosition();
+            int GetCurrentX();
+            int GetCurrentY();
 
         protected:
             Sprite sp;

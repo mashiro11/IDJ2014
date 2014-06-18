@@ -33,6 +33,7 @@ class StageState : public State
 
     protected:
     private:
+        InfoMenu* infoMenu;
         void Input();
         Sprite bg;
         BlockTileSet tileSet;

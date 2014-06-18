@@ -13,12 +13,13 @@ public:
     void Ejetar();
     void Update(float dt);
     void InserePiloto(Piloto* piloto);
+    void MataPilotos();
+
 
 protected:
     /*vazio*/
 private:
     std::vector<Piloto*> pilotoArray;
-    BarraVida vida;
 
 };
 
