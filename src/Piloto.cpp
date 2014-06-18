@@ -1,10 +1,11 @@
 #include "Piloto.h"
 
-Piloto::Piloto(GameObject* robo, string nome, Sprite sprite, bool lider, TileMap* mapRef)
+/*Aguardando embarcar, andar, barra de vida do menu nao acompanha mais*/
+
+Piloto::Piloto(Character* robo, string nome, Sprite sprite, bool lider, TileMap* mapRef)
 {
 
     sp = sprite;
-    vida.Open(this);
     this->speed = speed;
     this->robo = robo;
     this->nome = nome;
@@ -15,10 +16,8 @@ Piloto::Piloto(GameObject* robo, string nome, Sprite sprite, bool lider, TileMap
     box.w = sp.GetWidth();
 
     this->defesa = defesa;
-    this->vidaMaxima = vidaMaxima;
     this->range = range;
     this->distance = distance;
-    vidaAtual = vidaMaxima;
     this->coolDown = coolDown;
     this->rotation = 0;
     allyPosition = FRONT;
@@ -43,96 +42,108 @@ bool Piloto::Is(string type)
 void Piloto::Update(float dt)
 {
     if(robo == NULL){
-        if(timer.Get() < coolDown) timer.Update(dt);
-        //verifica se houve evento de clique do mouse
-        if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
-            //se o mouse estiver dentro do personagem, o menu é aberto e recebe true se nao existir.
-            //se o menu ja existir, recebe falso, pois sera fechado mais para frente.
-            if(this->box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
-                                  InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
-                                                if(menuAberto == false){
-                                                    Camera::Follow(this);
-                                                    Abrir_Menu();
-                                                    menuAberto = true;
-                                                }else{
-                                                    menuAberto = false;
-                                                }
-            //se o clique for fora do personagem, menu recebe falso para ser fechado mais a frente
-            }else{
-                menuAberto = false;
-            }
-            for(int i = 0; i < buttonArray.size(); i++){
-                //verifica qual o botao que foi clicado, se algum deles for clicado.
-                if(buttonArray[i].box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
-                                               InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
-                    switch(i){
-                    case(0):
-                       cout << "esse botao pede para andar" << endl;
-                       charState = AGUARDANDO_ANDAR;
-                       break;
-                   case(1):
-                       cout << "esse botao pede para defender" << endl;
-                       charState = DEFENDENDO;
-                       break;
-                   case(2):
-                       cout << "esse botao pede para usar item" << endl;
-                       charState = AGUARDANDO_ITEM;
-                       break;
-                   case(3):
-                       cout << "esse botao pede para ejetar" << endl;
-                       charState = AGUARDANDO_EMBARCAR;
-                       break;
-                   }
-                }
-
-                //se a flag estiver como falsa, fecha o menu
-                if (menuAberto == false){
-                    Fechar_Menu();
-                }
-            }
-        }
-
-        switch(charState){
-                case MOVENDO:
-                    if( path.empty() == true){
-                        cout << "Path vazio" << endl;
-                        charState = REPOUSO;
-                        break;
-                    }else{
-                        Andar();
-                    }
-                    break;
-
-                case DEFENDENDO:
-                    break;
-
-                case INATIVO:
-                    break;
-
-                case ATACANDO:
-                    break;
-
-                case REPOUSO:
-                    break;
-                case AGUARDANDO_ANDAR:
-
-                //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
-                       MakePath();
-                //}
-                    if(InputManager::GetInstance().MousePress(RIGHT_MOUSE_BUTTON) == true){
-                            charState = MOVENDO;
-                    }
-
-                    break;
-        }
-
-        sp.Update(dt);
+        StateMachine(dt);
+        Input();
         vida.Update();
         vida.SetX(box.RectCenterX());
         vida.SetY(box.RectCenterY());
     }else{
         box.SetRectCenterX(robo->box.RectCenterX());
         box.SetRectCenterY(robo->box.RectCenterY());
+    }
+}
+
+void Piloto::StateMachine(float dt)
+{
+    switch(charState){
+            case MOVENDO:
+                if( path.empty() == true){
+                    cout << "Path vazio" << endl;
+                    charState = REPOUSO;
+                    break;
+                }else{
+                    Andar();
+                }
+                break;
+            case AGUARDANDO_EMBARCAR:
+//                Character* alvo = NULL;
+//                Encontrar_Robo(alvo);
+//                Embarcar(alvo);
+                    charState = REPOUSO;
+                break;
+            case INATIVO:
+                break;
+            case REPOUSO:
+                break;
+            case AGUARDANDO_ANDAR:
+
+            //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
+                   MakePath();
+            //}
+                if(InputManager::GetInstance().MousePress(RIGHT_MOUSE_BUTTON) == true){
+                        charState = MOVENDO;
+                }
+
+                break;
+    }
+}
+
+void Piloto::Input()
+{
+    if(box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
+                    InputManager::GetInstance().GetMouseY() + Camera::pos.y) == true){
+                    if(InputManager::GetInstance().KeyPress(SDLK_d) == true ){
+                        vida.SetVida(0);
+                    }
+                    if(InputManager::GetInstance().KeyPress(SDLK_t) == true ){
+                        int vidaNova = vida.GetVida() - 5;
+                        vida.SetVida(vidaNova);
+
+                    }
+                    if(InputManager::GetInstance().KeyPress(SDLK_h) == true ){
+                        int vidaNova = vida.GetVida() + 5;
+                        vida.SetVida(vidaNova);
+                    }
+    }
+    //verifica se houve evento de clique do mouse
+    if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
+        //se o mouse estiver dentro do personagem, o menu é aberto e recebe true se nao existir.
+        //se o menu ja existir, recebe falso, pois sera fechado mais para frente.
+        if(this->box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
+                              InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
+                if(menuAberto == false){
+                    Camera::Follow(this);
+                    Abrir_Menu_Piloto();
+                    menuAberto = true;
+                }else{
+                    menuAberto = false;
+                }
+        //se o clique for fora do personagem, menu recebe falso para ser fechado mais a frente
+        }else{
+            menuAberto = false;
+        }
+        for(int i = 0; i < buttonArray.size(); i++){
+            //verifica qual o botao que foi clicado, se algum deles for clicado.
+            if(buttonArray[i].box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
+                                           InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
+                switch(i){
+                case(0):
+                   cout << "esse botao pede para andar" << endl;
+                   //charState = AGUARDANDO_ANDAR;
+                   break;
+               case(1):
+                   cout << "esse botao pede para embarcar" << endl;
+                   charState = AGUARDANDO_EMBARCAR;
+                   break;
+               }
+            }
+
+            //se a flag estiver como falsa, fecha o menu
+
+        }
+        if (menuAberto == false){
+            Fechar_Menu();
+        }
     }
 }
 
@@ -144,8 +155,8 @@ void Piloto::Render(int cameraX, int cameraY)
             int offSet = 100;
             int angulo = 0;
             for(int i = 0; i < buttonArray.size(); i++){
-                buttonArray[i].SetX(box.RectCenterX() - 52 + cos(angulo*M_PI/180)*offSet);
-                buttonArray[i].SetY(box.RectCenterY() - 20 + sin(angulo*M_PI/180)*offSet);
+                buttonArray[i].SetX(box.RectCenterX() + cos(angulo*M_PI/180)*offSet);
+                buttonArray[i].SetY(box.RectCenterY() + sin(angulo*M_PI/180)*offSet);
                 buttonArray[i].Render(cameraX,cameraY);
                 angulo += 180;
             }
@@ -155,7 +166,7 @@ void Piloto::Render(int cameraX, int cameraY)
     }
 }
 
-void Piloto::Embarcar(GameObject* alvo)
+void Piloto::Embarcar(Character* alvo)
 {
     robo = alvo;
     box.SetRectCenterX(robo->box.RectCenterX());
@@ -172,7 +183,7 @@ void Piloto::SetY(float y)
     box.SetRectCenterY(y);
 }
 
-void Piloto::Abrir_Menu()
+void Piloto::Abrir_Menu_Piloto()
 {
     float offSet = 125;
     float angulo = 0;
@@ -185,7 +196,7 @@ void Piloto::Abrir_Menu()
     buttonArray.emplace_back(*botaoAnim);
     angulo += angOffset;
 
-    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao.png");
+    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botaoItens.png");
     StillAnimation* botaoAnim2 = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
                                                    rotation, botao2, 50, false);
@@ -195,7 +206,41 @@ void Piloto::Abrir_Menu()
 
 void Piloto::Ejetar()
 {
-    box.SetRectCenterX(robo->box.RectCenterX());
-    box.SetRectCenterY(robo->box.RectCenterY() + 100);
+    CharacterPosition position = robo->GetCharacterPosition();
+    switch(position){
+    case(FRONT):
+        box.SetRectCenterX(robo->box.RectCenterX());
+        box.SetRectCenterY(robo->box.RectCenterY() - 50);
+        break;
+    case(RIGHT):
+        box.SetRectCenterX(robo->box.RectCenterX() - 50);
+        box.SetRectCenterY(robo->box.RectCenterY());
+        break;
+    case(BACK):
+        box.SetRectCenterX(robo->box.RectCenterX());
+        box.SetRectCenterY(robo->box.RectCenterY() + 50);
+        break;
+    case(LEFT):
+        box.SetRectCenterX(robo->box.RectCenterX() + 50);
+        box.SetRectCenterY(robo->box.RectCenterY());
+        break;
+    }
+
+//    int roboY = robo->GetCurrentX();
+//    int roboX = robo->GetCurrentY() + 1;
+
+//    cout << roboY << endl;
+//    box.SetRectCenterX( roboX );
+//    box.SetRectCenterY( roboY );
+//    currentPosition.SetPoint( roboX, roboY );
+
     robo = NULL;
+
+//    mapReference->At(roboX, roboY).state = ALLY;
+//    mapReference->At(roboX, roboY).occuper = this;
+
+}
+void Piloto::Encontrar_Robo(Character *alvo)
+{
+
 }

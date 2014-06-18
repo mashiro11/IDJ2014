@@ -28,7 +28,7 @@ void Camera::Unfollow ()
 
 void Camera::Update (float dt)
 {
-    speed = 1000*dt/4;
+
     if((InputManager::GetInstance().IsKeyDown(LEFT_ARROW_KEY))  ||
        (InputManager::GetInstance().IsKeyDown(RIGHT_ARROW_KEY)) ||
        (InputManager::GetInstance().IsKeyDown(UP_ARROW_KEY))    ||
@@ -36,6 +36,10 @@ void Camera::Update (float dt)
                     focus = NULL;
     }
     if(focus != NULL){
+//            float dist = sqrt((pos.x - focus->box.RectCenterX())*(pos.x - focus->box.RectCenterX()) +
+//                    (pos.y - focus->box.RectCenterY())*(pos.y - focus->box.RectCenterY()));
+//            cout << dist << endl;
+            speed = (1000*dt/4);
            //centraliza o foco na tela, movimento independe de dt, depende apenas do tamanho da tela
             //float angulo = atan2(focus->box.y - pos.y,focus->box.x - pos.x);
             float angulo = M_PI*45/180;

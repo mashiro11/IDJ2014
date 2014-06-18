@@ -33,6 +33,7 @@ InfoMenu::InfoMenu(float x, float y):
 }
 
 void InfoMenu::Update(float dt){
+    Reordenar();
     for(int j = 0; j < vidaArray.size(); j++){
         vidaArray[j].Update();
     }
@@ -41,8 +42,10 @@ void InfoMenu::Update(float dt){
         for(int i = 0; i < buttonArray.size(); i++){
             if(buttonArray[i].box.IsInside(InputManager::GetInstance().GetMouseX(),
                                            InputManager::GetInstance().GetMouseY())){
-                if(objectArray[i/2]->IsDead() == false){
-                    Camera::Follow(objectArray[i]);
+                if(objectArray[i] != NULL){
+                    if(objectArray[i]->IsDead() == false){
+                        Camera::Follow(objectArray[i]);
+                    }
                 }
             }
         }
@@ -123,7 +126,7 @@ void InfoMenu::InsereBotao(GameObject* objeto){
     buttonArray.emplace_back(*botaoAnim);
 
 
-    BarraVida vida(objeto);
+    BarraVida vida(objeto, 100);
 
     vida.SetX(botaoAnim->box.RectCenterX() + 100);
     vida.SetY(botaoAnim->box.RectCenterY() - 60);
@@ -147,4 +150,56 @@ bool InfoMenu::Is(string type){
     return false;
 }
 
+void InfoMenu::NotificarMorte(GameObject &objeto)
+{
+    cout << "MURREU!!" << endl;
+    cout << objectArray.size() << endl;
+    for(int i = 0; i < objectArray.size(); i++){
+        if(&objeto == objectArray[i]){
+            cout << "IGUAL" << endl;
+            objectArray[i] = NULL;
+        }
+    }
+}
 
+void InfoMenu::Reordenar()
+{
+//    int j = 0;
+//    for(int i = 0; i < objectArray.size(); i++){
+//        if(objectArray[i]->Is("Robo")){
+//            RefazBotao(objectArray[i], j);
+//            vector<Piloto*> pilotos;
+//            //recebe os pilotos do robo e refaz os botoes
+
+
+//        }else if(objectArray[i]->Is("Piloto")){
+////            if(objectArray[i])
+//            //se o robo for NULL, coloca o piloto no fim do array. Colocar em outro for??
+//        }
+
+//    }
+}
+
+void InfoMenu::RefazBotao(GameObject* objeto, int index)
+{
+//    string caminho;
+//    if(objeto->GetNome() == "Robotinic"){
+//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface.png";
+//    }else if(objeto->GetNome() == "Roboboy"){
+//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface2.png";
+//    }else if(objeto->GetNome() == "Blitzcrank"){
+//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface3.png";
+//    }else if(objeto->GetNome() == "OptimusPrime"){
+//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface4.png";
+//    }else if(objeto->GetNome() == "Bamboubi"){
+//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface5.png";
+//    }else if(objeto->GetNome() == "Walle"){
+//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface6.png";
+//    }
+
+//    Sprite botao(caminho);
+//    botao.SetScaleX(0.5);
+//    botao.SetScaleY(0.5);
+//    StillAnimation* botaoAnim = new StillAnimation(box.x + 30, box.y + 30 + 50*buttonArray.size(), rotation, botao, 50, false);
+    //inserir o botao na posicao index
+}

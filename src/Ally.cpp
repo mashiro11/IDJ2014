@@ -7,9 +7,9 @@
 
 void Ally::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int speed, int distance, int coolDown)
 {
+    vida.Open(this, vidaMaxima);
     this->defesa = defesa;
     this->ataque = ataque;
-    this->vidaAtual = this->vidaMaxima = vidaMaxima;
     this->range = range;
     this->distance = distance;
     this->speed = speed;
@@ -19,6 +19,7 @@ void Ally::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int 
 //gerencia as modificacoes e os estados  do ally
 void Ally::UpdateAlly(float dt)
 {
+
     StateMachine(dt);
     Input();
     IdentifyOpponent();
@@ -38,19 +39,26 @@ void Ally::Input()
     if(box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                     InputManager::GetInstance().GetMouseY() + Camera::pos.y) == true){
                     if(InputManager::GetInstance().KeyPress(SDLK_d) == true ){
-                        vidaAtual = 0;
+                        vida.SetVida(0);
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_t) == true ){
-                        vidaAtual -= 5;
+                        int vidaNova = vida.GetVida() - 5;
+                        vida.SetVida(vidaNova);
+
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_h) == true ){
-                        vidaAtual += 5;
+                        int vidaNova = vida.GetVida() + 5;
+                        vida.SetVida(vidaNova);
                     }
     }
     if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
-        Sound soundFX("images/audio/boom.wav");
+        #ifdef ANDRE
+            Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
+        #endif
+        #ifdef MASHIRO
+            Sound soundFX("images/audio/boom.wav");
+        #endif
         soundFX.Play(0);
-
         //se o mouse estiver dentro do personagem, o menu é aberto e recebe true se nao existir.
         //se o menu ja existir, recebe falso, pois sera fechado mais para frente.
         if(this->box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
@@ -70,26 +78,24 @@ void Ally::Input()
             //verifica qual o botao que foi clicado, se algum deles for clicado.
             if(buttonArray[i].box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                                            InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
-                Sound soundFX("images/audio/boom.wav");
-                soundFX.Play(0);
-
                 switch(i){
-                    case(0):
-                       cout << "esse botao pede para andar" << endl;
-                       charState = AGUARDANDO_ANDAR;
-                       break;
-                    case(1):
-                       cout << "esse botao pede para defender" << endl;
-                       charState = DEFENDENDO;
-                       break;
-                    case(2):
-                       cout << "esse botao pede para usar item" << endl;
-                       charState = AGUARDANDO_ITEM;
-                       break;
-                    case(3):
-                       cout << "esse botao pede para ejetar" << endl;
-                       charState = AGUARDANDO_EMBARCAR;
-                       break;
+                case(0):
+                   cout << "esse botao pede para andar" << endl;
+                   charState = AGUARDANDO_ANDAR;
+                   break;
+               case(1):
+                   cout << "esse botao pede para defender" << endl;
+                   charState = DEFENDENDO;
+                   break;
+               case(2):
+                   cout << "esse botao pede para usar item" << endl;
+                   charState = AGUARDANDO_ITEM;
+                   break;
+               case(3):
+                   cout << "esse botao pede para ejetar" << endl;
+                   Ejetar();
+                   charState = AGUARDANDO_EMBARCAR;
+                   break;
                }
             }
         }
@@ -158,7 +164,8 @@ void Ally::StateMachine(float dt)
 
 //verifica se ally esta morto
 bool Ally::IsDead(){
-    if(this->vidaAtual <= 0){
+    int vidaAtual = vida.GetVida();
+    if(vidaAtual <= 0){
         if(Camera::GetFocus() == this) Camera::Unfollow();
         return true;
     }
@@ -174,17 +181,19 @@ bool Ally::Is(string type)
 
 //movimenta o ally pelo mapa.
 void Ally::Andar(){
-
-        Sound soundFX("images/audio/boom.wav");
+        #ifdef ANDRE
+            Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
+        #endif
+        #ifdef MASHIRO
+            Sound soundFX("images/audio/boom.wav");
+        #endif
         //cout << "inicio allyPosition: " << allyPosition << endl;
         if( abs(box.RectCenterX() - mapReference->TileCenter( path.front().x ) ) < 5 &&
             abs(box.RectCenterY() - mapReference->TileCenter( path.front().y ) ) < 5){
                 box.SetRectCenterX( mapReference->TileCenter( path.front().x ) );
                 box.SetRectCenterY( mapReference->TileCenter( path.front().y ) );
                 path.pop();
-                //teste de posicionamento de som
                 soundFX.Play(0);
-
         }else{
         Point pastPosition( currentPosition.x, currentPosition.y );
         if( mapReference->TileCenter( path.front().x ) > box.RectCenterX() ){
@@ -210,7 +219,6 @@ void Ally::Andar(){
 
                             mapReference->At(currentPosition.x, currentPosition.y).state = ALLY;
                             mapReference->At(currentPosition.x, currentPosition.y).occuper = this;
-                            //teste de posicionamento de som
                             soundFX.Play(0);
 
                             #ifdef DEBUG
@@ -242,7 +250,9 @@ void Ally::Parar(){
 //reduz a vida do ally
 void Ally::Danificar(float dano)
 {
-    this->vidaAtual -= dano - defesa/10;
+    int vidaNova = vida.GetVida();
+    vidaNova -= dano - defesa/10;
+    vida.SetVida(vidaNova);
 }
 
 //notifica as colisoes de ally
@@ -258,10 +268,12 @@ void Ally::Atacar()
         cout << this->nome <<": Yaah! >=O" << endl;
         Enemy* enemyTarget = (Enemy*) closeEnemies.begin()->first;
         enemyTarget->Danificar( ataque );
-        //teste de posicionamento de som
-        Sound soundFX("images/audio/boom.wav");
-        soundFX.Play(0);
-
+        #ifdef ANDRE
+            Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
+        #endif
+        #ifdef MASHIRO
+            Sound soundFX("images/audio/boom.wav");
+        #endif
     }
 }
 
@@ -428,5 +440,10 @@ bool Ally::AreaMapa()
     }
 
     return true;
+}
+
+int Ally::GetVida()
+{
+    return this->vida.GetVida();
 }
 

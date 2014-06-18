@@ -6,14 +6,12 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string 
 //    sp.SetScaleX((float) 2);
 //    sp.SetScaleY((float) 2);
     sp = sprite;
-    vida.Open(this);
     sp.SetSpriteSheet(4, 4);
     sp.SetAnimation(0, 4);
     sp.SetFrameTime(4.0 * 1.0/24.0);
 
     this->lider = lider;
     this->nome = nome;
-
     mapReference = mapRef;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
@@ -39,11 +37,13 @@ Robo::~Robo()
 
 void Robo::Update(float dt)
 {
-
+    if(charState != INATIVO){
     UpdateAlly(dt);
+    }
     vida.Update();
     vida.SetX(box.RectCenterX());
     vida.SetY(box.RectCenterY());
+
 }
 
 void Robo::Render(int cameraX, int cameraY){
@@ -77,6 +77,7 @@ void Robo::Ejetar()
     if(pilotoArray.size() == 0){
         charState = INATIVO;
     }
+
 }
 
 void Robo::InserePiloto(Piloto *piloto)
@@ -84,4 +85,9 @@ void Robo::InserePiloto(Piloto *piloto)
     pilotoArray.push_back(piloto);
 }
 
-
+void Robo::MataPilotos()
+{
+    for(int i = 0; i < pilotoArray.size(); i++){
+        pilotoArray[i]->Danificar(1000);
+    }
+}

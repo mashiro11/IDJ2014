@@ -4,7 +4,7 @@
 Enemy::Enemy(float x, float y, TileMap* mapRef, string nome)
 {
     #ifdef ANDRE
-        sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/robotRosa.png");
+        sp.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/roboRosa.png");
     #endif
     #ifdef MASHIRO
         sp.Open("images/img/roboRosa.png");

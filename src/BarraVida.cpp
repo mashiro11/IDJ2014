@@ -1,6 +1,6 @@
 #include "BarraVida.h"
 
-BarraVida::BarraVida(GameObject* objeto)
+BarraVida::BarraVida(GameObject* objeto, int vidaMax)
 {
     #ifdef ANDRE
     vida.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVida.png");
@@ -11,6 +11,7 @@ BarraVida::BarraVida(GameObject* objeto)
     moldura.Open("images/img/barraVidaMold.png");
     #endif
 
+    vidaMaxima = vidaAtual = vidaMax;
     this->objeto = objeto;
     box.w = vida.GetWidth();
     box.h = vida.GetHeight();
@@ -18,7 +19,7 @@ BarraVida::BarraVida(GameObject* objeto)
     box.SetRectCenterY(objeto->box.RectCenterY());
 }
 
-void BarraVida::Open(GameObject *alvo)
+void BarraVida::Open(GameObject *alvo, int vidaMax)
 {
     #ifdef ANDRE
     vida.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVida.png");
@@ -28,8 +29,9 @@ void BarraVida::Open(GameObject *alvo)
     vida.Open("images/img/barraVida.png");
     moldura.Open("images/img/barraVidaMold.png");
     #endif;
-    this->objeto = alvo;
 
+    vidaMaxima = vidaAtual = vidaMax;
+    this->objeto = alvo;
     box.w = vida.GetWidth();
     box.h = vida.GetHeight();
     box.SetRectCenterX(objeto->box.RectCenterX());
@@ -39,11 +41,9 @@ void BarraVida::Open(GameObject *alvo)
 void BarraVida::Update()
 {
     //Nessas buscas que a barra de vida faz, dá erro quando o personagem morre!!
-        vidaMaxima = objeto->GetLife();
-        vidaAtual = objeto->GetHitPoint();
-        float porCento = 100*vidaAtual/vidaMaxima;
-        if(porCento > 100) porCento = 100;
-        vida.SetClip(0, 0, box.w*porCento/100, box.h);
+    float porCento = 100*vidaAtual/vidaMaxima;
+    if(porCento > 100) porCento = 100;
+    vida.SetClip(0, 0, box.w*porCento/100, box.h);
 }
 
 bool BarraVida::IsDead()
@@ -65,4 +65,14 @@ void BarraVida::SetX(float x){
 
 void BarraVida::SetY(float y){
     box.SetRectCenterY(y);
+}
+
+void BarraVida::SetVida(int vidaNova)
+{
+    this->vidaAtual = vidaNova;
+}
+
+int BarraVida::GetVida()
+{
+    return vidaAtual;
 }
