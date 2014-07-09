@@ -26,6 +26,7 @@ class TitleState : public State
         Text start;
         Text options;
         Text quit;
+        Sound bgm;
 };
 
 

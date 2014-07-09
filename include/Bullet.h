@@ -18,7 +18,6 @@ class Bullet : public GameObject
         bool Is(string type);
         bool targetsPlayer;
 
-        int GetHitPoint();
     protected:
         /* vazio */
     private:

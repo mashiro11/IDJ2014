@@ -18,6 +18,9 @@ public:
     bool IsDead();
     void SetVida(int vidaNova);
     int GetVida();
+    float GetPorcentagemVida();
+    bool IsFull();
+
 protected:
     /*vazio*/
 private:

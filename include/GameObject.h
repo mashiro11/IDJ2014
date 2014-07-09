@@ -17,6 +17,8 @@ class GameObject
         virtual void NotifyCollision(GameObject& other) = 0;
         virtual bool Is(string type) = 0;
         virtual string GetNome(){};
+        virtual void Morrer(){};
+        virtual bool IsLeader(){};
         Rect box;
         float rotation;
 

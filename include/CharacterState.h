@@ -9,6 +9,7 @@
 #include "CharacterData.h"
 #include "Robo.h"
 #include "Piloto.h"
+#include "BarraStatus.h"
 
 class CharacterState:public State{
 public:
@@ -20,6 +21,7 @@ public:
     void InserePersonagem(int index);
     void DeletaPersonagem(int index);
     bool NaoDentro(int index);
+    void CriaStatus();
 
 protected:
 
@@ -30,6 +32,7 @@ private:
     //unordered_map<string, StillAnimation> characterArray;
     std::vector<StillAnimation> characterArray;
     std::vector<StillAnimation> selecionadoArray;
+    std::vector<BarraStatus> statusArray;
     Sprite bg;
     Sprite selecao;
     Sprite selecionado;
@@ -37,6 +40,7 @@ private:
     Text instruction;
     Text inicio;
     CharacterData characters;
+
 };
 
 #endif // CHARACTERSTATE_H

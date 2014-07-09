@@ -8,15 +8,17 @@ public:
     ~Piloto();
     void Render(int cameraX, int cameraY);
     bool Is(string type);
-    void Embarcar(Character* alvo);
     void Update(float dt);
     void SetX(float x);
     void SetY(float y);
     void Abrir_Menu_Piloto();
-    void Ejetar();
+    bool Ejetar();
+    bool Embarcar(Ally* alvo);
     void StateMachine(float dt);
     void Input();
-    void Encontrar_Robo(Character* alvo);
+    Ally* EncontrarRobo();
+    void Danificar(float dano);
+    void Morrer();
 
 protected:
     /*vazio*/

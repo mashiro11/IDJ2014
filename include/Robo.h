@@ -10,10 +10,12 @@ public:
     ~Robo();
     void Render(int cameraX, int cameraY);
     bool Is(string type);
-    void Ejetar();
+    bool Ejetar();
     void Update(float dt);
+    bool Embarcar(Ally* alvo);
     void InserePiloto(Piloto* piloto);
-    void MataPilotos();
+    void Morrer();
+    void Danificar(float dano);
 
 
 protected:

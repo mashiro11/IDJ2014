@@ -17,6 +17,7 @@
 #include "Piloto.h"
 #include "CharacterData.h"
 #include "Enemy.h"
+#include "Chefe.h"
 
 using std::find;
 
@@ -40,6 +41,7 @@ class StageState : public State
         TileMap tileMap;
         Music backGroundMusic;
         Text chessPosition;
+        Timer vitoriaTime;
 };
 
 #endif // STAGESTATE_H

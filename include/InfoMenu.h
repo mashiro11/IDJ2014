@@ -4,33 +4,32 @@
 #include "StillAnimation.h"
 #include "Timer.h"
 #include "Text.h"
-#include "BarraVida.h"
+#include "BarraCooldown.h"
 #include "Piloto.h"
+#include "BarraVidaMenu.h"
 
-class InfoMenu:public GameObject{
+class InfoMenu{
 public:
     InfoMenu(float x, float y);
     ~InfoMenu(){};
     void Update(float dt);
     void Render(int cameraX, int cameraY);
     bool IsDead();
-    bool Is(string type);
-    void NotifyCollision(GameObject &other);
-    int GetHitPoint(){};
-    int GetLife(){};
-    void InsereBotao(GameObject* objeto);
-    void NotificarMorte(GameObject& objeto);
+    void InsereBotao(Ally* objeto);
+    void NotificarMorte(string nome);
     void Reordenar();
-    void RefazBotao(GameObject* objeto, int index);
+    void RefazBotao(Ally* objeto, int index);
+    void GerenciaCronometro(float dt);
 
 private:
+    Rect box;
+    Sprite sp;
     int minutos;
     Timer cronometro;
-    Sprite sp;
-    //vai virar array de barra de vida
+
     std::vector<StillAnimation> buttonArray;
-    std::vector<BarraVida> vidaArray;
-    std::vector<GameObject*> objectArray;
+    std::vector<BarraVidaMenu> vidaArray;
+    std::vector<Ally*> objectArray;
     Text texto;
     int offSet;
 };

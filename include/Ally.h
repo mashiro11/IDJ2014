@@ -9,11 +9,12 @@
 #include "Sprite.h"
 #include "StillAnimation.h"
 #include "BarraVida.h"
+#include "BarraCooldown.h"
 #include "TileMap.h"
 #include "Timer.h"
 #include "Character.h"
 #include "Enemy.h"
-
+#include "Bullet.h"
 
 using std::vector;
 using std::list;
@@ -40,7 +41,7 @@ public:
     bool AreaMapa();
 
     void SetStatus(int vidaMaxima, float ataque, int renge, float defesa, int speed, int distance, int coolDown);
-    void Danificar(float dano);
+    virtual void Danificar(float dano){};
     void Defender();
     void Andar();
     void Parar();
@@ -50,13 +51,21 @@ public:
     void Alocar_Item();
     void Especial();
     void Atacar();
-    virtual void Ejetar() = 0;
+    virtual bool Ejetar() = 0;
+    virtual bool Embarcar(Ally* alvo) = 0;
     void MakePath();
     void OrientarSprite();
     bool IsLider();
     bool ValidPath();
     string GetNome();
     int GetVida();
+    float GetPorcentagemVida();
+    void Atirar(float x, float y);
+    CharacterPosition GetAllyPosition();
+    Ally* EncontrarRobo();
+    bool VidaCheia();
+    void Curar(int cura);
+    bool IsLeader();
 
 protected:
     void UpdateAlly(float dt);
@@ -65,12 +74,13 @@ protected:
     CharacterPosition allyPosition;
     vector<StillAnimation> buttonArray;
 
-
+    Ally* alvoEspecial;
     //alcance de ataque
     bool menuAberto;
 
     queue<Point> path;
     Timer timer;
+    Timer especialTime;
 
 
     /**
@@ -82,6 +92,7 @@ protected:
     //float defesa;//poder de defesa
     //int range;//alcance de ataque
     BarraVida vida;
+    BarraCooldown barraCooldown;
     int coolDown;//tempo de espera para novo movimento
     int distance;//quantas células do grid pode andar
     //alcance de ataque
