@@ -1,11 +1,14 @@
 #include "Piloto.h"
+#include "Robo.h"
 
 /*Aguardando embarcar, andar, barra de vida do menu nao acompanha mais*/
 
 Piloto::Piloto(Character* robo, string nome, Sprite sprite, bool lider, TileMap* mapRef)
 {
-
     sp = sprite;
+    sp.SetSpriteSheet(1, 1);
+    sp.SetAnimation(0, 1);
+    sp.SetFrameTime(1);
     this->speed = speed;
     this->robo = robo;
     this->nome = nome;
@@ -24,6 +27,8 @@ Piloto::Piloto(Character* robo, string nome, Sprite sprite, bool lider, TileMap*
     charState = REPOUSO;
     menuAberto = false;
 
+    mapReference = mapRef;
+
 }
 
 Piloto::~Piloto()
@@ -41,16 +46,23 @@ bool Piloto::Is(string type)
 
 void Piloto::Update(float dt)
 {
+
     if(robo == NULL){
         StateMachine(dt);
         Input();
         vida.Update();
         vida.SetX(box.RectCenterX());
         vida.SetY(box.RectCenterY());
+        if(IsDead() == true){
+            cout << this->nome <<": Fui morrido!! gwaa a a a.... D: " << endl;
+            mapReference->At( currentPosition.x, currentPosition.y ).state = FREE;
+            mapReference->At( currentPosition.x , currentPosition.y ).occuper = NULL;
+        }
     }else{
         box.SetRectCenterX(robo->box.RectCenterX());
         box.SetRectCenterY(robo->box.RectCenterY());
     }
+
 }
 
 void Piloto::StateMachine(float dt)
@@ -58,19 +70,29 @@ void Piloto::StateMachine(float dt)
     switch(charState){
             case MOVENDO:
                 if( path.empty() == true){
-                    cout << "Path vazio" << endl;
+                    cout << endl << "*" << this->nome << " parou*" << endl;
                     charState = REPOUSO;
                     break;
                 }else{
+                    cout << "*" << this->nome << " esta andando*\r";
                     Andar();
                 }
                 break;
             case AGUARDANDO_EMBARCAR:
-//                Character* alvo = NULL;
-//                Encontrar_Robo(alvo);
-//                Embarcar(alvo);
+                Ally* alvo;
+                alvo = EncontrarRobo();
+                if(alvo != NULL){
+                    if(Embarcar(alvo) == true){
+                        charState = INATIVO;
+                    }else{
+                        charState = AGUARDANDO_EMBARCAR;
+                    }
+                }
+                if(InputManager::GetInstance().MousePress(SDL_BUTTON_RIGHT) == true){
                     charState = REPOUSO;
+                }
                 break;
+
             case INATIVO:
                 break;
             case REPOUSO:
@@ -78,12 +100,16 @@ void Piloto::StateMachine(float dt)
             case AGUARDANDO_ANDAR:
 
             //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
-                   MakePath();
-            //}
-                if(InputManager::GetInstance().MousePress(RIGHT_MOUSE_BUTTON) == true){
-                        charState = MOVENDO;
+                MakePath();
+                if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
+                        if(ValidPath() == true){
+                                charState = MOVENDO;
+                        }else{
+                                while(path.empty() == false) path.pop();
+                                charState = REPOUSO;
+                        }
+                        barraCooldown.Esvazia();
                 }
-
                 break;
     }
 }
@@ -129,7 +155,7 @@ void Piloto::Input()
                 switch(i){
                 case(0):
                    cout << "esse botao pede para andar" << endl;
-                   //charState = AGUARDANDO_ANDAR;
+                   charState = AGUARDANDO_ANDAR;
                    break;
                case(1):
                    cout << "esse botao pede para embarcar" << endl;
@@ -166,11 +192,24 @@ void Piloto::Render(int cameraX, int cameraY)
     }
 }
 
-void Piloto::Embarcar(Character* alvo)
+bool Piloto::Embarcar(Ally* alvo)
 {
-    robo = alvo;
-    box.SetRectCenterX(robo->box.RectCenterX());
-    box.SetRectCenterY(robo->box.RectCenterY());
+    if(alvo->Embarcar(this) == true){
+        #ifdef ANDRE
+            Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
+        #endif
+        #ifdef MASHIRO
+            Sound soundFX("images/audio/boom.wav");
+        #endif
+        soundFX.Play(0);
+        robo = alvo;
+        box.SetRectCenterX(robo->box.RectCenterX());
+        box.SetRectCenterY(robo->box.RectCenterY());
+        return true;
+    }else{
+        return false;
+    }
+
 }
 
 void Piloto::SetX(float x)
@@ -185,18 +224,25 @@ void Piloto::SetY(float y)
 
 void Piloto::Abrir_Menu_Piloto()
 {
-    float offSet = 125;
+    float offSet = 100;
     float angulo = 0;
     float angOffset = 180;
+#ifdef ANDRE
+    Sprite botao("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2andar.png");
+    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2embarcar.png");
+#endif
+#ifdef MASHIRO
+    Sprite botao("/images/img/botao2andar.png");
+    Sprite botao2("/images/img/botao2embarcar.png");
+#endif
 
-    Sprite botao("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botaoMover.png");
     StillAnimation* botaoAnim = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
                                                    rotation, botao, 50, false);
     buttonArray.emplace_back(*botaoAnim);
     angulo += angOffset;
 
-    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botaoItens.png");
+
     StillAnimation* botaoAnim2 = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
                                                    rotation, botao2, 50, false);
@@ -204,43 +250,97 @@ void Piloto::Abrir_Menu_Piloto()
     angulo += angOffset;
 }
 
-void Piloto::Ejetar()
+bool Piloto::Ejetar()
 {
-    CharacterPosition position = robo->GetCharacterPosition();
+    #ifdef ANDRE
+        Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
+    #endif
+    #ifdef MASHIRO
+        Sound soundFX("images/audio/boom.wav");
+    #endif
+    soundFX.Play(0);
+
+    Ally* robot = (Ally*) robo;
+    int pilotoX = robo->GetCurrentX();
+    int pilotoY = robo->GetCurrentY();
+
+    CharacterPosition position = robot->GetAllyPosition();
     switch(position){
     case(FRONT):
-        box.SetRectCenterX(robo->box.RectCenterX());
-        box.SetRectCenterY(robo->box.RectCenterY() - 50);
+        pilotoY -= 1;
         break;
     case(RIGHT):
-        box.SetRectCenterX(robo->box.RectCenterX() - 50);
-        box.SetRectCenterY(robo->box.RectCenterY());
+        pilotoX -= 1;
         break;
     case(BACK):
-        box.SetRectCenterX(robo->box.RectCenterX());
-        box.SetRectCenterY(robo->box.RectCenterY() + 50);
+        pilotoY += 1;
         break;
     case(LEFT):
-        box.SetRectCenterX(robo->box.RectCenterX() + 50);
-        box.SetRectCenterY(robo->box.RectCenterY());
+        pilotoX += 1;
         break;
     }
 
-//    int roboY = robo->GetCurrentX();
-//    int roboX = robo->GetCurrentY() + 1;
+    if(mapReference->At(pilotoX, pilotoY).state == FREE){
+        box.SetRectCenterX( mapReference->MapPositionToPixelPosition(pilotoX) );
+        box.SetRectCenterY( mapReference->MapPositionToPixelPosition(pilotoY) );
+        currentPosition.SetPoint( pilotoX, pilotoY);
 
-//    cout << roboY << endl;
-//    box.SetRectCenterX( roboX );
-//    box.SetRectCenterY( roboY );
-//    currentPosition.SetPoint( roboX, roboY );
+        robo = NULL;
 
-    robo = NULL;
-
-//    mapReference->At(roboX, roboY).state = ALLY;
-//    mapReference->At(roboX, roboY).occuper = this;
-
+        mapReference->At(pilotoX, pilotoY).state = ALLY;
+        mapReference->At(pilotoX, pilotoY).occuper = this;
+        return true;
+    }
+    return false;
 }
-void Piloto::Encontrar_Robo(Character *alvo)
-{
 
+Ally* Piloto::EncontrarRobo()
+{
+    Ally* alvo = NULL;
+    if(InputManager::GetInstance().MousePress(SDL_BUTTON_LEFT) == true){
+        int mapX = mapReference->PixelPositionToMapPosition(InputManager::GetInstance().GetMouseX() + Camera::pos.x);
+        int mapY = mapReference->PixelPositionToMapPosition(InputManager::GetInstance().GetMouseY() + Camera::pos.y);
+        //cout << "MAPX: " << mapX << " | MAPY: " << mapY << endl;
+        int pilotoX = mapReference->PixelPositionToMapPosition(box.RectCenterX());
+        int pilotoY = mapReference->PixelPositionToMapPosition(box.RectCenterY());
+        //cout << "PILOTOX: " << pilotoX << " | PILOTOY: " << pilotoY << endl;
+
+        if( (mapX >= pilotoX - 1) && (mapX <= pilotoX + 1) ){
+            if( (mapY >= pilotoY - 1) && (mapY <= pilotoY + 1) ) {
+                if(mapReference->At( mapX, mapY ).state == ALLY){
+                    if(mapReference->At( mapX, mapY ).occuper->Is("Robo")){
+                        Ally* robo = (Ally*) mapReference->At( mapX, mapY ).occuper;
+                        alvo = robo;
+                    }
+                }
+            }
+        }
+    }
+
+    return alvo;
+}
+
+void Piloto::Danificar(float dano)
+{
+#ifdef ANDRE
+    Sprite hit("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/hit.png");
+#endif
+#ifdef MASHIRO
+    Sprite hit("/images/img/hit.png");
+#endif
+    Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
+                                                                       box.RectCenterY() - 15, rotation, hit, 0.5, true));
+    if(robo == NULL){
+        int vidaNova = vida.GetVida();
+        vidaNova -= dano - defesa/10;
+        if(vidaNova < 0){
+            vidaNova = 0;
+        }
+        vida.SetVida(vidaNova);
+    }
+}
+
+void Piloto::Morrer()
+{
+    vida.SetVida(0);
 }

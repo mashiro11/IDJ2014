@@ -4,7 +4,7 @@ CharacterState::CharacterState()
 {
     #ifdef ANDRE
     bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/title.jpg");
-    selecao.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/selecao.png");
+    selecao.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/selecaoOld.png");
     selecionado.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/selecionado.png");
     #endif
     #ifdef MASHIRO
@@ -38,6 +38,7 @@ CharacterState::CharacterState()
     #endif
 
     PopulaArray();
+    CriaStatus();
 }
 
 //~CharacterState()
@@ -58,6 +59,12 @@ void CharacterState::Update(float dt)
         }else if(k == 3){
             offSetX = 850;
             offSetY = 300;
+        }else if(k == 4){
+            offSetX = 650;
+            offSetY = 450;
+        }else if(k == 5){
+            offSetX = 850;
+            offSetY = 450;
         }
 
         if(k%2 == 0){
@@ -74,7 +81,7 @@ void CharacterState::Update(float dt)
 void CharacterState::Render()
 {
     bg.Render(0,0);
-    selecao.Render(50,70);
+    selecao.Render(50,5);
     selecionado.Render(bg.GetWidth()/2 + 50, 70);
     instruction.Render(0,0);
     inicio.Render(0,0);
@@ -86,6 +93,10 @@ void CharacterState::Render()
     for(int j = 0; j < selecionadoArray.size(); j++){
         selecionadoArray[j].Render(0,0);
     }
+
+//     for(int k = 0; k < statusArray.size(); k++){
+//         statusArray[k].Render(0,0);
+//     }
 }
 
 void CharacterState::Input()
@@ -117,7 +128,7 @@ void CharacterState::Input()
         for(int i = 0; i < characterArray.size(); i++){
             if(characterArray[i].box.IsInside(InputManager::GetInstance().GetMouseX(),
                                            InputManager::GetInstance().GetMouseY())){
-                if(selecionadoArray.size() < 4){
+                if(selecionadoArray.size() < 6){
                     if(NaoDentro(i) == true){
                         InserePersonagem(i);
                         StillAnimation aux = characterArray[i];
@@ -140,6 +151,8 @@ void CharacterState::PopulaArray()
     Sprite botao4("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface4.png");
     Sprite botao5("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface5.png");
     Sprite botao6("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface6.png");
+    Sprite botao7("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface7.png");
+    Sprite botao8("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface8.png");
 #endif
 #ifdef MASHIRO
     Sprite botao("images/img/penguinface.png");
@@ -148,25 +161,37 @@ void CharacterState::PopulaArray()
     Sprite botao4("images/img/penguinface4.png");
     Sprite botao5("images/img/penguinface5.png");
     Sprite botao6("images/img/penguinface6.png");
+    Sprite botao7("images/img/penguinface7.png");
+    Sprite botao8("images/img/penguinface8.png");
 #endif
 
-    StillAnimation* botaoAnim = new StillAnimation(150, 150 + 75*characterArray.size(), 0, botao, 50, false);
+    StillAnimation* botaoAnim = new StillAnimation(150, 80 + 75*characterArray.size(), 0, botao, 50, false);
     characterArray.emplace_back(*botaoAnim);
 
-    StillAnimation* botaoAnim2 = new StillAnimation(330, 150, 0, botao2, 50, false);
+    StillAnimation* botaoAnim2 = new StillAnimation(330, 80, 0, botao2, 50, false);
     characterArray.emplace_back(*botaoAnim2);
 
-    StillAnimation* botaoAnim3 = new StillAnimation(150, 150 + 75*characterArray.size(), 0, botao3, 50, false);
+    StillAnimation* botaoAnim3 = new StillAnimation(150, 80 + 75*characterArray.size(), 0, botao3, 50, false);
     characterArray.emplace_back(*botaoAnim3);
 
-    StillAnimation* botaoAnim4 = new StillAnimation(330, 150 + 50*characterArray.size(), 0, botao4, 50, false);
+    StillAnimation* botaoAnim4 = new StillAnimation(330, 80 + 50*characterArray.size(), 0, botao4, 50, false);
     characterArray.emplace_back(*botaoAnim4);
 
-    StillAnimation* botaoAnim5 = new StillAnimation(150, 150 + 75*characterArray.size(), 0, botao5, 50, false);
+    StillAnimation* botaoAnim5 = new StillAnimation(150, 80 + 75*characterArray.size(), 0, botao5, 50, false);
     characterArray.emplace_back(*botaoAnim5);
 
-    StillAnimation* botaoAnim6 = new StillAnimation(330, 150 + 60*characterArray.size(), 0, botao6, 50, false);
+    StillAnimation* botaoAnim6 = new StillAnimation(330, 80 + 60*characterArray.size(), 0, botao6, 50, false);
     characterArray.emplace_back(*botaoAnim6);
+
+    StillAnimation* botaoAnim7 = new StillAnimation(150, 80 + 75*characterArray.size(), 0, botao7, 50, false);
+    characterArray.emplace_back(*botaoAnim7);
+
+    StillAnimation* botaoAnim8 = new StillAnimation(330, 80 + 65*characterArray.size(), 0, botao8, 50, false);
+    characterArray.emplace_back(*botaoAnim8);
+
+}
+
+void CharacterState::CriaStatus(){
 
 }
 
@@ -191,6 +216,12 @@ void CharacterState::InserePersonagem(int index)
     case(5):
         characters.robo.push_back("Josea");
         break;
+    case(6):
+        characters.robo.push_back("Batata");
+        break;
+    case(7):
+        characters.robo.push_back("Digglet");
+        break;
     }
 
 }
@@ -210,6 +241,11 @@ void CharacterState::DeletaPersonagem(int index)
     case(3):
         characters.robo.erase(characters.robo.begin() + 3);
         break;
+    case(4):
+        characters.robo.erase(characters.robo.begin() + 4);
+        break;
+    case(5):
+        characters.robo.erase(characters.robo.begin() + 5);
     }
 }
 
@@ -235,6 +271,12 @@ bool CharacterState::NaoDentro(int index)
         break;
     case(5):
         nome = "Josea";
+        break;
+    case(6):
+        nome = "Batata";
+        break;
+    case(7):
+        nome = "Digglet";
         break;
     }
 

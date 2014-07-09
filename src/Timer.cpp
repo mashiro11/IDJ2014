@@ -19,3 +19,8 @@ float Timer::Get()
 {
     return time;
 }
+
+void Timer::Set(float value)
+{
+    this->time = value;
+}

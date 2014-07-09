@@ -31,15 +31,25 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string 
 
 Robo::~Robo()
 {
-     mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
+    mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
                       mapReference->PixelPositionToMapPosition( box.RectCenterY() ) ).state = FREE;
 }
 
 void Robo::Update(float dt)
 {
     if(charState != INATIVO){
-    UpdateAlly(dt);
+        UpdateAlly(dt);
+        barraCooldown.Update(dt);
+        barraCooldown.SetX(box.RectCenterX());
+        barraCooldown.SetY(box.RectCenterY());
     }
+    if(IsDead() == true){
+        cout << this->nome <<": Fui destruido!! Noooooooo.... D: " << endl;
+        mapReference->At( currentPosition.x, currentPosition.y ).state = FREE;
+        mapReference->At( currentPosition.x , currentPosition.y ).occuper = NULL;
+
+    }
+
     vida.Update();
     vida.SetX(box.RectCenterX());
     vida.SetY(box.RectCenterY());
@@ -58,6 +68,7 @@ void Robo::Render(int cameraX, int cameraY){
             angulo += 90;
         }
     }else{
+        barraCooldown.Render(cameraX, cameraY);
         vida.Render(cameraX, cameraY);
     }
 }
@@ -69,15 +80,19 @@ bool Robo::Is(string type){
     return false;
 }
 
-void Robo::Ejetar()
+bool Robo::Ejetar()
 {
     Piloto* piloto = pilotoArray.back();
-    piloto->Ejetar();
-    pilotoArray.pop_back();
-    if(pilotoArray.size() == 0){
-        charState = INATIVO;
+    if(piloto->Ejetar() == true){
+        pilotoArray.pop_back();
+        if(pilotoArray.size() == 0){
+            this->charState = INATIVO;
+        }else{
+            this->charState = REPOUSO;
+        }
+        return true;
     }
-
+    return false;
 }
 
 void Robo::InserePiloto(Piloto *piloto)
@@ -85,9 +100,38 @@ void Robo::InserePiloto(Piloto *piloto)
     pilotoArray.push_back(piloto);
 }
 
-void Robo::MataPilotos()
+void Robo::Morrer()
 {
     for(int i = 0; i < pilotoArray.size(); i++){
-        pilotoArray[i]->Danificar(1000);
+        pilotoArray[i]->Morrer();
     }
+}
+
+bool Robo::Embarcar(Ally *alvo)
+{
+    if(pilotoArray.size() < 2){
+        if(charState == INATIVO){
+            charState = REPOUSO;
+        }
+        Piloto* piloto = (Piloto*) alvo;
+        pilotoArray.push_back(piloto);
+        return true;
+    }else{
+        return false;
+    }
+}
+
+void Robo::Danificar(float dano)
+{
+#ifdef ANDRE
+    Sprite hit("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/hit.png");
+#endif
+#ifdef MASHIRO
+    Sprite hit("/images/img/hit.png");
+#endif
+    Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
+                                                                       box.RectCenterY() - 25, rotation, hit, 0.5, true));
+    int vidaNova = vida.GetVida();
+    vidaNova -= dano - defesa/10;
+    vida.SetVida(vidaNova);
 }

@@ -42,18 +42,13 @@ bool Bullet::IsDead()
 
 void Bullet::NotifyCollision(GameObject& other)
 {
-    if( (other.Is("Alien") && targetsPlayer == false) || other.Is("Penguins")){
-        distanceLeft = 0;
-    }
+//    if( (other.Is("Alien") && targetsPlayer == false) || other.Is("Penguins")){
+//        distanceLeft = 0;
+//    }
 }
 
 bool Bullet::Is(string type)
 {
     if(type == "Bullet") return true;
     return false;
-}
-
-int Bullet::GetHitPoint()
-{
-    return 0;
 }

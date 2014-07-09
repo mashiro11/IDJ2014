@@ -3,7 +3,7 @@
 TitleState::TitleState()
 {
 #ifdef ANDRE
-    bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/title.jpg");
+    bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/screenSbuttons.png");
 #endif
 #ifdef MASHIRO
     bg.Open("images/img/title.jpg");

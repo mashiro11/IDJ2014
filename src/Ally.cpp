@@ -8,6 +8,7 @@
 void Ally::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int speed, int distance, int coolDown)
 {
     vida.Open(this, vidaMaxima);
+    barraCooldown.Open(coolDown, this->box.RectCenterX(), this->box.RectCenterY());
     this->defesa = defesa;
     this->ataque = ataque;
     this->range = range;
@@ -50,6 +51,9 @@ void Ally::Input()
                         int vidaNova = vida.GetVida() + 5;
                         vida.SetVida(vidaNova);
                     }
+                    if(InputManager::GetInstance().KeyPress(SDLK_q) == true){
+                        barraCooldown.SetTimer(this->coolDown);
+                    }
     }
     if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
         #ifdef ANDRE
@@ -80,22 +84,25 @@ void Ally::Input()
                                            InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
                 switch(i){
                 case(0):
-                   cout << "esse botao pede para andar" << endl;
-                   charState = AGUARDANDO_ANDAR;
-                   break;
-               case(1):
-                   cout << "esse botao pede para defender" << endl;
-                   charState = DEFENDENDO;
-                   break;
-               case(2):
-                   cout << "esse botao pede para usar item" << endl;
-                   charState = AGUARDANDO_ITEM;
-                   break;
-               case(3):
-                   cout << "esse botao pede para ejetar" << endl;
-                   Ejetar();
-                   charState = AGUARDANDO_EMBARCAR;
-                   break;
+                    cout << "esse botao pede para andar" << endl;
+                    if(barraCooldown.IsFull()){
+                        charState = AGUARDANDO_ANDAR;
+                    }
+                    break;
+                case(1):
+                    cout << "esse botao pede para usar especial" << endl;
+                    if(barraCooldown.IsFull()){
+                        charState = AGUARDANDO_ALVO;
+                    }
+                    break;
+                case(2):
+                    cout << "esse botao pede para usar item" << endl;
+                    charState = AGUARDANDO_ITEM;
+                    break;
+                case(3):
+                    cout << "esse botao pede para ejetar" << endl;
+                    Ejetar();
+                    break;
                }
             }
         }
@@ -121,6 +128,28 @@ void Ally::StateMachine(float dt)
             break;
 
         case DEFENDENDO:
+            break;
+
+        case AGUARDANDO_ALVO:
+            alvoEspecial = EncontrarRobo();
+            if(alvoEspecial != NULL){
+                charState = ESPECIAL;
+                barraCooldown.Esvazia();
+            }
+            if(InputManager::GetInstance().MousePress(SDL_BUTTON_RIGHT) == true){
+                charState = REPOUSO;
+            }
+            break;
+
+        case ESPECIAL:
+            especialTime.Update(dt);
+            if(especialTime.Get() > 1.5){
+                alvoEspecial->Curar(10);
+                especialTime.Restart();
+            }
+            if(alvoEspecial->VidaCheia() == true){
+                charState = REPOUSO;
+            }
             break;
 
         case INATIVO:
@@ -156,16 +185,55 @@ void Ally::StateMachine(float dt)
                             while(path.empty() == false) path.pop();
                             charState = REPOUSO;
                     }
+                    barraCooldown.Esvazia();
             }
             break;
     }
 }
 
+Ally* Ally::EncontrarRobo()
+{
+    Ally* alvo = NULL;
+    if(InputManager::GetInstance().MousePress(SDL_BUTTON_LEFT) == true){
+        int mapX = mapReference->PixelPositionToMapPosition(InputManager::GetInstance().GetMouseX() + Camera::pos.x);
+        int mapY = mapReference->PixelPositionToMapPosition(InputManager::GetInstance().GetMouseY() + Camera::pos.y);
+        //cout << "MAPX: " << mapX << " | MAPY: " << mapY << endl;
+        int roboX = mapReference->PixelPositionToMapPosition(box.RectCenterX());
+        int roboY = mapReference->PixelPositionToMapPosition(box.RectCenterY());
+        //cout << "PILOTOX: " << pilotoX << " | PILOTOY: " << pilotoY << endl;
+
+        if( (mapX >= roboX - 1) &&
+                (mapX <= roboX + 1) ){
+            if( (mapY >= roboY - 1) && (mapY <= roboY + 1) ) {
+                if(mapReference->At( mapX, mapY ).state == ALLY){
+                    if(mapReference->At( mapX, mapY ).occuper->Is("Robo")){
+                        Ally* robo = (Ally*) mapReference->At( mapX, mapY ).occuper;
+                        alvo = robo;
+                    }
+                }
+            }
+        }
+    }
+
+    if(alvo != NULL){
+        if(mapReference->PixelPositionToMapPosition(alvo->box.RectCenterX()) > mapReference->PixelPositionToMapPosition(box.RectCenterX())){
+            allyPosition = RIGHT;
+        }else if(mapReference->PixelPositionToMapPosition(alvo->box.RectCenterX()) < mapReference->PixelPositionToMapPosition(box.RectCenterX())){
+            allyPosition = LEFT;
+        }else if(mapReference->PixelPositionToMapPosition(alvo->box.RectCenterY()) > mapReference->PixelPositionToMapPosition(box.RectCenterY())){
+            allyPosition = FRONT;
+        }else{
+            allyPosition = BACK;
+        }
+        OrientarSprite();
+    }
+    return alvo;
+}
 
 //verifica se ally esta morto
 bool Ally::IsDead(){
-    int vidaAtual = vida.GetVida();
-    if(vidaAtual <= 0){
+
+    if(vida.GetVida() <= 0){
         if(Camera::GetFocus() == this) Camera::Unfollow();
         return true;
     }
@@ -238,7 +306,9 @@ void Ally::Andar(){
                                 RangeAreaUpdate( 0, -1);
                             }
                 }
-            OrientarSprite();
+                if(Is("Robo")){
+                    OrientarSprite();
+                }
             }
 }
 
@@ -248,12 +318,12 @@ void Ally::Parar(){
 }
 
 //reduz a vida do ally
-void Ally::Danificar(float dano)
-{
-    int vidaNova = vida.GetVida();
-    vidaNova -= dano - defesa/10;
-    vida.SetVida(vidaNova);
-}
+//void Ally::Danificar(float dano)
+//{
+//    int vidaNova = vida.GetVida();
+//    vidaNova -= dano - defesa/10;
+//    vida.SetVida(vidaNova);
+//}
 
 //notifica as colisoes de ally
 void Ally::NotifyCollision(GameObject &other)
@@ -274,7 +344,31 @@ void Ally::Atacar()
         #ifdef MASHIRO
             Sound soundFX("images/audio/boom.wav");
         #endif
+        if(mapReference->PixelPositionToMapPosition(enemyTarget->box.RectCenterX()) > mapReference->PixelPositionToMapPosition(box.RectCenterX())){
+            allyPosition = RIGHT;
+        }else if(mapReference->PixelPositionToMapPosition(enemyTarget->box.RectCenterX()) < mapReference->PixelPositionToMapPosition(box.RectCenterX())){
+            allyPosition = LEFT;
+        }else if(mapReference->PixelPositionToMapPosition(enemyTarget->box.RectCenterY()) > mapReference->PixelPositionToMapPosition(box.RectCenterY())){
+            allyPosition = FRONT;
+        }else{
+            allyPosition = BACK;
+        }
+        OrientarSprite();
+        Atirar(enemyTarget->box.RectCenterX(), enemyTarget->box.RectCenterY());
     }
+}
+
+void Ally::Atirar(float x, float y)
+{
+    float pX = x - box.RectCenterX() - Camera::pos.x;
+    float pY = y - box.RectCenterY() - Camera::pos.y;
+    float ang = atan2(pY, pX);
+    float speed = 1.1;
+    float maxDistance = 100;//sqrt(pX*pX + pY*pY);
+
+//    Sprite sprite("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/tiro.png", 3, 200);
+//    Bullet* bullet = new Bullet(box.RectCenterX(), box.RectCenterY(), 1, 0.001, maxDistance, sprite, 0);
+//    Game::GetInstance().GetCurrentState().AddObject(bullet);
 }
 
 //gerencia o ally em seu modo de defesa.
@@ -303,7 +397,10 @@ void Ally::Usar_Item()
 
 }
 
-
+bool Ally::IsLeader()
+{
+    return lider;
+}
 
 //gerencia o uso de especial
 void Ally::Especial()
@@ -378,10 +475,10 @@ void Ally::Abrir_Menu(){
     float offSet = 125;
     float angulo = 0;
 #ifdef ANDRE
-    Sprite botao("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botaoMover.png");
-    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botaoDefender.png");
+    Sprite botao("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2andar.png");
+    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2especial.png");
     Sprite botao3("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botaoItens.png");
-    Sprite botao4("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botaoEspecial.png");
+    Sprite botao4("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2Ejetar.png");
 #endif
 #ifdef MASHIRO
     Sprite botao("images/img/botaoMover.png");
@@ -444,6 +541,27 @@ bool Ally::AreaMapa()
 
 int Ally::GetVida()
 {
-    return this->vida.GetVida();
+    return vida.GetVida();
 }
 
+float Ally::GetPorcentagemVida()
+{
+    return vida.GetPorcentagemVida();
+}
+
+CharacterPosition Ally::GetAllyPosition()
+{
+    return allyPosition;
+}
+
+void Ally::Curar(int cura){
+    int vidaNova = vida.GetVida() + cura;
+    vida.SetVida(vidaNova);
+}
+
+bool Ally::VidaCheia(){
+    if(vida.IsFull() == true){
+        return true;
+    }
+    return false;
+}

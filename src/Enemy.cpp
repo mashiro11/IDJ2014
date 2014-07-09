@@ -118,12 +118,6 @@ void Enemy::StateMachine(float dt)
                 charState = REPOUSO;
             }
             break;
-//        case ():
-//            break;
-//        case ():
-//            break;
-//        case ():
-//            break;
     }
 }
 
@@ -138,5 +132,13 @@ void Enemy::Atacar()
 
 void Enemy::Danificar(float dano)
 {
+#ifdef ANDRE
+    Sprite hit("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/hit.png");
+#endif
+#ifdef MASHIRO
+    Sprite hit("/images/img/hit.png");
+#endif
+    Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
+                                                                       box.RectCenterY() - 25, rotation, hit, 0.5, true));
     this->vida -= dano - defesa/10;
 }

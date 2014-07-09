@@ -69,10 +69,26 @@ void BarraVida::SetY(float y){
 
 void BarraVida::SetVida(int vidaNova)
 {
-    this->vidaAtual = vidaNova;
+    if(vidaNova > vidaMaxima){
+        vidaAtual = vidaMaxima;
+    }else{
+        vidaAtual = vidaNova;
+    }
 }
 
 int BarraVida::GetVida()
 {
     return vidaAtual;
+}
+
+float BarraVida::GetPorcentagemVida()
+{
+    return 100*vidaAtual/vidaMaxima;
+}
+
+bool BarraVida::IsFull(){
+    if(vidaAtual/vidaMaxima == 1){
+        return true;
+    }
+    return false;
 }
