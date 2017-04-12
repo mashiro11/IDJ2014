@@ -2,16 +2,16 @@
 
 CharacterState::CharacterState()
 {
-    bg.Open("img/screenSbuttons.png");
-    selecao.Open("img/selecaoOld.png");
-    selecionado.Open("img/selecionado.png");
+    bg.Open(CHARACTER_STATE_BACKGROUND_FILE);
+    selecao.Open(CHARACTER_STATE_TOSELECT_FILE);
+    selecionado.Open(CHARACTER_STATE_SELECTED_FILE);
 
-    instruction.Initialize("images/font/Call me maybe.ttf", 55, Text::TEXT_BLENDED, "Escolha");
+    instruction.Initialize(CHARACTER_STATE_TYPE_FILE, 55, Text::TEXT_BLENDED, "Escolha");
     instruction.SetColor(255, 0, 0);
     instruction.SetPos(Game::GetInstance().GetWindowWidth()/2,
                  Game::GetInstance().GetWindowHeight()*1/20, true, true);
 
-    inicio.Initialize("images/font/Call me maybe.ttf", 50, Text::TEXT_BLENDED, "Jogar");
+    inicio.Initialize(CHARACTER_STATE_TYPE_FILE, 50, Text::TEXT_BLENDED, "Jogar");
     inicio.SetColor(255, 0, 0);
     inicio.SetPos(Game::GetInstance().GetWindowWidth()*12/13,
                  Game::GetInstance().GetWindowHeight()*14/15, true, true);

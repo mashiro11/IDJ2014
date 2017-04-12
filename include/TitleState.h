@@ -14,6 +14,13 @@
 #define TITLE_STATE_BACKGROUND "img/screenSbuttons.png"
 #define TITLE_STATE_MUSIC "images/audio/Tema_01.wav"
 
+#define TITLE_STATE_MENU_OP1        "Jogar"
+#define TITLE_STATE_MENU_OP2        "Opcoes"
+#define TITLE_STATE_MENU_OP3        "Sair"
+#define TITLE_STATE_MENU_SPACEMENT  50
+#define TITLE_STATE_MENU_X          512
+#define TITLE_STATE_MENU_Y          700
+
 
 class TitleState : public State
 {

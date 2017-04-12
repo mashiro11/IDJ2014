@@ -16,8 +16,12 @@ TitleState::TitleState()
     bg.Open(TITLE_STATE_BACKGROUND);
     mainTheme.Open(TITLE_STATE_MUSIC);
     mainTheme.Play(-1);
-    menu.SetDirection(VERTICAL, 50);//arbitrario temporário
-    menu.SetPosition(GAME_WIDTH/2, GAME_HEIGTH*7/8, true);//arbitrario temporário
+    menu.AddMenuOption(TITLE_STATE_MENU_OP1);
+    menu.AddMenuOption(TITLE_STATE_MENU_OP2);
+    menu.AddMenuOption(TITLE_STATE_MENU_OP3);
+
+    menu.SetDirection(HORIZONTAL, TITLE_STATE_MENU_SPACEMENT);
+    menu.SetPosition(TITLE_STATE_MENU_X, TITLE_STATE_MENU_Y, true);
 }
 
 void TitleState::Update(float dt)

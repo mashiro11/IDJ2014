@@ -27,6 +27,12 @@ enum MenuType{
     VERTICAL
 };
 
+enum PositionAlign{
+    LEFT_ALIGN = 0,
+    CENTERED,
+    RIGHT_ALIGN
+};
+
 class Menu//: public GameObject
 {
 public:
@@ -57,7 +63,6 @@ private:
 //    Text options;
 //    Text quit;
     int selectedOption;
-    int safeSpace;
 //    int currentOption;
 //    int lastOption;
 //    int selectedOption;

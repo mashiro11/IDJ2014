@@ -16,20 +16,9 @@ Menu::Menu(){
     absoluteX = box.x = 0;
     absoluteY = box.y = 0;
     espacamento = 0;
+    centered = false;
     box.w = 0;
     box.h = 0;
-    safeSpace = 0;
-    AddMenuOption("JOGAR");
-    AddMenuOption("Opcoes");
-    AddMenuOption("Sair");
-
-
-    DEBUG_PRINT("Menu::Menu()")
-    DEBUG_PRINT(" Posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
-    DEBUG_PRINT(" Textura de 'JOGAR' box(" << options[0]->GetWidth() << "x" << options[0]->GetHeigth() << ")")
-    DEBUG_PRINT(" MenuPosition(" << box.x << "x" << box.y << ")")
-    DEBUG_PRINT(" MenuSize(" << box.w << "x" << box.h << ")")
-
     selectedOption = -1;
 }
 Menu::~Menu()
@@ -73,7 +62,7 @@ void Menu::Update(float dt){
 ////        }
 ////    }
 }
-//
+
 void Menu::HandleInputs(){
     if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON)){
         for(int i = 0; i<options.size(); i++){
@@ -154,16 +143,8 @@ void Menu::AddMenuOption(string newOpt){
 
 void Menu::RemoveMenuOption(int option){
     options.erase(options.begin() + option);
+    _organizeOptions();
 //    buttons.erase(buttons.begin() + option);
-    switch(menuType){
-        case VERTICAL:
-            for(int i = 0; i < options.size(); i++){
-                this->options[i]->SetPos(this->box.x,this->box.y + safeSpace*i,true,false);
-            }
-            break;
-        case HORIZONTAL:
-            break;
-    }
 //    options[currentOption]->SetColor(TEXT_BLACK);
 }
 
@@ -172,12 +153,6 @@ void Menu::SetPosition(float x, float y, bool centered){
     absoluteY = y;
     this->centered = centered;
     _organizeOptions();
-
-    DEBUG_PRINT("Menu::SetPosition()");
-    DEBUG_PRINT(" Primeira Opcao: posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
-    DEBUG_PRINT(" Primeira Opcao: dimens. box(" << options[0]->GetWidth() << "x" << options[0]->GetHeigth() << ")")
-    DEBUG_PRINT(" Menu: posicao(" << box.x << "x" << box.y << ")")
-    DEBUG_PRINT(" Menu: dimens.(" << box.w << "x" << box.h << ")")
 }
 
 void Menu::SetDirection(MenuType mt, float esp){
@@ -187,7 +162,10 @@ void Menu::SetDirection(MenuType mt, float esp){
     box.h = 0;
     _organizeOptions();
 }
-
+/**
+ *  A função _organizeOptions é responsável por rearranjar as opções dentro do menu
+ *  de acordo com a orientação, VERTICAL ou HORIZONTAL, escolhida para o Menu.
+*/
 void Menu::_organizeOptions(){
     box.x = absoluteX;
     box.y = absoluteY;
@@ -209,7 +187,6 @@ void Menu::_organizeOptions(){
         case HORIZONTAL:
             box.h = options[0]->GetHeigth();
             box.w = (options.size()-1)*espacamento;
-            cout << box.w << endl;
             for(unsigned int i = 0; i < options.size(); i++){
                 box.w += options[i]->GetWidth();
             }
@@ -224,6 +201,11 @@ void Menu::_organizeOptions(){
             }
             break;
     }
+    DEBUG_PRINT("Menu::SetPosition()");
+    DEBUG_PRINT(" Primeira Opcao: posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
+    DEBUG_PRINT(" Primeira Opcao: dimens. box(" << options[0]->GetWidth() << "x" << options[0]->GetHeigth() << ")")
+    DEBUG_PRINT(" Menu: posicao(" << box.x << "x" << box.y << ")")
+    DEBUG_PRINT(" Menu: dimens.(" << box.w << "x" << box.h << ")")
 }
 #ifdef DEBUG
     #undef DEBUG
