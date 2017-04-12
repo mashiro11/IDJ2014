@@ -35,13 +35,18 @@ class TileMap
         int GetHeight(){return mapHeight;};
         int GetDepth(){return mapDepth;};
         //~TileMap();
-        Point PixelToChessPosition(int x, int y);
+        Point PixelToChessPosition(int x, int y, int tileNumber = 1);
         int GetTileSize();
         int GetSize();
 
-        float TileCenter(int coord);
-        float MapPositionToPixelPosition(int coord);
-        int PixelPositionToMapPosition(int pixels);
+        float TileCenter(int coord, int tileNumber = 1);
+        float MapPositionToPixelPosition(int coord, int tileNumber = 1);
+        int PixelPositionToMapPosition(int pixels, int tileNumber = 1);
+
+        void SetTileOccuper(Point point, GameObject* occuper, int tileNumber = 1);
+        bool CheckTileState(Point point, TileState checkState, int tileNumber = 1);
+        void SetTileState(Point point, TileState newState, int tileNumber = 1);
+
     protected:
         /* vazio */
     private:

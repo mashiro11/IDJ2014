@@ -1,7 +1,4 @@
-#include "Piloto.h"
-#include "Robo.h"
-
-/*Aguardando embarcar, andar, barra de vida do menu nao acompanha mais*/
+#include "../include/Piloto.h"
 
 Piloto::Piloto(Character* robo, string nome, Sprite sprite, bool lider, TileMap* mapRef)
 {
@@ -13,22 +10,17 @@ Piloto::Piloto(Character* robo, string nome, Sprite sprite, bool lider, TileMap*
     this->robo = robo;
     this->nome = nome;
     this->lider = lider;
+    mapReference = mapRef;
     box.SetRectCenterX(robo->box.RectCenterX());
     box.SetRectCenterY(robo->box.RectCenterY());
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
+    tileNumber = 1;
 
-    this->defesa = defesa;
-    this->range = range;
-    this->distance = distance;
-    this->coolDown = coolDown;
     this->rotation = 0;
     allyPosition = FRONT;
     charState = REPOUSO;
     menuAberto = false;
-
-    mapReference = mapRef;
-
 }
 
 Piloto::~Piloto()
@@ -49,7 +41,7 @@ void Piloto::Update(float dt)
 
     if(robo == NULL){
         StateMachine(dt);
-        Input();
+        Input(dt);
         vida.Update();
         vida.SetX(box.RectCenterX());
         vida.SetY(box.RectCenterY());
@@ -62,8 +54,8 @@ void Piloto::Update(float dt)
         box.SetRectCenterX(robo->box.RectCenterX());
         box.SetRectCenterY(robo->box.RectCenterY());
     }
-
 }
+
 
 void Piloto::StateMachine(float dt)
 {
@@ -114,7 +106,7 @@ void Piloto::StateMachine(float dt)
     }
 }
 
-void Piloto::Input()
+void Piloto::Input(float dt)
 {
     if(box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                     InputManager::GetInstance().GetMouseY() + Camera::pos.y) == true){
@@ -181,8 +173,8 @@ void Piloto::Render(int cameraX, int cameraY)
             int offSet = 100;
             int angulo = 0;
             for(int i = 0; i < buttonArray.size(); i++){
-                buttonArray[i].SetX(box.RectCenterX() + cos(angulo*M_PI/180)*offSet);
-                buttonArray[i].SetY(box.RectCenterY() + sin(angulo*M_PI/180)*offSet);
+                buttonArray[i].SetX(box.RectCenterX() - 52 + cos(angulo*M_PI/180)*offSet);
+                buttonArray[i].SetY(box.RectCenterY() - 20 + sin(angulo*M_PI/180)*offSet);
                 buttonArray[i].Render(cameraX,cameraY);
                 angulo += 180;
             }
@@ -195,12 +187,7 @@ void Piloto::Render(int cameraX, int cameraY)
 bool Piloto::Embarcar(Ally* alvo)
 {
     if(alvo->Embarcar(this) == true){
-        #ifdef ANDRE
-            Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
-        #endif
-        #ifdef MASHIRO
-            Sound soundFX("images/audio/boom.wav");
-        #endif
+        Sound soundFX("images/audio/boom.wav");
         soundFX.Play(0);
         robo = alvo;
         box.SetRectCenterX(robo->box.RectCenterX());
@@ -227,14 +214,8 @@ void Piloto::Abrir_Menu_Piloto()
     float offSet = 100;
     float angulo = 0;
     float angOffset = 180;
-#ifdef ANDRE
-    Sprite botao("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2andar.png");
-    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2embarcar.png");
-#endif
-#ifdef MASHIRO
-    Sprite botao("/images/img/botao2andar.png");
-    Sprite botao2("/images/img/botao2embarcar.png");
-#endif
+    Sprite botao("img/botao2andar.png");
+    Sprite botao2("img/botao2embarcar.png");
 
     StillAnimation* botaoAnim = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
@@ -250,14 +231,11 @@ void Piloto::Abrir_Menu_Piloto()
     angulo += angOffset;
 }
 
+
 bool Piloto::Ejetar()
 {
-    #ifdef ANDRE
-        Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
-    #endif
-    #ifdef MASHIRO
-        Sound soundFX("images/audio/boom.wav");
-    #endif
+
+    Sound soundFX("images/audio/boom.wav");
     soundFX.Play(0);
 
     Ally* robot = (Ally*) robo;
@@ -322,12 +300,7 @@ Ally* Piloto::EncontrarRobo()
 
 void Piloto::Danificar(float dano)
 {
-#ifdef ANDRE
-    Sprite hit("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/hit.png");
-#endif
-#ifdef MASHIRO
     Sprite hit("/images/img/hit.png");
-#endif
     Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
                                                                        box.RectCenterY() - 15, rotation, hit, 0.5, true));
     if(robo == NULL){

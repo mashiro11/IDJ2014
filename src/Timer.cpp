@@ -1,4 +1,4 @@
-#include "Timer.h"
+#include "../include/Timer.h"
 
 Timer::Timer()
 {
@@ -24,3 +24,4 @@ void Timer::Set(float value)
 {
     this->time = value;
 }
+

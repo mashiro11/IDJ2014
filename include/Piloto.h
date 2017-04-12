@@ -15,7 +15,7 @@ public:
     bool Ejetar();
     bool Embarcar(Ally* alvo);
     void StateMachine(float dt);
-    void Input();
+    void Input(float dt);
     Ally* EncontrarRobo();
     void Danificar(float dano);
     void Morrer();

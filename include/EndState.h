@@ -20,6 +20,7 @@ class EndState : public State
         Sprite bg;
         Music music;
         Text instruction;
+        Timer cronometro;
 };
 
 #endif // ENDSTATE_H

@@ -24,7 +24,7 @@ class Sprite
         ~Sprite();
         void Open(string file);
         void SetClip(int x, int y, int w, int h);
-        void Render(int x, int y, float angle = 0);
+        void Render(int x = 0, int y = 0, float angle = 0);
         int GetWidth();
         int GetHeight();
         bool IsOpen() {return (texture == NULL)? true: false;}

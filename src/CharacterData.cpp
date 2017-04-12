@@ -1,4 +1,4 @@
-#include "CharacterData.h"
+#include "../include/CharacterData.h"
 
 CharacterData::CharacterData()
 {

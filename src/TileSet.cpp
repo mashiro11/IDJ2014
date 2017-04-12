@@ -1,4 +1,4 @@
-#include "TileSet.h"
+#include "../include/TileSet.h"
 
 //Classe sem construtor
 //TileSet::TileSet()

@@ -1,37 +1,17 @@
-#include "EndState.h"
+#include "../include/EndState.h"
 
 EndState::EndState(StateData stateData)
 {
     wait = false;
-#ifdef ANDRE
     if(stateData.playerVictory == true){
-        bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/win.jpg");
-        music.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/endStateWin.ogg");
-    }else{
-        bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/lose.jpg");
-        music.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/endStateLose.ogg");
-    }
-#endif
-#ifdef MASHIRO
-    if(stateData.playerVictory == true){
-        bg.Open("images/img/win.jpg");
+        bg.Open("img/win.jpg");
         music.Open("images/audio/endStateWin.ogg");
     }else{
-        bg.Open("images/img/lose.jpg");
+        bg.Open("img/lose.jpg");
         music.Open("images/audio/endStateLose.ogg");
     }
-#endif
-    SDL_Color color;
-    color.r =   0;
-    color.b =   0;
-    color.g =   0;
-    color.a = 255;
-#ifdef ANDRE
-    instruction.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, "PRESS SPACE TO PLAY AGAIN", color);
-#endif
-#ifdef MASHIRO
-    instruction.Initialize("images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, "PRESS SPACE TO PLAY AGAIN", color);
-#endif
+    instruction.Initialize("images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, "PRESS SPACE TO PLAY AGAIN");
+    instruction.SetColor(255, 0, 0);
     instruction.SetPos(Game::GetInstance().GetWindowWidth()/2,
                        Game::GetInstance().GetWindowHeight()*5/6,
                        true, true);
@@ -49,21 +29,21 @@ void EndState::Update(float dt)
         music.Stop();
         requestDelete = true;
     }
-    instruction.cronometro.Update(dt);
+    cronometro.Update(dt);
     if(wait == false){
-        if(instruction.cronometro.Get() > 12){
-                instruction.cronometro.Restart();
+        if(cronometro.Get() > 12){
+                cronometro.Restart();
                 wait = true;
         }
     }else{
-        if(instruction.cronometro.Get() > 2) instruction.cronometro.Restart();
+        if(cronometro.Get() > 2) cronometro.Restart();
     }
 }
 
 void EndState::Render()
 {
     bg.Render(0,0);
-    if(wait == true && instruction.cronometro.Get() < 2 && instruction.cronometro.Get() > 0.5){
+    if(wait == true && cronometro.Get() < 2 && cronometro.Get() > 0.5){
         instruction.Render();
     }
 }

@@ -1,4 +1,4 @@
-#include "MultiTileSet.h"
+#include "../include/MultiTileSet.h"
 
 MultiTileSet::MultiTileSet()
 {

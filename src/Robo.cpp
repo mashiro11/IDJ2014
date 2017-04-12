@@ -1,23 +1,27 @@
-#include "Robo.h"
+#include "../include/Robo.h"
 
 Robo::Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string nome)
 {
     //ver a proporзгo do personagem em relaзao ao tile do mundopara aplicar na posicao certa
-//    sp.SetScaleX((float) 2);
-//    sp.SetScaleY((float) 2);
     sp = sprite;
+    tileNumber = 1;
+    sp.SetScaleX((float) tileNumber);
+    sp.SetScaleY((float) tileNumber);
     sp.SetSpriteSheet(4, 4);
     sp.SetAnimation(0, 4);
     sp.SetFrameTime(4.0 * 1.0/24.0);
 
     this->lider = lider;
     this->nome = nome;
+
+    cout << "ate aqui tudo bem" << endl;
     mapReference = mapRef;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
-    box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x) );
-    box.SetRectCenterY( mapReference->MapPositionToPixelPosition(y) );
+    box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x,tileNumber) );
+    box.SetRectCenterY( mapReference->MapPositionToPixelPosition(y,tileNumber) );
     currentPosition.SetPoint( x, y );
+    cout << "posicao inicial de " << this->nome << ": " << currentPosition.x << ", " << currentPosition.y << endl;
 
     this->rotation = 0;
 
@@ -25,14 +29,20 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string 
     charState = REPOUSO;
     menuAberto = false;
     //cout << "(" << x << ", " << y << ")" << endl;
-    mapReference->At(x, y).state = ALLY;
-    mapReference->At(x, y).occuper = this;
+    //mapReference->At(x, y).state = ALLY;
+    //mapReference->At(x, y).occuper = this;
+
+    cout << "funcoes finais" << endl;
+    mapReference->SetTileState(currentPosition, ALLY, tileNumber);
+    cout << "sanduiche" << endl;
+    mapReference->SetTileOccuper(currentPosition, this, tileNumber);
+    cout << "fim do construtor" << endl;
 }
 
 Robo::~Robo()
 {
-    mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
-                      mapReference->PixelPositionToMapPosition( box.RectCenterY() ) ).state = FREE;
+     mapReference->At( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
+                       mapReference->PixelPositionToMapPosition( box.RectCenterY() ) ).state = FREE;
 }
 
 void Robo::Update(float dt)
@@ -100,6 +110,7 @@ void Robo::InserePiloto(Piloto *piloto)
     pilotoArray.push_back(piloto);
 }
 
+
 void Robo::Morrer()
 {
     for(int i = 0; i < pilotoArray.size(); i++){
@@ -123,12 +134,7 @@ bool Robo::Embarcar(Ally *alvo)
 
 void Robo::Danificar(float dano)
 {
-#ifdef ANDRE
-    Sprite hit("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/hit.png");
-#endif
-#ifdef MASHIRO
-    Sprite hit("/images/img/hit.png");
-#endif
+    Sprite hit("images/img/hit.png");
     Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
                                                                        box.RectCenterY() - 25, rotation, hit, 0.5, true));
     int vidaNova = vida.GetVida();

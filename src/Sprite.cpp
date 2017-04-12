@@ -1,4 +1,4 @@
-#include "Sprite.h"
+#include "../include/Sprite.h"
 
 unordered_map<string, SDL_Texture*> Sprite::assetTable;
 Sprite::Sprite()

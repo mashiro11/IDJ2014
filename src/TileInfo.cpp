@@ -1,4 +1,4 @@
-#include "TileInfo.h"
+#include "../include/TileInfo.h"
 
 TileInfo::TileInfo(int tileType, TileState state, GameObject* occuper)
 {

@@ -1,4 +1,4 @@
-#include "Penguins.h"
+#include "../include/Penguins.h"
 
 
 const int maxMoveSpeed = 300;

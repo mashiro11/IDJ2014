@@ -1,0 +1,12 @@
+#include "State.h"
+
+State::State()
+{
+    requestDelete = false;
+    requestQuit = false;
+}
+
+State::~State()
+{
+    //dtor
+}

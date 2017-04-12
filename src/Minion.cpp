@@ -1,4 +1,4 @@
-#include "Minion.h"
+#include "../include/Minion.h"
 
 const int translationSpeed = 70;
 const int bulletSpeed = 200;

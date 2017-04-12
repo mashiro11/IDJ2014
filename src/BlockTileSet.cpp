@@ -1,4 +1,4 @@
-#include "BlockTileSet.h"
+#include "../include/BlockTileSet.h"
 
 BlockTileSet::BlockTileSet(int tileWidth, int tileHeight, string file)
 {

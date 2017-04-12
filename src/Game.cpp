@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "../include/Game.h"
 
 const int INDEX  = -1;
 Game* Game::instance = 0;

@@ -1,15 +1,9 @@
-#include "BarraVida.h"
+#include "../include/BarraVida.h"
 
 BarraVida::BarraVida(GameObject* objeto, int vidaMax)
 {
-    #ifdef ANDRE
-    vida.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVida.png");
-    moldura.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVidaMold.png");
-    #endif
-    #ifdef MASHIRO
-    vida.Open("images/img/barraVida.png");
-    moldura.Open("images/img/barraVidaMold.png");
-    #endif
+    vida.Open("img/barraVida.png");
+    moldura.Open("img/barraVidaMold.png");
 
     vidaMaxima = vidaAtual = vidaMax;
     this->objeto = objeto;
@@ -21,14 +15,8 @@ BarraVida::BarraVida(GameObject* objeto, int vidaMax)
 
 void BarraVida::Open(GameObject *alvo, int vidaMax)
 {
-    #ifdef ANDRE
-    vida.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVida.png");
-    moldura.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/barraVidaMold.png");
-    #endif
-    #ifdef MASHIRO
-    vida.Open("images/img/barraVida.png");
-    moldura.Open("images/img/barraVidaMold.png");
-    #endif;
+    vida.Open("img/barraVida.png");
+    moldura.Open("img/barraVidaMold.png");
 
     vidaMaxima = vidaAtual = vidaMax;
     this->objeto = alvo;

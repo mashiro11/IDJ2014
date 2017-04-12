@@ -1,4 +1,4 @@
-#include "Music.h"
+#include "../include/Music.h"
 
 
 unordered_map<string, Mix_Music*> Music::assetTable;

@@ -1,10 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-//#define DEBUG
-#define ANDRE
-//#define MASHIRO
-
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -36,6 +32,11 @@ using std::endl;
 using std::vector;
 using std::unique_ptr;
 using std::stack;
+
+#ifndef GAME_WIDTH
+    #define GAME_WIDTH 1024
+    #define GAME_HEIGTH 600
+#endif // GAME_WIDTH
 
 class State;
 class Game

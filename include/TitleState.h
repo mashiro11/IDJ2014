@@ -9,6 +9,10 @@
 #include "Text.h"
 #include "OptionsState.h"
 #include "CharacterState.h"
+#include "Menu.h"
+
+#define TITLE_STATE_BACKGROUND "img/screen.png"
+#define TITLE_STATE_MUSIC "images/audio/Tema_01.wav"
 
 
 class TitleState : public State
@@ -23,10 +27,13 @@ class TitleState : public State
     private:
         void Input();
         Sprite bg;
-        Text start;
-        Text options;
-        Text quit;
-        Sound bgm;
+        Music mainTheme;
+        Menu menu;
+        enum title_options{
+            TITLE_START = 0,
+            TITLE_OPTIONS,
+            TITLE_QUIT
+        }TitleOptions;
 };
 
 

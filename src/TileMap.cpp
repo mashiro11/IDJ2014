@@ -1,4 +1,4 @@
-#include "TileMap.h"
+#include "../include/TileMap.h"
 
 TileMap::TileMap(int mapWidth, int mapHeight, int layers, TileSet* tileSet)
 {
@@ -31,7 +31,7 @@ void TileMap::Load(string file)
     fscanf(arquivo, "%d", &mapDepth);
     fscanf(arquivo, "%*c");
     tileMatrix.resize( mapDepth * mapHeight * mapWidth , -1);
-
+    cout << "width: " << mapWidth << " height: " << mapHeight << " depth: " << mapDepth << endl;
     int num;
     for(int k = 0, l = 0; k < mapDepth; k++){
         for(int i = 0; i < mapWidth; i++){
@@ -52,6 +52,14 @@ void TileMap::Load(string file)
     }
     //cout << endl;
     fclose(arquivo);
+//    cout << endl;
+//    for(int i = 0, l = 0; i < mapHeight ; i++){
+//            for(int j = 0; j < mapWidth; j++, l++){
+//                cout << tileMatrix[ l ].tileType << ":";
+//            }
+//            cout << endl;
+//    }
+//    cout << endl;
 }
 
 void TileMap::SetTileSet(TileSet* tileSet)
@@ -71,12 +79,12 @@ TileInfo& TileMap::At(int x, int y, int z)
 }
 void TileMap::Render(int cameraX, int cameraY)
 {
-    for (int k = 0, l = 0; k < mapDepth; k++){
-        for(int i = 0; i < mapWidth; i++){
-                for(int j = 0; j < mapHeight; j++, l++){
-                    tileSet->Render(tileMatrix[l].tileType,
-                                    j * tileSet->GetTileWidth() - cameraX,
-                                    i * tileSet->GetTileHeight() - cameraY);
+    for (int k = 0; k < mapDepth; k++){
+        for(int j = 0; j < mapHeight; j++){
+                for(int i = 0; i < mapWidth; i++){
+                    tileSet->Render(At(i,j,k).tileType,
+                                    i * tileSet->GetTileWidth() - cameraX,
+                                    j * tileSet->GetTileHeight() - cameraY);
                 }
         }
     }
@@ -84,12 +92,11 @@ void TileMap::Render(int cameraX, int cameraY)
 void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 {
     //Faz o mesmo que Render, mas para uma layer s?.
-    int k = layer * mapWidth * mapHeight;
-    for(int i = 0; i < mapWidth; i++){
-            for(int j = 0; j < mapHeight; j++, k++){
-                tileSet->Render(tileMatrix[k].tileType,
-                                j * tileSet->GetTileWidth() - cameraX,
-                                i * tileSet->GetTileHeight() - cameraY);
+    for(int j = 0; j < mapHeight; j++){
+            for(int i = 0; i < mapWidth; i++){
+                tileSet->Render(At(i, j, layer).tileType,
+                                i * tileSet->GetTileWidth() - cameraX,
+                                j * tileSet->GetTileHeight() - cameraY);
             }
     }
 }
@@ -104,24 +111,54 @@ int TileMap::GetTileSize()
     return tileSet->GetTileWidth();
 }
 
-Point TileMap::PixelToChessPosition(int x, int y)
+Point TileMap::PixelToChessPosition(int x, int y, int tileNumber)
 {
     if(x < 0 && y < 0) return Point( -1, -1);
-    else               return Point( (int)(x + Camera::pos.x)/tileSet->GetTileWidth(),
-                                     (int)(y + Camera::pos.y)/tileSet->GetTileHeight() );
+    else               return Point( (int)(x + Camera::pos.x)/(tileSet->GetTileWidth()*tileNumber),
+                                     (int)(y + Camera::pos.y)/(tileSet->GetTileHeight()*tileNumber) );
 }
 
-float TileMap::TileCenter(int coord)
+float TileMap::TileCenter(int coord, int tileNumber)
 {
-    return coord * GetTileSize() + GetTileSize()/2;
+    return coord * tileNumber * GetTileSize() + GetTileSize() * tileNumber/2.0;
 }
 
-float TileMap::MapPositionToPixelPosition(int coord)
+float TileMap::MapPositionToPixelPosition(int coord, int tileNumber)
 {
-    return GetTileSize() * coord + GetTileSize()/2.0;
+    return GetTileSize() * tileNumber * coord + GetTileSize() * tileNumber/2.0;
 }
 
-int TileMap::PixelPositionToMapPosition(int pixels)
+int TileMap::PixelPositionToMapPosition(int pixels, int tileNumber)
 {
-    return pixels/GetTileSize();
+    return pixels/(GetTileSize() * tileNumber);
 }
+
+void TileMap::SetTileState(Point point, TileState newState, int tileNumber)
+{
+
+    for(int i = 0; i < tileNumber; i++){
+        for(int j = 0; j < tileNumber; j++){
+            At(point.x * tileNumber + i, point.y * tileNumber + j).state = newState;
+        }
+    }
+}
+
+bool TileMap::CheckTileState(Point point, TileState checkState, int tileNumber)
+{
+    for(int i = 0; i < tileNumber; i++){
+        for(int j = 0; j < tileNumber; j++){
+                if( checkState != At(point.x * tileNumber + i, point.y * tileNumber + j).state ) return false;
+        }
+    }
+    return true;
+}
+
+void TileMap::SetTileOccuper(Point point, GameObject* occuper, int tileNumber)
+{
+    for(int i = 0; i < tileNumber; i++){
+        for(int j = 0; j < tileNumber; j++){
+            At(point.x * tileNumber + i, point.y * tileNumber + j).occuper = occuper;
+        }
+    }
+}
+

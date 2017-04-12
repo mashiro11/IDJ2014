@@ -9,7 +9,7 @@
 #include "CharacterData.h"
 #include "Robo.h"
 #include "Piloto.h"
-#include "BarraStatus.h"
+//#include "BarraStatus.h"
 
 class CharacterState:public State{
 public:
@@ -32,7 +32,7 @@ private:
     //unordered_map<string, StillAnimation> characterArray;
     std::vector<StillAnimation> characterArray;
     std::vector<StillAnimation> selecionadoArray;
-    std::vector<BarraStatus> statusArray;
+//    std::vector<BarraStatus> statusArray;
     Sprite bg;
     Sprite selecao;
     Sprite selecionado;

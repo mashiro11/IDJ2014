@@ -1,8 +1,8 @@
 #ifndef FACE_H
 #define FACE_H
 
-#include <GameObject.h>
-#include <Sprite.h>
+#include "../include/GameObject.h"
+#include "../include/Sprite.h"
 #include <math.h>
 
 //#include "Game.h"//StageState

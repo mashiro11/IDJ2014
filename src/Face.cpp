@@ -1,4 +1,4 @@
-#include "Face.h"
+#include "../include/Face.h"
 
 const int BONUS_FACTOR = 10;
 const int DAMAGE = 10;

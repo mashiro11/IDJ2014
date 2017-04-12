@@ -1,9 +1,4 @@
-#include "Ally.h"
-
-//Ally::Ally()
-//{
-//
-//}
+#include "../include/Ally.h"
 
 void Ally::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int speed, int distance, int coolDown)
 {
@@ -14,15 +9,14 @@ void Ally::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int 
     this->range = range;
     this->distance = distance;
     this->speed = speed;
-    this->coolDown = coolDown;
+    this->atackCoolDown = this->coolDown = coolDown;
 }
 
 //gerencia as modificacoes e os estados  do ally
 void Ally::UpdateAlly(float dt)
 {
-
     StateMachine(dt);
-    Input();
+    Input(dt);
     IdentifyOpponent();
     CloseEnemiesUpdate();
     //if(timer.Get() < coolDown) timer.Update(dt);
@@ -31,38 +25,42 @@ void Ally::UpdateAlly(float dt)
         cout << this->nome <<": Fui destruido!! Noooooooo.... D: " << endl;
         mapReference->At( currentPosition.x, currentPosition.y ).state = FREE;
         mapReference->At( currentPosition.x , currentPosition.y ).occuper = NULL;
-
     }
 }
 
-void Ally::Input()
+void Ally::Input(float dt)
 {
     if(box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                     InputManager::GetInstance().GetMouseY() + Camera::pos.y) == true){
                     if(InputManager::GetInstance().KeyPress(SDLK_d) == true ){
-                        vida.SetVida(0);
+                        vidaAtual = 0;
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_t) == true ){
-                        int vidaNova = vida.GetVida() - 5;
-                        vida.SetVida(vidaNova);
-
+                        vidaAtual -= 5;
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_h) == true ){
-                        int vidaNova = vida.GetVida() + 5;
-                        vida.SetVida(vidaNova);
+                        vidaAtual += 5;
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_q) == true){
                         barraCooldown.SetTimer(this->coolDown);
                     }
     }
-    if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
-        #ifdef ANDRE
-            Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
-        #endif
-        #ifdef MASHIRO
-            Sound soundFX("images/audio/boom.wav");
-        #endif
+    if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true &&
+       box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
+                    InputManager::GetInstance().GetMouseY() + Camera::pos.y) == true){
+                        if( inputTimer.Get() > 0.3 && barraCooldown.IsFull()){
+                            if(menuAberto == true){
+                                menuAberto = false;
+                            }
+                            //cout << this->nome << ": estou sendo selecionado para andar!" << endl;
+                            charState = AGUARDANDO_ANDAR;
+                        }else inputTimer.Update(dt);
+    }
+    //if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true)
+    if(InputManager::GetInstance().MouseRelease(LEFT_MOUSE_BUTTON) == true){
+        Sound soundFX("images/audio/TIRO_02.wav");
         soundFX.Play(0);
+
         //se o mouse estiver dentro do personagem, o menu é aberto e recebe true se nao existir.
         //se o menu ja existir, recebe falso, pois sera fechado mais para frente.
         if(this->box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
@@ -82,23 +80,25 @@ void Ally::Input()
             //verifica qual o botao que foi clicado, se algum deles for clicado.
             if(buttonArray[i].box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                                            InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
+                Sound soundFX("images/audio/TIRO_01.wav");
+                soundFX.Play(0);
+
                 switch(i){
-                case(0):
-                    cout << "esse botao pede para andar" << endl;
-                    if(barraCooldown.IsFull()){
-                        charState = AGUARDANDO_ANDAR;
-                    }
-                    break;
+//                    case(0):
+//                    //ESSE BOTAO NAO EXISTE MAIS!
+//                       cout << "esse botao pede para andar" << endl;
+//                       charState = AGUARDANDO_ANDAR;
+//                       break;
                 case(1):
-                    cout << "esse botao pede para usar especial" << endl;
-                    if(barraCooldown.IsFull()){
-                        charState = AGUARDANDO_ALVO;
-                    }
-                    break;
+                        cout << "esse botao pede para usar especial" << endl;
+                        if(barraCooldown.IsFull()){
+                            charState = AGUARDANDO_ALVO;
+                        }
+                        break;
                 case(2):
-                    cout << "esse botao pede para usar item" << endl;
-                    charState = AGUARDANDO_ITEM;
-                    break;
+                       cout << "esse botao pede para usar item" << endl;
+                       charState = AGUARDANDO_ITEM;
+                       break;
                 case(3):
                     cout << "esse botao pede para ejetar" << endl;
                     Ejetar();
@@ -118,18 +118,18 @@ void Ally::StateMachine(float dt)
     switch(charState){
         case MOVENDO:
             if( path.empty() == true){
-                cout << endl << "*" << this->nome << " parou*" << endl;
                 charState = REPOUSO;
                 break;
             }else{
-                cout << "*" << this->nome << " esta andando*\r";
-                Andar();
+                Andar(tileNumber);
             }
             break;
 
         case DEFENDENDO:
             break;
 
+        case INATIVO:
+            break;
         case AGUARDANDO_ALVO:
             alvoEspecial = EncontrarRobo();
             if(alvoEspecial != NULL){
@@ -152,17 +152,14 @@ void Ally::StateMachine(float dt)
             }
             break;
 
-        case INATIVO:
-            break;
-
         case ATACANDO:
-            timer.Update(dt);
-            if(timer.Get() > coolDown){
+            atackTimer.Update(dt);
+            if(atackTimer.Get() > atackCoolDown){
                 Atacar();
-                timer.Restart();
+                atackTimer.Restart();
             }
             if(closeEnemies.size() == 0){
-                cout << this-> nome <<": Vencemos! \\o/" << endl;
+                cout << this->nome <<": Vencemos! \\o/" << endl;
                 charState = REPOUSO;
             }
             break;
@@ -174,11 +171,10 @@ void Ally::StateMachine(float dt)
             }
             break;
         case AGUARDANDO_ANDAR:
-
-            //if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true){
-            //}
-            MakePath();
-            if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true){
+            MakePath(tileNumber);
+            //if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true)
+            if(InputManager::GetInstance().MouseRelease(LEFT_MOUSE_BUTTON) == true){
+                    inputTimer.Restart();
                     if(ValidPath() == true){
                             charState = MOVENDO;
                     }else{
@@ -248,45 +244,48 @@ bool Ally::Is(string type)
 }
 
 //movimenta o ally pelo mapa.
-void Ally::Andar(){
-        #ifdef ANDRE
-            Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
-        #endif
-        #ifdef MASHIRO
-            Sound soundFX("images/audio/boom.wav");
-        #endif
+void Ally::Andar(int tileNumber){
+
+        Sound soundFX("images/audio/TIRO_03.wav");
         //cout << "inicio allyPosition: " << allyPosition << endl;
-        if( abs(box.RectCenterX() - mapReference->TileCenter( path.front().x ) ) < 5 &&
-            abs(box.RectCenterY() - mapReference->TileCenter( path.front().y ) ) < 5){
-                box.SetRectCenterX( mapReference->TileCenter( path.front().x ) );
-                box.SetRectCenterY( mapReference->TileCenter( path.front().y ) );
+        if( abs(box.RectCenterX() - mapReference->TileCenter( path.front().x, tileNumber) ) < 5 &&
+            abs(box.RectCenterY() - mapReference->TileCenter( path.front().y, tileNumber) ) < 5){
+                box.SetRectCenterX( mapReference->TileCenter( path.front().x, tileNumber) );
+                box.SetRectCenterY( mapReference->TileCenter( path.front().y, tileNumber) );
                 path.pop();
+                //teste de posicionamento de som
                 soundFX.Play(0);
+
         }else{
         Point pastPosition( currentPosition.x, currentPosition.y );
-        if( mapReference->TileCenter( path.front().x ) > box.RectCenterX() ){
+        if( mapReference->TileCenter( path.front().x, tileNumber) > box.RectCenterX() ){
             box.SetRectCenterX(box.RectCenterX() + speed);
             allyPosition = RIGHT;
-        }else if( mapReference->TileCenter( path.front().x ) < box.RectCenterX() ){
+        }else if( mapReference->TileCenter( path.front().x, tileNumber) < box.RectCenterX() ){
             box.SetRectCenterX(box.RectCenterX() - speed);
             allyPosition = LEFT;
         }
-        if( mapReference->TileCenter( path.front().y ) > box.RectCenterY() ){
+        if( mapReference->TileCenter( path.front().y, tileNumber) > box.RectCenterY() ){
             box.SetRectCenterY(box.RectCenterY() + speed);
             allyPosition = FRONT;
-        }else if( mapReference->TileCenter( path.front().y ) < box.RectCenterY() ){
+        }else if( mapReference->TileCenter( path.front().y, tileNumber) < box.RectCenterY() ){
             box.SetRectCenterY(box.RectCenterY() - speed);
             allyPosition = BACK;
         }
-        currentPosition.SetPoint( mapReference->PixelPositionToMapPosition( box.RectCenterX() ),
-                                  mapReference->PixelPositionToMapPosition( box.RectCenterY() ));
+        currentPosition.SetPoint( mapReference->PixelPositionToMapPosition( box.RectCenterX(), tileNumber),
+                                  mapReference->PixelPositionToMapPosition( box.RectCenterY(), tileNumber));
                 if(pastPosition.x != currentPosition.x ||
                    pastPosition.y != currentPosition.y){
-                            mapReference->At(pastPosition.x, pastPosition.y).state = FREE;
-                            mapReference->At(pastPosition.x, pastPosition.y).occuper = NULL;
+                            mapReference->SetTileState(pastPosition, FREE, tileNumber);
+                            //mapReference->At(pastPosition.x, pastPosition.y).state = FREE;
+                            mapReference->SetTileOccuper(pastPosition, NULL, tileNumber);
+                            //mapReference->At(pastPosition.x, pastPosition.y).occuper = NULL;
 
-                            mapReference->At(currentPosition.x, currentPosition.y).state = ALLY;
-                            mapReference->At(currentPosition.x, currentPosition.y).occuper = this;
+                            mapReference->SetTileState(currentPosition, ALLY, tileNumber);
+                            //mapReference->At(currentPosition.x, currentPosition.y).state = ALLY;
+                            mapReference->SetTileOccuper(currentPosition, this, tileNumber);
+                            //mapReference->At(currentPosition.x, currentPosition.y).occuper = this;
+                            //teste de posicionamento de som
                             soundFX.Play(0);
 
                             #ifdef DEBUG
@@ -306,9 +305,7 @@ void Ally::Andar(){
                                 RangeAreaUpdate( 0, -1);
                             }
                 }
-                if(Is("Robo")){
-                    OrientarSprite();
-                }
+            OrientarSprite();
             }
 }
 
@@ -320,9 +317,7 @@ void Ally::Parar(){
 //reduz a vida do ally
 //void Ally::Danificar(float dano)
 //{
-//    int vidaNova = vida.GetVida();
-//    vidaNova -= dano - defesa/10;
-//    vida.SetVida(vidaNova);
+//    this->vidaAtual -= dano - defesa/10;
 //}
 
 //notifica as colisoes de ally
@@ -338,12 +333,9 @@ void Ally::Atacar()
         cout << this->nome <<": Yaah! >=O" << endl;
         Enemy* enemyTarget = (Enemy*) closeEnemies.begin()->first;
         enemyTarget->Danificar( ataque );
-        #ifdef ANDRE
-            Sound soundFX("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/audio/boom.wav");
-        #endif
-        #ifdef MASHIRO
-            Sound soundFX("images/audio/boom.wav");
-        #endif
+        //teste de posicionamento de som
+        Sound soundFX("images/audio/boom.wav");
+        soundFX.Play(0);
         if(mapReference->PixelPositionToMapPosition(enemyTarget->box.RectCenterX()) > mapReference->PixelPositionToMapPosition(box.RectCenterX())){
             allyPosition = RIGHT;
         }else if(mapReference->PixelPositionToMapPosition(enemyTarget->box.RectCenterX()) < mapReference->PixelPositionToMapPosition(box.RectCenterX())){
@@ -354,21 +346,7 @@ void Ally::Atacar()
             allyPosition = BACK;
         }
         OrientarSprite();
-        Atirar(enemyTarget->box.RectCenterX(), enemyTarget->box.RectCenterY());
     }
-}
-
-void Ally::Atirar(float x, float y)
-{
-    float pX = x - box.RectCenterX() - Camera::pos.x;
-    float pY = y - box.RectCenterY() - Camera::pos.y;
-    float ang = atan2(pY, pX);
-    float speed = 1.1;
-    float maxDistance = 100;//sqrt(pX*pX + pY*pY);
-
-//    Sprite sprite("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/tiro.png", 3, 200);
-//    Bullet* bullet = new Bullet(box.RectCenterX(), box.RectCenterY(), 1, 0.001, maxDistance, sprite, 0);
-//    Game::GetInstance().GetCurrentState().AddObject(bullet);
 }
 
 //gerencia o ally em seu modo de defesa.
@@ -408,22 +386,28 @@ void Ally::Especial()
 
 }
 
-void Ally::MakePath(/*int line, int row*/)
+void Ally::MakePath(int tileNumber)
 {
-    int line = mapReference->PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x );
-    int row =  mapReference->PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y );
+    Point newPoint;
+    newPoint.x = mapReference->PixelPositionToMapPosition( InputManager::GetInstance().GetMouseX() + Camera::pos.x, tileNumber );
+    newPoint.y = mapReference->PixelPositionToMapPosition( InputManager::GetInstance().GetMouseY() + Camera::pos.y, tileNumber );
+    cout << "novo ponto: " << newPoint.x << ", " << newPoint.y << endl;
     if(path.size() < distance && //ainda pode andar E
-       line < mapReference->GetHeight() && //está dentro das linhas do mapa E
-       row < mapReference->GetWidth()){ //está dentro das colunas do mapa
+       newPoint.x + (tileNumber - 1) < mapReference->GetHeight()  && //está dentro das linhas do mapa E
+       newPoint.y + (tileNumber - 1) < mapReference->GetWidth()){ //está dentro das colunas do mapa
 
-        if(mapReference->At(line, row).state == FREE ||
-           mapReference->At(line, row).state == ALLY){
+//        if(mapReference->At(line, row).state == FREE ||
+//           mapReference->At(line, row).state == ALLY){
+        if(mapReference->CheckTileState(newPoint, FREE, tileNumber) ||
+           mapReference->CheckTileState(newPoint, ALLY, tileNumber) ){
+
+
            //cout << "ponto ( " << line << ", " << row << ") adicionado" << endl;
            //cout << "mapStateAt( " << line << ", " << row << "): " << mapReference->At(line, row).state << endl;
 
            //se a lista de pontos estiver vazia ou
            //se o novo ponto for vizinho do ponto anterior
-           Point newPoint(line, row);
+           //Point newPoint(line, row);
 
            if( path.empty() == true){
                path.push( newPoint );
@@ -443,9 +427,10 @@ void Ally::MakePath(/*int line, int row*/)
 }
 
 
-bool Ally::ValidPath()
+bool Ally::ValidPath(int tileNumber)
 {
-    if(mapReference->At(path.back().x, path.back().y).state == FREE ) return true;
+    if(mapReference->CheckTileState(path.back(), FREE, tileNumber) ) return true;
+                   //At(path.back().x, path.back().y).state == FREE
     else return false;
 }
 
@@ -474,18 +459,11 @@ void Ally::OrientarSprite()
 void Ally::Abrir_Menu(){
     float offSet = 125;
     float angulo = 0;
-#ifdef ANDRE
-    Sprite botao("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2andar.png");
-    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2especial.png");
-    Sprite botao3("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botaoItens.png");
-    Sprite botao4("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/botao2Ejetar.png");
-#endif
-#ifdef MASHIRO
-    Sprite botao("images/img/botaoMover.png");
-    Sprite botao2("images/img/botaoDefender.png");
-    Sprite botao3("images/img/botaoItens.png");
-    Sprite botao4("images/img/botaoEspecial.png");
-#endif
+    Sprite botao("img/botao2andar.png");
+    Sprite botao2("img/botao2especial.png");
+    Sprite botao3("img/botaoItens.png");
+    Sprite botao4("img/botao2Ejetar.png");
+
     StillAnimation* botaoAnim = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
                                                    rotation, botao, 50, false);
@@ -548,6 +526,7 @@ float Ally::GetPorcentagemVida()
 {
     return vida.GetPorcentagemVida();
 }
+
 
 CharacterPosition Ally::GetAllyPosition()
 {

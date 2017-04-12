@@ -32,6 +32,7 @@ private:
     std::vector<Ally*> objectArray;
     Text texto;
     int offSet;
+    bool showDebug;
 };
 
 #endif // INFOMENU_H

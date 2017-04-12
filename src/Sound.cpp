@@ -1,4 +1,4 @@
-#include "Sound.h"
+#include "../include/Sound.h"
 
 unordered_map<string, Mix_Chunk*> Sound::assetTable;
 Sound::Sound()

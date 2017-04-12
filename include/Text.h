@@ -26,7 +26,7 @@ class Text
         };
         Text();
         Text(string fontFile, int fontSize, TextStyle style,
-             string text, SDL_Color color, int x = 0, int y = 0);
+             string text, int x = 0, int y = 0);
 //        Text(string fontFile, int fontSize, TextStyle style,
 //             string text, int x = 0, int y = 0);
 
@@ -34,18 +34,21 @@ class Text
         void Render(int cameraX = 0, int cameraY = 0);
         void SetPos(int x , int y, bool centerX = false, bool centerY = false);
         void SetText(string text);
-        void SetColor(SDL_Color color);
+        void SetColor(int r = 0, int g = 0, int b = 0, int alpha = 255);
         void SetStyle(TextStyle style);
         void SetFontSize(int fontSize);
         static void Clear();
 
         void Initialize(string fontFile, int fontSize, TextStyle style,
-                        string text, SDL_Color color, int x = 0, int y = 0);
+                        string text, int x = 0, int y = 0);
         void SetColor(SDL_Color* color, int r, int g, int b, int a);
-        int GetPosX(){return box.x;};
-        int GetPosY(){return box.y;};
+        float GetPosX();
+        float GetPosY();
+        float GetWidth();
+        float GetHeigth();
+        string GetText();
         bool IsInside(float x, float y){return box.IsInside(x, y);};
-        Timer cronometro;
+        //Timer cronometro;
 
     protected:
     private:

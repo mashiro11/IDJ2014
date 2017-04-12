@@ -17,12 +17,10 @@ public:
     void Morrer();
     void Danificar(float dano);
 
-
 protected:
     /*vazio*/
 private:
     std::vector<Piloto*> pilotoArray;
-
 };
 
 #endif // ROBO_H

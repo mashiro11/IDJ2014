@@ -1,10 +1,13 @@
 #include <stdio.h>
 
-#include "Game.h"
-#include "TitleState.h"
-
+#include "../include/Game.h"
+#include "../include/TitleState.h"
+#ifndef GAME_WIDTH
+    #define GAME_WIDTH 1024
+    #define GAME_HEIGTH 600
+#endif // GAME_WIDTH
 int main(int argc, char** argv){
-    Game novoJogo("Jogo teste", 1024, 600);
+    Game novoJogo("Jogo teste", GAME_WIDTH, GAME_HEIGTH);
     novoJogo.Push(new TitleState);
     novoJogo.Run();
     return 0;

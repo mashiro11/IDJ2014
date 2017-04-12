@@ -1,4 +1,15 @@
-#include "Text.h"
+#include "../include/Text.h"
+
+//#define DEBUG
+#ifdef DEBUG
+        //se estiver definido debug, imprime os trecos
+        #define DEBUG_PRINT(message) do{std::cout << message << std::endl;}while(0);
+        #define DEBUG_ONLY(x) do{x;}while(0);
+#else
+        //caso contrario, recebe argumentos mas faz nada
+        #define DEBUG_PRINT(message)
+        #define DEBUG_ONLY(x) //do{;}while(0)
+#endif //DEBUG
 
 unordered_map<string, TTF_Font*> Text::assetTable;
 Text::Text()
@@ -7,47 +18,42 @@ Text::Text()
 }
 
 Text::Text(string fontFile, int fontSize, TextStyle style,
-           string text, SDL_Color color, int x, int y)
+           string text, int x, int y)
 {
     texture = NULL;
     this->fontFile = fontFile;
     this->text = text;
     this->style = style;
     this->fontSize = fontSize;
-    this->color.r = color.r;
-    this->color.b = color.b;
-    this->color.g = color.g;
-    this->color.a = color.a;
-
+    SetColor(255, 0, 0);
+    box.x = x;
+    box.y = y;
 
     //facilita concatenação de string e inteiros
     stringstream aux;
-    aux << fontFile << fontSize;
 
+    aux << fontFile << fontSize;
     if(assetTable.find( aux.str() ) != assetTable.end() ){
             font = assetTable.find( aux.str() )->second;
     }else{
             font = TTF_OpenFont( fontFile.c_str(), fontSize);
-            //cout << "cheguei aqui font: " << font << " " <<  fontFile << endl;
             assetTable.emplace( aux.str(), font);
     }
+
     RemakeTexture();
 }
 
 void Text::Initialize(string fontFile, int fontSize, TextStyle style,
-                      string text, SDL_Color color, int x, int y)
+                      string text, int x, int y)
 {
     texture = NULL;
     this->fontFile = fontFile;
     this->text = text;
     this->style = style;
     this->fontSize = fontSize;
-
-    this->color.r = color.r;
-    this->color.b = color.b;
-    this->color.g = color.g;
-    this->color.a = color.a;
-
+    SetColor(255, 0, 0);
+    box.x = x;
+    box.y = y;
 
     //facilita concatenação de string e inteiros
     stringstream aux;
@@ -57,7 +63,6 @@ void Text::Initialize(string fontFile, int fontSize, TextStyle style,
             font = assetTable.find( aux.str() )->second;
     }else{
             font = TTF_OpenFont( fontFile.c_str(), fontSize);
-            //cout << "cheguei aqui font: " << font << " " <<  fontFile << endl;
             assetTable.emplace( aux.str(), font);
     }
     RemakeTexture();
@@ -98,18 +103,12 @@ void Text::SetText(string text)
     RemakeTexture();
 }
 
-void Text::SetColor(SDL_Color color)
+void Text::SetColor(int r, int g, int b, int alpha)
 {
-    this->color = color;
-    RemakeTexture();
-}
-
-void Text::SetColor(SDL_Color* color, int r, int g, int b, int a)
-{
-    color->r = r;
-    color->g = g;
-    color->b = b;
-    color->a = a;
+    this->color.r = r;
+    this->color.g = g;
+    this->color.b = b;
+    this->color.a = alpha;
 }
 
 void Text::SetStyle(TextStyle style)
@@ -153,3 +152,26 @@ void Text::RemakeTexture()
     box.h = temp->h;
     SDL_FreeSurface(temp);
 }
+
+float Text::GetPosX(){
+    return box.x;
+}
+
+float Text::GetPosY(){
+    return box.y;
+}
+
+float Text::GetWidth(){
+    return box.w;
+}
+
+float Text::GetHeigth(){
+    return box.h;
+}
+string Text::GetText(){
+    return text;
+}
+
+#ifdef DEBUG
+    #undef DEBUG
+#endif // DEBUG

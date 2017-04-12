@@ -1,10 +1,10 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-
 #include <queue>
 #include <vector>
 #include <list>
+#include <stack>
 #include <unordered_map>
 #include <sstream>
 
@@ -23,9 +23,14 @@ using std::unordered_map;
 using std::stringstream;
 
 enum CharacterPosition{FRONT, BACK, LEFT, RIGHT};
-enum CharState{ATACANDO, DEFENDENDO, INATIVO, MOVENDO, AGUARDANDO_ANDAR, AGUARDANDO_EMBARCAR, AGUARDANDO_ITEM, REPOUSO, EMBARCAR,
-               ESPECIAL, AGUARDANDO_ALVO};
+enum CharState{ATACANDO, DEFENDENDO, INATIVO, MOVENDO,
+               AGUARDANDO_ANDAR, AGUARDANDO_EMBARCAR,
+               AGUARDANDO_ITEM, REPOUSO, EMBARCAR, ESPECIAL, AGUARDANDO_ALVO};
 
+typedef struct nodo{
+    int indice;
+    Point point;
+}NODO;
 
 class Character: public GameObject{
 
@@ -39,7 +44,7 @@ class Character: public GameObject{
             virtual bool Is(string type) = 0;
             virtual void NotifyCollision(GameObject& other) = 0;
 
-            void MakeRangeArea();
+            void MakeRangeArea(int tileNumber = 1);
             void RangeAreaUpdate(int x, int y);
             void CloseEnemiesUpdate();
             void IdentifyOpponent();
@@ -51,9 +56,12 @@ class Character: public GameObject{
             virtual void Especial() = 0;
             void Atacar();
             void OrientarSprite();
-            CharacterPosition GetCharacterPosition();
+            string GetNome();
+            void Pathfinder(int goalX, int goalY);
+            bool Centered();
             int GetCurrentX();
             int GetCurrentY();
+
 
         protected:
             Sprite sp;
@@ -64,7 +72,10 @@ class Character: public GameObject{
             unordered_map<GameObject*, Point> closeEnemies;
             TileMap *mapReference;
             vector<Point> rangeMap;//guardar a área de ataque
+            queue<Point> path; //caminho que irá andar
+            vector<NODO> processed;
             Timer timer;
+            int tileNumber;
 
             /**
                 STATUS
@@ -75,7 +86,9 @@ class Character: public GameObject{
             float ataque;//poder de ataque
             float defesa;//poder de defesa
             int range;//alcance de ataque
-            //int coolDown;
+            int coolDown;
+            int atackCoolDown;//tempo de espera para novo movimento
+            int distance;
 
         private:
 };

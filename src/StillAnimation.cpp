@@ -1,4 +1,4 @@
-#include "StillAnimation.h"
+#include "../include/StillAnimation.h"
 
 StillAnimation::StillAnimation (float x, float y, float rotation, Sprite sprite, float timeLimit, bool ends):
     sp(sprite)

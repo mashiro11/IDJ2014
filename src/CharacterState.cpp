@@ -1,41 +1,20 @@
-#include "CharacterState.h"
+#include "../include/CharacterState.h"
 
 CharacterState::CharacterState()
 {
-    #ifdef ANDRE
-    bg.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/title.jpg");
-    selecao.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/selecaoOld.png");
-    selecionado.Open("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/selecionado.png");
-    #endif
-    #ifdef MASHIRO
-    bg.Open("images/img/title.jpg");
-    selecao.Open("images/img/selecao.png");
-    selecionado.Open("images/img/selecionado.png");
-    #endif
+    bg.Open("img/screenSbuttons.png");
+    selecao.Open("img/selecaoOld.png");
+    selecionado.Open("img/selecionado.png");
 
-    SDL_Color color;
-    color.r =   0;
-    color.b =   0;
-    color.g =   0;
-    color.a = 255;
-    #ifdef ANDRE
-    instruction.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 55, Text::TEXT_BLENDED, "Escolha", color);
+    instruction.Initialize("images/font/Call me maybe.ttf", 55, Text::TEXT_BLENDED, "Escolha");
+    instruction.SetColor(255, 0, 0);
     instruction.SetPos(Game::GetInstance().GetWindowWidth()/2,
                  Game::GetInstance().GetWindowHeight()*1/20, true, true);
 
-    inicio.Initialize("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/font/Call me maybe.ttf", 50, Text::TEXT_BLENDED, "Jogar", color);
+    inicio.Initialize("images/font/Call me maybe.ttf", 50, Text::TEXT_BLENDED, "Jogar");
+    inicio.SetColor(255, 0, 0);
     inicio.SetPos(Game::GetInstance().GetWindowWidth()*12/13,
                  Game::GetInstance().GetWindowHeight()*14/15, true, true);
-    #endif
-    #ifdef MASHIRO
-    instruction.Initialize("images/font/Call me maybe.ttf", 55, Text::TEXT_BLENDED, "Escolha", color);
-    instruction.SetPos(Game::GetInstance().GetWindowWidth()/2,
-                 Game::GetInstance().GetWindowHeight()*1/20, true, true);
-
-    inicio.Initialize("images/font/Call me maybe.ttf", 50, Text::TEXT_BLENDED, "Jogar", color);
-    inicio.SetPos(Game::GetInstance().GetWindowWidth()*12/13,
-                 Game::GetInstance().GetWindowHeight()*14/15, true, true);
-    #endif
 
     PopulaArray();
     CriaStatus();
@@ -82,7 +61,7 @@ void CharacterState::Render()
 {
     bg.Render(0,0);
     selecao.Render(50,5);
-    selecionado.Render(bg.GetWidth()/2 + 50, 70);
+    selecionado.Render(Game::GetInstance().GetWindowWidth()/2 + 50, 70);
     instruction.Render(0,0);
     inicio.Render(0,0);
 
@@ -93,10 +72,6 @@ void CharacterState::Render()
     for(int j = 0; j < selecionadoArray.size(); j++){
         selecionadoArray[j].Render(0,0);
     }
-
-//     for(int k = 0; k < statusArray.size(); k++){
-//         statusArray[k].Render(0,0);
-//     }
 }
 
 void CharacterState::Input()
@@ -144,26 +119,14 @@ void CharacterState::Input()
 
 void CharacterState::PopulaArray()
 {
-#ifdef ANDRE
-    Sprite botao("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface.png");
-    Sprite botao2("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface2.png");
-    Sprite botao3("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface3.png");
-    Sprite botao4("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface4.png");
-    Sprite botao5("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface5.png");
-    Sprite botao6("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface6.png");
-    Sprite botao7("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface7.png");
-    Sprite botao8("C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/penguinface8.png");
-#endif
-#ifdef MASHIRO
-    Sprite botao("images/img/penguinface.png");
-    Sprite botao2("images/img/penguinface2.png");
-    Sprite botao3("images/img/penguinface3.png");
-    Sprite botao4("images/img/penguinface4.png");
-    Sprite botao5("images/img/penguinface5.png");
-    Sprite botao6("images/img/penguinface6.png");
-    Sprite botao7("images/img/penguinface7.png");
-    Sprite botao8("images/img/penguinface8.png");
-#endif
+    Sprite botao("img/penguinface.png");
+    Sprite botao2("img/penguinface2.png");
+    Sprite botao3("img/penguinface3.png");
+    Sprite botao4("img/penguinface4.png");
+    Sprite botao5("img/penguinface5.png");
+    Sprite botao6("img/penguinface6.png");
+    Sprite botao7("img/penguinface7.png");
+    Sprite botao8("img/penguinface8.png");
 
     StillAnimation* botaoAnim = new StillAnimation(150, 80 + 75*characterArray.size(), 0, botao, 50, false);
     characterArray.emplace_back(*botaoAnim);
