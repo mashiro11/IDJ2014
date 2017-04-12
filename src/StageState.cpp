@@ -12,7 +12,7 @@ backGroundMusic("images/audio/Tema_Boss_01.wav")
                                                   InputManager::GetInstance().GetMouseY());
     aux << position.x << " x " << position.y;
 
-    InfoMenu *menuLateral = new InfoMenu(GAME_WIDTH, 0);
+    InfoMenu *menuLateral = new InfoMenu(770,0);//(GAME_WIDTH, 0);
     this->infoMenu = menuLateral;
 
     Camera::pos.x = 300;

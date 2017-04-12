@@ -134,6 +134,7 @@ void Text::Clear()
 
 void Text::RemakeTexture()
 {
+    //http://stackoverflow.com/questions/22886500/how-to-render-text-in-sdl2
     if(texture != NULL) SDL_DestroyTexture(texture);
     SDL_Surface* temp = NULL;
     switch( style ){

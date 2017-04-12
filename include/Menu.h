@@ -22,6 +22,11 @@
 #define BUTTON_NOT_SELECTED     "img/buttonnotselected.png"
 #define BUTTON_OFFSET_Y         5
 
+enum MenuType{
+    HORIZONTAL = 0,
+    VERTICAL
+};
+
 class Menu//: public GameObject
 {
 public:
@@ -39,19 +44,21 @@ public:
 //    bool GetSelection();
     int GetSelectedOption();
     void AddMenuOption(string newOpt);
-//    void RemoveMenuOption(int option);
-    void SetPosition(float x, float y);
-    void OrganizeOptions();
+    void RemoveMenuOption(int option);
+    void SetType(MenuType mt);
+    void SetPosition(float x, float y, bool centered = false);
+    void SetSpacement(float esp);
 
 
 protected:
 
 private:
+    void OrganizeOptions(bool centered);
 //    Text start;
 //    Text options;
 //    Text quit;
     int selectedOption;
-    int newLineSpace;
+    int safeSpace;
 //    int currentOption;
 //    int lastOption;
 //    int selectedOption;
@@ -62,6 +69,8 @@ private:
     bool gotInput;
     void HandleInputs();
     Rect box;
+    MenuType menuType;
+    float absoluteX,absoluteY, espacamento;
 };
 
 #endif // MENU_H

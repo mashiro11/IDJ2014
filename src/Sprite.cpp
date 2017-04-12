@@ -112,7 +112,7 @@ void Sprite::SetClip(int x, int y, int w, int h)
     clipRect.h = h;
 }
 
-void Sprite::Render(int x, int y, float angle)
+void Sprite::Render(int x, int y, float angle, bool centered)
 {
     SDL_Rect dimCopy;
     dimCopy.x = x ;//+ clipRect.w * scaleX;

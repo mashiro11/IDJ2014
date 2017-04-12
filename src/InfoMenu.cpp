@@ -6,7 +6,7 @@ InfoMenu::InfoMenu(float x, float y):
 {
     sp.Open("img/infoMenu.png");
 
-    box.x = x - sp.GetWidth();
+    box.x = x;// - sp.GetWidth();
     box.y = y;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();

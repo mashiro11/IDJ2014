@@ -11,7 +11,7 @@
 #include "CharacterState.h"
 #include "Menu.h"
 
-#define TITLE_STATE_BACKGROUND "img/screen.png"
+#define TITLE_STATE_BACKGROUND "img/screenSbuttons.png"
 #define TITLE_STATE_MUSIC "images/audio/Tema_01.wav"
 
 
