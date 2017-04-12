@@ -34,3 +34,5 @@ obj/
 bin/
 images/
 Tranqueira\ velha/
+*.depend
+*.layout
