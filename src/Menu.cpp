@@ -12,17 +12,22 @@
 #endif //DEBUG
 
 Menu::Menu(){
-    box.x = 0;
-    box.y = 0;
+    menuType = VERTICAL;
+    absoluteX = box.x = 0;
+    absoluteY = box.y = 0;
+    espacamento = 0;
     box.w = 0;
     box.h = 0;
+    safeSpace = 0;
     AddMenuOption("JOGAR");
     AddMenuOption("Opcoes");
     AddMenuOption("Sair");
-    DEBUG_PRINT("Posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
-    DEBUG_PRINT("Size box(" << options[0]->GetWidth() << "," << options[0]->GetHeigth() << ")")
+    DEBUG_PRINT("Menu::Menu()")
+    DEBUG_PRINT(" Posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
+    DEBUG_PRINT(" Textura de 'JOGAR' box(" << options[0]->GetWidth() << "x" << options[0]->GetHeigth() << ")")
+    DEBUG_PRINT(" MenuPosition(" << box.x << "x" << box.y << ")")
+    DEBUG_PRINT(" MenuSize(" << box.w << "x" << box.h << ")")
 
-    newLineSpace = options[0]->GetWidth();//no minimo
     selectedOption = -1;
 }
 Menu::~Menu()
@@ -126,13 +131,6 @@ void Menu::Render(int x, int y){
 //    return MENU_TYPE;
 //}
 //
-//int Menu::GetLayer(){
-//    return 0;
-//}
-//
-//int Menu::GetSublayer(){
-//    return 0;
-//}
 //bool Menu::GetSelection(){
 //    if(selectedOption != -1) return true;
 //    else return false;
@@ -147,32 +145,102 @@ int Menu::GetSelectedOption(){
 void Menu::AddMenuOption(string newOpt){
 
     options.push_back(new Text(MENU_TEXT_FONT, MENU_TEXT_FONT_SIZE, Text::TEXT_BLENDED, newOpt) );
-    options.back()->SetPos(box.x, box.y + newLineSpace*(options.size()-1));
+
+    switch(menuType){
+        case VERTICAL:
+            options.back()->SetPos(box.x, box.y + safeSpace*(options.size()-1));
+            if(options.size() == 1) safeSpace = options[0]->GetHeigth();//minimo
+
+            //      TEMPORARIO: box não necessariamente vai ter Height da soma dos textos
+            if(options.back()->GetWidth() > box.w) box.w = options.back()->GetWidth();
+            box.h += options.back()->GetHeigth();
+
+            break;
+        case HORIZONTAL:
+            options.back()->SetPos(box.x + box.w , box.y);//minimo
+            box.w += options.back()->GetWidth();
+            break;
+    }
+
+
+
 
 //    Sprite selectedButton;
 //    selectedButton.SetFile(BUTTON_NOT_SELECTED);// = Sprite(BUTTON_NOT_SELECTED);
 //    buttons.push_back(selectedButton);
 }
 
-//void Menu::RemoveMenuOption(int option){
-//    options.erase(options.begin() + option);
+void Menu::RemoveMenuOption(int option){
+    options.erase(options.begin() + option);
 //    buttons.erase(buttons.begin() + option);
-//
-//    for(int i = 0; i < options.size(); i++){
-//        this->options[i]->SetPos(this->box.x,this->box.y + newLineSpace*i,true,false);
-//    }
+    switch(menuType){
+        case VERTICAL:
+            for(int i = 0; i < options.size(); i++){
+                this->options[i]->SetPos(this->box.x,this->box.y + safeSpace*i,true,false);
+            }
+            break;
+        case HORIZONTAL:
+            break;
+    }
 //    options[currentOption]->SetColor(TEXT_BLACK);
-//}
-//
-void Menu::SetPosition(float x, float y){
-    box.x = x;
-    box.y = y;
-    OrganizeOptions();
 }
 
-void Menu::OrganizeOptions(){
-    for(unsigned int i = 0; i < options.size(); i++){
-        this->options[i]->SetPos(box.x, box.y + newLineSpace*i);
+void Menu::SetPosition(float x, float y, bool centered){
+    absoluteX = x;
+    absoluteY = y;
+    if(centered){
+        box.x = absoluteX - box.w/2;
+        box.y = absoluteY - box.h/2;
+    }else{
+        box.x = x;
+        box.y = y;
+    }
+    OrganizeOptions(centered);
+    DEBUG_PRINT("Menu::SetPosition()");
+    DEBUG_PRINT(" Primeira Opcao: posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
+    DEBUG_PRINT(" Primeira Opcao: dimens. box(" << options[0]->GetWidth() << "x" << options[0]->GetHeigth() << ")")
+    DEBUG_PRINT(" Menu: posicao(" << box.x << "x" << box.y << ")")
+    DEBUG_PRINT(" Menu: dimens.(" << box.w << "x" << box.h << ")")
+}
+
+void Menu::SetSpacement(float esp){
+    espacamento = esp;
+    OrganizeOptions(absoluteX == box.x);
+}
+
+void Menu::SetType(MenuType mt){
+    menuType = mt;
+    box.w = 0;
+    box.h = 0;
+    box.x = absoluteX;
+    box.y = absoluteY;
+}
+
+void Menu::OrganizeOptions(bool centered){
+    switch(menuType){
+        case VERTICAL:
+            for(unsigned int i = 0; i < options.size(); i++){
+                this->options[i]->SetPos(box.x, box.y + safeSpace*i);
+            }
+            break;
+        case HORIZONTAL:
+            box.h = options[0]->GetHeigth();
+            box.w = (options.size()-1)*espacamento;
+            cout << box.w << endl;
+            for(unsigned int i = 0; i < options.size(); i++){
+                box.w += options[i]->GetWidth();
+            }
+            if(centered){
+                box.x = absoluteX - box.w/2;
+                box.y = absoluteY - box.h/2;
+            }
+
+            int sum = 0;
+            for(unsigned int i = 0; i < options.size(); i++){
+                this->options[i]->SetPos(box.x + sum, box.y);
+                sum += options[i]->GetWidth() + espacamento;
+            }
+            break;
     }
 }
 #ifdef DEBUG
