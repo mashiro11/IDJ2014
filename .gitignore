@@ -29,8 +29,8 @@
 *.app
 
 #Folders
-img\
-obj\
-bin\
-images\
-"Tranqueira velha\"
+img/
+obj/
+bin/
+images/
+"Tranqueira velha/"
