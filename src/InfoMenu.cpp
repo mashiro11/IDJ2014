@@ -4,16 +4,15 @@
 InfoMenu::InfoMenu(float x, float y):
     cronometro()
 {
-    sp.Open("img/infoMenu.png");
+    sp.Open(INFO_MENU_FILE);
 
     box.x = x;// - sp.GetWidth();
     box.y = y;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
-    sp.SetScaleX(0.25);
     minutos = 0;
 
-    texto.Initialize("images/font/Call me maybe.ttf", 60,Text::TEXT_SOLID, "Inicio");
+    texto.Initialize(INFO_MENU_FONT, 60,Text::TEXT_SOLID, "Inicio");
     texto.SetColor(255, 0, 0);
     texto.SetPos(x + 75, y + 550, true, true);
     showDebug = false;
