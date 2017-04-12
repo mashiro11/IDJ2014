@@ -16,9 +16,8 @@ TitleState::TitleState()
     bg.Open(TITLE_STATE_BACKGROUND);
     mainTheme.Open(TITLE_STATE_MUSIC);
     mainTheme.Play(-1);
-    menu.SetType(HORIZONTAL);
-    menu.SetSpacement(50);//arbitrario
-    menu.SetPosition(GAME_WIDTH/2, GAME_HEIGTH*7/8, true);//arbitrario
+    menu.SetDirection(VERTICAL, 50);//arbitrario temporário
+    menu.SetPosition(GAME_WIDTH/2, GAME_HEIGTH*7/8, true);//arbitrario temporário
 }
 
 void TitleState::Update(float dt)
@@ -40,7 +39,7 @@ void TitleState::Update(float dt)
 
 void TitleState::Render()
 {
-    bg.Render( (GAME_WIDTH-bg.GetWidth())/2 );
+    bg.Render( (GAME_WIDTH-bg.GetWidth())/2 );//temporário
     menu.Render();
 }
 

@@ -8,6 +8,9 @@
 #include "Piloto.h"
 #include "BarraVidaMenu.h"
 
+#define INFO_MENU_FILE "img/infoMenu.png"
+#define INFO_MENU_FONT "images/font/Call me maybe.ttf"
+
 class InfoMenu{
 public:
     InfoMenu(float x, float y);

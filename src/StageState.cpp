@@ -1,10 +1,10 @@
 #include "../include/StageState.h"
 
 StageState::StageState(CharacterData characters):
-bg("img/ocean.jpg"),
-tileSet(64,64, "img/tileSet.jpg"),
-tileMap("images/map/tileMap20x20.txt", &tileSet),
-backGroundMusic("images/audio/Tema_Boss_01.wav")
+bg(STAGE_BACKGROUND_FILE),
+tileSet(STAGE_TILE_W_H,STAGE_TILE_W_H, STAGE_TILESET_FILE),
+backGroundMusic(STAGE_BACKGROUND_MUSIC_FILE),
+tileMap(STAGE_TILEMAP_FILE, &tileSet)
 {
     backGroundMusic.Play(-1);
     stringstream aux;
@@ -34,13 +34,12 @@ backGroundMusic("images/audio/Tema_Boss_01.wav")
     chefe->MakeRangeArea();
     objectArray.emplace_back(chefe);
 
-    chessPosition.Initialize("images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, aux.str());
+    chessPosition.Initialize(STAGE_FONT_FILE, 60, Text::TEXT_BLENDED, aux.str());
     chessPosition.SetColor(255, 0, 0);
 
     chessPosition.SetPos( 0, 0);
     chessPosition.SetText(aux.str());
     tileNumber = 1;
-    cout << "construtor do stageState: fim" << endl;
     showDebug = false;
 }
 

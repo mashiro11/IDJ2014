@@ -1,6 +1,6 @@
 #include "../include/Menu.h"
 
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
         //se estiver definido debug, imprime os trecos
         #define DEBUG_PRINT(message) do{std::cout << message << std::endl;}while(0);
@@ -22,6 +22,8 @@ Menu::Menu(){
     AddMenuOption("JOGAR");
     AddMenuOption("Opcoes");
     AddMenuOption("Sair");
+
+
     DEBUG_PRINT("Menu::Menu()")
     DEBUG_PRINT(" Posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
     DEBUG_PRINT(" Textura de 'JOGAR' box(" << options[0]->GetWidth() << "x" << options[0]->GetHeigth() << ")")
@@ -77,7 +79,6 @@ void Menu::HandleInputs(){
         for(int i = 0; i<options.size(); i++){
             if(options[i]->IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                                     InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
-                cout << "IsInside:" << options[i]->GetText() << endl;
                 gotInput = true;
                 selectedOption = i;
             }
@@ -145,26 +146,7 @@ int Menu::GetSelectedOption(){
 void Menu::AddMenuOption(string newOpt){
 
     options.push_back(new Text(MENU_TEXT_FONT, MENU_TEXT_FONT_SIZE, Text::TEXT_BLENDED, newOpt) );
-
-    switch(menuType){
-        case VERTICAL:
-            options.back()->SetPos(box.x, box.y + safeSpace*(options.size()-1));
-            if(options.size() == 1) safeSpace = options[0]->GetHeigth();//minimo
-
-            //      TEMPORARIO: box não necessariamente vai ter Height da soma dos textos
-            if(options.back()->GetWidth() > box.w) box.w = options.back()->GetWidth();
-            box.h += options.back()->GetHeigth();
-
-            break;
-        case HORIZONTAL:
-            options.back()->SetPos(box.x + box.w , box.y);//minimo
-            box.w += options.back()->GetWidth();
-            break;
-    }
-
-
-
-
+    _organizeOptions();
 //    Sprite selectedButton;
 //    selectedButton.SetFile(BUTTON_NOT_SELECTED);// = Sprite(BUTTON_NOT_SELECTED);
 //    buttons.push_back(selectedButton);
@@ -188,14 +170,9 @@ void Menu::RemoveMenuOption(int option){
 void Menu::SetPosition(float x, float y, bool centered){
     absoluteX = x;
     absoluteY = y;
-    if(centered){
-        box.x = absoluteX - box.w/2;
-        box.y = absoluteY - box.h/2;
-    }else{
-        box.x = x;
-        box.y = y;
-    }
-    OrganizeOptions(centered);
+    this->centered = centered;
+    _organizeOptions();
+
     DEBUG_PRINT("Menu::SetPosition()");
     DEBUG_PRINT(" Primeira Opcao: posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
     DEBUG_PRINT(" Primeira Opcao: dimens. box(" << options[0]->GetWidth() << "x" << options[0]->GetHeigth() << ")")
@@ -203,24 +180,30 @@ void Menu::SetPosition(float x, float y, bool centered){
     DEBUG_PRINT(" Menu: dimens.(" << box.w << "x" << box.h << ")")
 }
 
-void Menu::SetSpacement(float esp){
-    espacamento = esp;
-    OrganizeOptions(absoluteX == box.x);
-}
-
-void Menu::SetType(MenuType mt){
+void Menu::SetDirection(MenuType mt, float esp){
     menuType = mt;
+    espacamento = esp;
     box.w = 0;
     box.h = 0;
-    box.x = absoluteX;
-    box.y = absoluteY;
+    _organizeOptions();
 }
 
-void Menu::OrganizeOptions(bool centered){
+void Menu::_organizeOptions(){
+    box.x = absoluteX;
+    box.y = absoluteY;
     switch(menuType){
         case VERTICAL:
+            box.h = (options.size()*(options[0]->GetHeigth() + espacamento) - espacamento);
             for(unsigned int i = 0; i < options.size(); i++){
-                this->options[i]->SetPos(box.x, box.y + safeSpace*i);
+                if(options[i]->GetWidth() > box.w)
+                    box.w = options[i]->GetWidth();
+            }
+            if(centered){
+                box.x -= box.w/2;
+                box.y -= box.h/2;
+            }
+            for(unsigned int i = 0; i < options.size(); i++){
+                this->options[i]->SetPos(box.x, box.y + (options[0]->GetHeigth()+espacamento)*i );
             }
             break;
         case HORIZONTAL:
@@ -231,10 +214,9 @@ void Menu::OrganizeOptions(bool centered){
                 box.w += options[i]->GetWidth();
             }
             if(centered){
-                box.x = absoluteX - box.w/2;
-                box.y = absoluteY - box.h/2;
+                box.x -= box.w/2;
+                box.y -= box.h/2;
             }
-
             int sum = 0;
             for(unsigned int i = 0; i < options.size(); i++){
                 this->options[i]->SetPos(box.x + sum, box.y);

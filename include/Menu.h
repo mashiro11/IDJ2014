@@ -45,15 +45,14 @@ public:
     int GetSelectedOption();
     void AddMenuOption(string newOpt);
     void RemoveMenuOption(int option);
-    void SetType(MenuType mt);
+    void SetDirection(MenuType mt, float esp = 0);
     void SetPosition(float x, float y, bool centered = false);
-    void SetSpacement(float esp);
 
 
 protected:
 
 private:
-    void OrganizeOptions(bool centered);
+    void _organizeOptions();
 //    Text start;
 //    Text options;
 //    Text quit;
@@ -71,6 +70,7 @@ private:
     Rect box;
     MenuType menuType;
     float absoluteX,absoluteY, espacamento;
+    bool centered;
 };
 
 #endif // MENU_H
