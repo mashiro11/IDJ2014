@@ -1,6 +1,6 @@
 #include "../include/Menu.h"
 
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
         //se estiver definido debug, imprime os trecos
         #define DEBUG_PRINT(message) do{std::cout << message << std::endl;}while(0);
@@ -52,15 +52,6 @@ void Menu::Update(float dt){
     HandleInputs();
     cronometro.Update(dt);
     if( cronometro.Get() > 2 ) cronometro.Restart();
-////    this->buttonSelected.Update(dt);
-////	// Menu Select
-////    if(gotInput){
-////        gotInput = false;
-//////        options[currentOption]->SetColor(TEXT_BLACK);
-////        if(lastOption != -1){
-////            options[lastOption]->SetColor(TEXT_WHITE);
-////        }
-////    }
 }
 
 void Menu::HandleInputs(){
@@ -73,25 +64,6 @@ void Menu::HandleInputs(){
             }
         }
     }
-//    if(InputManager::GetInstance().KeyPress(SDLK_RETURN)){
-//        selectedOption = currentOption;
-//	}
-//	// Menu Input
-//	if(InputManager::GetInstance().KeyPress(UP_ARROW_KEY)){
-//		gotInput = true;
-//		lastOption = currentOption;
-//		this->currentOption--;
-//		if(this->currentOption < MENU_MIN_t)
-//			this->currentOption = options.size() - 1;
-//	}
-//
-//	if(InputManager::GetInstance().KeyPress(DOWN_ARROW_KEY)){
-//		gotInput = true;
-//		lastOption = currentOption;
-//		this->currentOption++;
-//		if(this->currentOption > options.size()-1)
-//			this->currentOption = MENU_MIN_t;
-//	}
 }
 
 void Menu::Render(int x, int y){
@@ -167,8 +139,10 @@ void Menu::SetDirection(MenuType mt, float esp){
  *  de acordo com a orientação, VERTICAL ou HORIZONTAL, escolhida para o Menu.
 */
 void Menu::_organizeOptions(){
+    DEBUG_PRINT("Posicao antes: " << box.x << "x" << box.y)
     box.x = absoluteX;
     box.y = absoluteY;
+    DEBUG_PRINT("Posicao depois: " << box.x << "x" << box.y)
     switch(menuType){
         case VERTICAL:
             box.h = (options.size()*(options[0]->GetHeigth() + espacamento) - espacamento);
@@ -201,11 +175,11 @@ void Menu::_organizeOptions(){
             }
             break;
     }
-    DEBUG_PRINT("Menu::SetPosition()");
-    DEBUG_PRINT(" Primeira Opcao: posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
-    DEBUG_PRINT(" Primeira Opcao: dimens. box(" << options[0]->GetWidth() << "x" << options[0]->GetHeigth() << ")")
+    DEBUG_PRINT("Menu::_organizeOptions()");
     DEBUG_PRINT(" Menu: posicao(" << box.x << "x" << box.y << ")")
     DEBUG_PRINT(" Menu: dimens.(" << box.w << "x" << box.h << ")")
+    DEBUG_PRINT(" Primeira Opcao: posicao box(" << options[0]->GetPosX() << "," << options[0]->GetPosY() << ")")
+    DEBUG_PRINT(" Primeira Opcao: dimens. box(" << options[0]->GetWidth() << "x" << options[0]->GetHeigth() << ")")
 }
 #ifdef DEBUG
     #undef DEBUG

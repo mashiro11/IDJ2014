@@ -19,7 +19,7 @@
 #define TITLE_STATE_MENU_OP3        "Sair"
 #define TITLE_STATE_MENU_SPACEMENT  50
 #define TITLE_STATE_MENU_X          512
-#define TITLE_STATE_MENU_Y          700
+#define TITLE_STATE_MENU_Y          600*(7/8.0)
 
 
 class TitleState : public State
