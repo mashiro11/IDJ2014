@@ -4,7 +4,7 @@ int  Chefe::chefeMorto = 0;
 
 Chefe::Chefe(float x, float y, TileMap *mapRef, string nome)
 {
-    sp.Open("img/chefe2resp.png");
+    sp.Open(CHEFE_RESP);
     atacando = 0;
 
     sp.SetSpriteSheet(1, 2);
@@ -75,7 +75,7 @@ void Chefe::StateMachine(float dt)
             rangedTime.Update(dt);
 
             if(timer.Get() > coolDown){
-                sp.Open("images/img/chefe2ataque.png");
+                sp.Open(CHEFE_ATAQUE);
                 sp.SetSpriteSheet(1, 6);
                 sp.SetAnimation(0, 6);
                 sp.SetFrameTime(2.5 * 1.0/24.0);
@@ -87,7 +87,7 @@ void Chefe::StateMachine(float dt)
             if(atacando == 1){
                 ataqueTime.Update(dt);
                 if(ataqueTime.Get() > 6*(2.4 * 1.0/24.0)){
-                    sp.Open("images/img/chefe2resp.png");
+                    sp.Open(CHEFE_RESP);
                     sp.SetSpriteSheet(1, 2);
                     sp.SetAnimation(0, 2);
                     sp.SetFrameTime(5.0 * 1.0/24.0);
@@ -101,7 +101,7 @@ void Chefe::StateMachine(float dt)
             if(atacando == 2){
                 ataqueTime.Update(dt);
                 if(ataqueTime.Get() > 6*(2.4 * 1.0/24.0)){
-                    sp.Open("images/img/chefe2resp.png");
+                    sp.Open(CHEFE_RESP);
                     sp.SetSpriteSheet(1, 2);
                     sp.SetAnimation(0, 2);
                     sp.SetFrameTime(5.0 * 1.0/24.0);
@@ -113,7 +113,7 @@ void Chefe::StateMachine(float dt)
             }
 
             if(especialTime.Get() > coolDown*3){
-                sp.Open("images/img/chefe2rodando.png");
+                sp.Open(CHEFE_RODANDO);
                 sp.SetSpriteSheet(1, 2);
                 sp.SetAnimation(0, 2);
                 sp.SetFrameTime(2.0 * 1.0/24.0);
@@ -176,7 +176,7 @@ void Chefe::AtaqueRanged(){
             int chefeY = mapReference->PixelPositionToMapPosition(box.RectCenterY());
             int dist = sqrt((chefeY - posY)*(chefeY - posY) + (chefeX - posX)*(chefeX - posX));
             if(dist > 1){
-                Sprite death("img/chefe2ranged.png", 6, 100);
+                Sprite death(CHEFE_RANGED, 6, 100);
                 Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(allyTarget->box.RectCenterX(),
                                                                                    allyTarget->box.RectCenterY(),
                                                                                    rotation, death, 600, true));
@@ -199,7 +199,7 @@ void Chefe::Atacar()
 
 void Chefe::Danificar(float dano)
 {
-    Sprite hit("img/hit.png");
+    Sprite hit(HIT);
     Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
                                                                        box.RectCenterY() - 25, rotation, hit, 0.5, true));
     this->vida -= dano - defesa/10;

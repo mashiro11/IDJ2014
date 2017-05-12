@@ -459,10 +459,10 @@ void Ally::OrientarSprite()
 void Ally::Abrir_Menu(){
     float offSet = 125;
     float angulo = 0;
-    Sprite botao("img/botao2andar.png");
-    Sprite botao2("img/botao2especial.png");
-    Sprite botao3("img/botaoItens.png");
-    Sprite botao4("img/botao2Ejetar.png");
+    Sprite botao(BOTAO1);
+    Sprite botao2(BOTAO2);
+    Sprite botao3(BOTAO3);
+    Sprite botao4(BOTAO4);
 
     StillAnimation* botaoAnim = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,

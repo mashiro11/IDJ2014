@@ -5,7 +5,7 @@
 #include "Sprite.h"
 #include "Music.h"
 #include "Text.h"
-
+#include "resources_path.h"
 class EndState : public State
 {
     public:

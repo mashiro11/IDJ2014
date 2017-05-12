@@ -10,11 +10,7 @@
 #include "Robo.h"
 #include "Piloto.h"
 //#include "BarraStatus.h"
-
-#define CHARACTER_STATE_BACKGROUND_FILE "img/screenSbuttons.png"
-#define CHARACTER_STATE_TOSELECT_FILE   "img/selecaoOld.png"
-#define CHARACTER_STATE_SELECTED_FILE   "img/selecionado.png"
-#define CHARACTER_STATE_TYPE_FILE       "images/font/NEON____.TTF"
+#include "resources_path.h"
 
 class CharacterState:public State{
 public:

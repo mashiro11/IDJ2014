@@ -134,7 +134,7 @@ bool Robo::Embarcar(Ally *alvo)
 
 void Robo::Danificar(float dano)
 {
-    Sprite hit("images/img/hit.png");
+    Sprite hit(HIT);
     Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
                                                                        box.RectCenterY() - 25, rotation, hit, 0.5, true));
     int vidaNova = vida.GetVida();

@@ -16,6 +16,8 @@
 #include "Bullet.h"
 #include "BarraCooldown.h"
 
+#include "resources_path.h"
+
 using std::vector;
 using std::list;
 using std::queue;

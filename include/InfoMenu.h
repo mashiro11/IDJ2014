@@ -8,8 +8,7 @@
 #include "Piloto.h"
 #include "BarraVidaMenu.h"
 
-#define INFO_MENU_FILE "img/infoMenu.png"
-#define INFO_MENU_FONT "images/font/Call me maybe.ttf"
+#include "resources_path.h"
 
 class InfoMenu{
 public:

@@ -2,7 +2,7 @@
 #define BARRAVIDAMENU_H
 
 #include "StillAnimation.h"
-
+#include "resources_path.h"
 class BarraVidaMenu
 {
 public:

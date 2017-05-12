@@ -2,6 +2,7 @@
 #define CHEFE_H
 #include "Ally.h"
 #include "TileMap.h"
+#include "resources_path.h"
 
 class Chefe:public Character{
 public:

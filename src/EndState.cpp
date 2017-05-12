@@ -4,13 +4,13 @@ EndState::EndState(StateData stateData)
 {
     wait = false;
     if(stateData.playerVictory == true){
-        bg.Open("img/win.jpg");
-        music.Open("images/audio/endStateWin.ogg");
+        bg.Open(BG_WIN);
+        music.Open(AUDIO_WIN);
     }else{
-        bg.Open("img/lose.jpg");
-        music.Open("images/audio/endStateLose.ogg");
+        bg.Open(BG_LOSE);
+        music.Open(AUDIO_LOSE);
     }
-    instruction.Initialize("images/font/Call me maybe.ttf", 60, Text::TEXT_BLENDED, "PRESS SPACE TO PLAY AGAIN");
+    instruction.Initialize(FONT1, 60, Text::TEXT_BLENDED, "PRESS SPACE TO PLAY AGAIN");
     instruction.SetColor(255, 0, 0);
     instruction.SetPos(Game::GetInstance().GetWindowWidth()/2,
                        Game::GetInstance().GetWindowHeight()*5/6,

@@ -3,7 +3,7 @@
 
 Enemy::Enemy(float x, float y, TileMap* mapRef, string nome)
 {
-    sp.Open("img/monster_bright.png");
+    sp.Open(MONSTER);
 
     sp.SetSpriteSheet(8, 12);
     sp.SetAnimation(0, 3);
@@ -227,7 +227,7 @@ void Enemy::Atacar()
 
 void Enemy::Danificar(float dano)
 {
-    Sprite hit("img/hit.png");
+    Sprite hit(HIT);
     Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
                                                                        box.RectCenterY() - 25, rotation, hit, 0.5, true));
     this->vida -= dano - defesa/10;

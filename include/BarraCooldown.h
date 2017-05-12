@@ -2,6 +2,7 @@
 #define BARRACOOLDOWN_H
 #include "StillAnimation.h"
 #include "Timer.h"
+#include "resources_path.h"
 
 class BarraCooldown
 {

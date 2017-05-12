@@ -214,8 +214,8 @@ void Piloto::Abrir_Menu_Piloto()
     float offSet = 100;
     float angulo = 0;
     float angOffset = 180;
-    Sprite botao("img/botao2andar.png");
-    Sprite botao2("img/botao2embarcar.png");
+    Sprite botao(BOTAO_ANDAR);
+    Sprite botao2(BOTAO_EMBARCAR);
 
     StillAnimation* botaoAnim = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
@@ -300,7 +300,7 @@ Ally* Piloto::EncontrarRobo()
 
 void Piloto::Danificar(float dano)
 {
-    Sprite hit("/images/img/hit.png");
+    Sprite hit(HIT);
     Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
                                                                        box.RectCenterY() - 15, rotation, hit, 0.5, true));
     if(robo == NULL){

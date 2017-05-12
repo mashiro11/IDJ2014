@@ -2,8 +2,8 @@
 
 BarraVida::BarraVida(GameObject* objeto, int vidaMax)
 {
-    vida.Open("img/barraVida.png");
-    moldura.Open("img/barraVidaMold.png");
+    vida.Open(BARRA_VIDA);
+    moldura.Open(BARRA_VIDA_MOLDURA);
 
     vidaMaxima = vidaAtual = vidaMax;
     this->objeto = objeto;
@@ -15,8 +15,8 @@ BarraVida::BarraVida(GameObject* objeto, int vidaMax)
 
 void BarraVida::Open(GameObject *alvo, int vidaMax)
 {
-    vida.Open("img/barraVida.png");
-    moldura.Open("img/barraVidaMold.png");
+    vida.Open(BARRA_VIDA);
+    moldura.Open(BARRA_VIDA_MOLDURA);
 
     vidaMaxima = vidaAtual = vidaMax;
     this->objeto = alvo;

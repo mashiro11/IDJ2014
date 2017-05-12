@@ -34,7 +34,7 @@ tileMap(STAGE_TILEMAP_FILE, &tileSet)
     chefe->MakeRangeArea();
     objectArray.emplace_back(chefe);
 
-    chessPosition.Initialize(STAGE_FONT_FILE, 60, Text::TEXT_BLENDED, aux.str());
+    chessPosition.Initialize(FONT1, 60, Text::TEXT_BLENDED, aux.str());
     chessPosition.SetColor(255, 0, 0);
 
     chessPosition.SetPos( 0, 0);
@@ -202,8 +202,8 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
 {
     if(find(characters.robo.begin(), characters.robo.end(), "Joao") != characters.robo.end()){
     //Joao
-        Sprite sp("img/robot2iceaxe.png");
-        Sprite pilotoSp1("img/pilotoPrata.png");
+        Sprite sp(ROBO_SP1);
+        Sprite pilotoSp1(PILOTO_SP1);
         Robo *robo = new Robo(7, 18, &tileMap, false, sp, "Robotinic");
         cout << "robo construido" << endl;
         robo->SetStatus(10, 10, 2, 5, 7, 5, 10);
@@ -220,8 +220,8 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
 
     if(find(characters.robo.begin(), characters.robo.end(), "Joana") != characters.robo.end()){
     //Joana
-        Sprite sp2("img/roboRosa.png");
-        Sprite pilotoSp2("img/pilotoRosa.png");
+        Sprite sp2(ROBO_SP2);
+        Sprite pilotoSp2(PILOTO_SP1);
         Robo *robo2 = new Robo(8, 18, &tileMap, false, sp2, "Roboboy");
         robo2->SetStatus(60, 5, 2, 5, 7, 5, 10);
         robo2->MakeRangeArea();
@@ -238,8 +238,8 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
 
     if(find(characters.robo.begin(), characters.robo.end(), "Maria") != characters.robo.end()){
     //Maria
-        Sprite sp3("img/roboVerde.png");
-        Sprite pilotoSp3("img/pilotoVerde.png");
+        Sprite sp3(ROBO_SP3);
+        Sprite pilotoSp3(PILOTO_SP3);
         Robo *robo3 = new Robo(9, 18, &tileMap, false, sp3, "Blitzcrank");
         robo3->SetStatus(80, 10, 2, 5, 3, 5, 10);
         robo3->MakeRangeArea();
@@ -255,8 +255,8 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
 
     if(find(characters.robo.begin(), characters.robo.end(), "Mario") != characters.robo.end()){
     //Mario
-        Sprite sp4("img/roboPreto.png");
-        Sprite pilotoSp4("img/pilotoPreto.png");
+        Sprite sp4(ROBO_SP4);
+        Sprite pilotoSp4(PILOTO_SP4);
         Robo *robo4 = new Robo(10, 18, &tileMap, false, sp4, "OptimusPrime");
         robo4->SetStatus(100, 10, 2, 5, 2, 5, 10);
         robo4->MakeRangeArea();
@@ -272,8 +272,8 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
 
     if(find(characters.robo.begin(), characters.robo.end(), "Jose") != characters.robo.end()){
     //Jose
-        Sprite sp5("img/roboAmarelo.png");
-        Sprite pilotoSp5("img/pilotoAmarelo.png");
+        Sprite sp5(ROBO_SP5);
+        Sprite pilotoSp5(PILOTO_SP5);
         Robo *robo5 = new Robo(11, 18, &tileMap, false, sp5, "Bamboubi");
         robo5->SetStatus(120, 10, 2, 5, 6, 5, 10);
         robo5->MakeRangeArea();
@@ -289,8 +289,8 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
 
     if(find(characters.robo.begin(), characters.robo.end(), "Josea") != characters.robo.end()){
     //Josea
-        Sprite sp6("img/roboAzul.png");
-        Sprite pilotoSp6("img/pilotoAzul.png");
+        Sprite sp6(ROBO_SP6);
+        Sprite pilotoSp6(PILOTO_SP6);
         Robo *robo6 = new Robo(12, 18, &tileMap, false, sp6, "Walle");
         robo6->SetStatus(100, 10, 2, 5, 7, 5, 10);
         robo6->MakeRangeArea();
@@ -306,8 +306,8 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
 
     if(find(characters.robo.begin(), characters.robo.end(), "Batata") != characters.robo.end()){
     //Batata
-        Sprite sp7("img/roboVermelho.png");
-        Sprite pilotoSp7("img/pilotoVermelho.png");
+        Sprite sp7(ROBO_SP7);
+        Sprite pilotoSp7(PILOTO_SP7);
         Robo *robo7 = new Robo(13, 18, &tileMap, false, sp7, "Gurren");
         robo7->SetStatus(30, 10, 2, 5, 7, 5, 10);
         robo7->MakeRangeArea();
@@ -323,8 +323,8 @@ void StageState::InicializaPersonagens(CharacterData characters, InfoMenu *infoM
 
     if(find(characters.robo.begin(), characters.robo.end(), "Digglet") != characters.robo.end()){
     //Josea
-        Sprite sp8("img/roboMarrom.png");
-        Sprite pilotoSp8("img/pilotoMarrom.png");
+        Sprite sp8(ROBO_SP8);
+        Sprite pilotoSp8(PILOTO_SP8);
         Robo *robo8 = new Robo(6, 18, &tileMap, false, sp8, "ApoloBR");
         robo8->SetStatus(150, 2, 2, 5, 7, 5, 10);
         robo8->MakeRangeArea();

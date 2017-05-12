@@ -11,15 +11,11 @@
 #include "Timer.h"
 #include "Rect.h"
 
-#define BG_MENU "img/menuProvisorio.png"
+#include "resources_path.h"
 #define MENU_MIN_t 0
-
 #define MENU_TYPE   "Menu"
-
-#define MENU_TEXT_FONT          "images/font/NEON____.TTF"
 #define MENU_TEXT_FONT_SIZE     50
-#define BUTTON_SELECTED         "img/buttonselected.png"
-#define BUTTON_NOT_SELECTED     "img/buttonnotselected.png"
+
 #define BUTTON_OFFSET_Y         5
 
 enum MenuType{

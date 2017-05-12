@@ -2,8 +2,8 @@
 
 BarraVidaMenu::BarraVidaMenu(float x, float y)
 {
-    vida.Open("img/barraVidaMenu.png");
-    moldura.Open("img/barraVidaMoldMenu.png");
+    vida.Open(BARRA_VIDA_MENU);
+    moldura.Open(BARRA_VIDA_MENU_MOLDURA);
 
     box.w = vida.GetWidth();
     box.h = vida.GetHeight();
@@ -13,8 +13,8 @@ BarraVidaMenu::BarraVidaMenu(float x, float y)
 
 void BarraVidaMenu::Open(float x, float y)
 {
-    vida.Open("img/barraVidaMenu.png");
-    moldura.Open("img/barraVidaMoldMenu.png");
+    vida.Open(BARRA_VIDA_MENU);
+    moldura.Open(BARRA_VIDA_MENU_MOLDURA);
 
     box.w = vida.GetWidth();
     box.h = vida.GetHeight();

@@ -7,8 +7,8 @@ BarraCooldown::BarraCooldown()
 
 BarraCooldown::BarraCooldown(int cooldown, float x, float y)
 {
-    barra.Open("img/barraCooldown.png");
-    moldura.Open("img/barraCooldownMoldura.png");
+    barra.Open(BARRA_COOLDOWN);
+    moldura.Open(BARRA_COOLDDOWN_MOLDURA);
     tamanho = 0;
     this->cooldown = cooldown;
     box.w = barra.GetWidth();
@@ -19,8 +19,8 @@ BarraCooldown::BarraCooldown(int cooldown, float x, float y)
 
 void BarraCooldown::Open(int cooldown, float x, float y)
 {
-    barra.Open("img/barraCooldown.png");
-    moldura.Open("img/barraCooldownMoldura.png");
+    barra.Open(BARRA_COOLDOWN);
+    moldura.Open(BARRA_COOLDDOWN_MOLDURA);
 
     tamanho = 0;
     this->cooldown = cooldown;

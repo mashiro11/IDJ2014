@@ -1,6 +1,7 @@
 #ifndef BARRAVIDA_H
 #define BARRAVIDA_H
 #include "StillAnimation.h"
+#include "resources_path.h"
 
 class BarraVida
 {

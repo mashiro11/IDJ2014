@@ -12,7 +12,7 @@ InfoMenu::InfoMenu(float x, float y):
     box.w = sp.GetWidth();
     minutos = 0;
 
-    texto.Initialize(INFO_MENU_FONT, 60,Text::TEXT_SOLID, "Inicio");
+    texto.Initialize(FONT1, 60,Text::TEXT_SOLID, "Inicio");
     texto.SetColor(255, 0, 0);
     texto.SetPos(x + 75, y + 550, true, true);
     showDebug = false;
@@ -77,39 +77,39 @@ void InfoMenu::InsereBotao(Ally* objeto){
     string caminho;
     if(objeto->Is("Robo")){
         if(objeto->GetNome() == "Robotinic"){
-            caminho = "img/roboPrataIcone.png";
+            caminho = MENU_ROBO_ICON1;
         }else if(objeto->GetNome() == "Roboboy"){
-            caminho = "img/roboRosaIcone.png";
+            caminho = MENU_ROBO_ICON2;
         }else if(objeto->GetNome() == "Blitzcrank"){
-            caminho = "img/roboVerdeIcone.png";
+            caminho = MENU_ROBO_ICON3;
         }else if(objeto->GetNome() == "OptimusPrime"){
-            caminho = "img/roboPretoIcone.png";
+            caminho = MENU_ROBO_ICON4;
         }else if(objeto->GetNome() == "Bamboubi"){
-            caminho = "img/roboAmareloIcone.png";
+            caminho = MENU_ROBO_ICON5;
         }else if(objeto->GetNome() == "Walle"){
-            caminho = "img/roboAzulIcone.png";
+            caminho = MENU_ROBO_ICON6;
         }else if(objeto->GetNome() == "Gurren"){
-            caminho = "img/roboVermelhoIcone.png";
+            caminho = MENU_ROBO_ICON7;
         }else if(objeto->GetNome() == "ApoloBR"){
-            caminho = "img/roboMarromIcone.png";
+            caminho = MENU_ROBO_ICON8;
         }
     }else if(objeto->Is("Piloto")){
         if(objeto->GetNome() == "Joao"){
-            caminho = "img/penguinfaceIcone.png";
+            caminho = MENU_PEN_ICON1;
         }else if(objeto->GetNome() == "Joana"){
-            caminho = "img/penguinface2Icone.png";
+            caminho = MENU_PEN_ICON2;
         }else if(objeto->GetNome() == "Jose"){
-            caminho = "img/penguinface5Icone.png";
+            caminho = MENU_PEN_ICON3;
         }else if(objeto->GetNome() == "Josea"){
-            caminho = "img/penguinface6Icone.png";
+            caminho = MENU_PEN_ICON4;
         }else if(objeto->GetNome() == "Mario"){
-            caminho = "img/penguinface4Icone.png";
+            caminho = MENU_PEN_ICON5;
         }else if(objeto->GetNome() == "Maria"){
-            caminho = "img/penguinface3Icone.png";
+            caminho = MENU_PEN_ICON6;
         }else if(objeto->GetNome() == "Batata"){
-            caminho = "img/penguinface7Icone.png";
+            caminho = MENU_PEN_ICON7;
         }else if(objeto->GetNome() == "Digglet"){
-            caminho = "img/penguinface8Icone.png";
+            caminho = MENU_PEN_ICON8;
    }
     }
 
@@ -161,35 +161,4 @@ void InfoMenu::Reordenar()
 
 void InfoMenu::RefazBotao(Ally* objeto, int index)
 {
-//    string caminho;
-//    if(objeto->GetNome() == "Robotinic"){
-//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/roboPrataIcone.png";
-//    }else if(objeto->GetNome() == "Roboboy"){
-//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/roboRosaIcone.png";
-//    }else if(objeto->GetNome() == "Blitzcrank"){
-//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/roboVerdeIcone.png";
-//    }else if(objeto->GetNome() == "OptimusPrime"){
-//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/roboPretoIcone.png";
-//    }else if(objeto->GetNome() == "Bamboubi"){
-//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/roboAmareloIcone.png";
-//    }else if(objeto->GetNome() == "Walle"){
-//        caminho = "C:/Users/Andre/Desktop/DefesaMitica-2entrega/DefessaMitica2/images/img/roboAzulIcone.png";
-//    }else if(objeto->GetNome() == "Joao"){
-//        caminho = "images/img/penguinfaceIcone.png";
-//    }else if(objeto->GetNome() == "Joana"){
-//        caminho = "images/img/penguinface2Icone.png";
-//    }else if(objeto->GetNome() == "Jose"){
-//        caminho = "images/img/penguinface5Icone.png";
-//    }else if(objeto->GetNome() == "Josea"){
-//        caminho = "images/img/penguinface6Icone.png";
-//    }else if(objeto->GetNome() == "Mario"){
-//        caminho = "images/img/penguinface4Icone.png";
-//    }else if(objeto->GetNome() == "Maria"){
-//        caminho = "images/img/penguinface3Icone.png";
-//    }
-//}
-
-//    Sprite botao(caminho);
-//    StillAnimation* botaoAnim = new StillAnimation(box.x + 30, box.y + 30 + 50*buttonArray.size(), rotation, botao, 50, false);
-
 }

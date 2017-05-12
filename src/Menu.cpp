@@ -21,33 +21,12 @@ Menu::Menu(){
     box.h = 0;
     selectedOption = -1;
 }
+
 Menu::~Menu()
 {
     //dtor
 }
 
-//
-//Menu::Menu(float posX, float posY, int newLineSpace){
-//    //ctor
-////    this->sp.SetFile(BG_MENU);// = Sprite(BG_MENU);
-//    this->box.x = posX;
-//    this->box.y = posY;
-////    this->buttonSelected.SetFile(BUTTON_SELECTED);// = Sprite(BUTTON_SELECTED);
-//    this->newLineSpace = newLineSpace;
-//    this->currentOption = 0;
-//    this->lastOption = -1;
-//    this->gotInput = false;
-//}
-//
-//
-//void Menu::Load(){
-////    this->sp.Load();
-////    this->buttonSelected.Load();
-////    for(unsigned int i = 0; i < buttons.size(); i++){
-////        this->buttons[i].Load();
-////    }
-//}
-//
 void Menu::Update(float dt){
     HandleInputs();
     cronometro.Update(dt);
@@ -106,18 +85,13 @@ int Menu::GetSelectedOption(){
 
 void Menu::AddMenuOption(string newOpt){
 
-    options.push_back(new Text(MENU_TEXT_FONT, MENU_TEXT_FONT_SIZE, Text::TEXT_BLENDED, newOpt) );
+    options.push_back(new Text(FONT2, MENU_TEXT_FONT_SIZE, Text::TEXT_BLENDED, newOpt) );
     _organizeOptions();
-//    Sprite selectedButton;
-//    selectedButton.SetFile(BUTTON_NOT_SELECTED);// = Sprite(BUTTON_NOT_SELECTED);
-//    buttons.push_back(selectedButton);
 }
 
 void Menu::RemoveMenuOption(int option){
     options.erase(options.begin() + option);
     _organizeOptions();
-//    buttons.erase(buttons.begin() + option);
-//    options[currentOption]->SetColor(TEXT_BLACK);
 }
 
 void Menu::SetPosition(float x, float y, bool centered){

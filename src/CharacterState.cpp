@@ -6,12 +6,12 @@ CharacterState::CharacterState()
     selecao.Open(CHARACTER_STATE_TOSELECT_FILE);
     selecionado.Open(CHARACTER_STATE_SELECTED_FILE);
 
-    instruction.Initialize(CHARACTER_STATE_TYPE_FILE, 55, Text::TEXT_BLENDED, "Escolha");
+    instruction.Initialize(FONT1, 55, Text::TEXT_BLENDED, "Escolha");
     instruction.SetColor(255, 0, 0);
     instruction.SetPos(Game::GetInstance().GetWindowWidth()/2,
                  Game::GetInstance().GetWindowHeight()*1/20, true, true);
 
-    inicio.Initialize(CHARACTER_STATE_TYPE_FILE, 50, Text::TEXT_BLENDED, "Jogar");
+    inicio.Initialize(FONT1, 50, Text::TEXT_BLENDED, "Jogar");
     inicio.SetColor(255, 0, 0);
     inicio.SetPos(Game::GetInstance().GetWindowWidth()*12/13,
                  Game::GetInstance().GetWindowHeight()*14/15, true, true);
@@ -119,14 +119,14 @@ void CharacterState::Input()
 
 void CharacterState::PopulaArray()
 {
-    Sprite botao("img/penguinface.png");
-    Sprite botao2("img/penguinface2.png");
-    Sprite botao3("img/penguinface3.png");
-    Sprite botao4("img/penguinface4.png");
-    Sprite botao5("img/penguinface5.png");
-    Sprite botao6("img/penguinface6.png");
-    Sprite botao7("img/penguinface7.png");
-    Sprite botao8("img/penguinface8.png");
+    Sprite botao(PORTRAIT_SELECT0);
+    Sprite botao2(PORTRAIT_SELECT1);
+    Sprite botao3(PORTRAIT_SELECT2);
+    Sprite botao4(PORTRAIT_SELECT3);
+    Sprite botao5(PORTRAIT_SELECT4);
+    Sprite botao6(PORTRAIT_SELECT5);
+    Sprite botao7(PORTRAIT_SELECT6);
+    Sprite botao8(PORTRAIT_SELECT7);
 
     StillAnimation* botaoAnim = new StillAnimation(150, 80 + 75*characterArray.size(), 0, botao, 50, false);
     characterArray.emplace_back(*botaoAnim);
