@@ -2,8 +2,8 @@
 
 void Ally::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int speed, int distance, int coolDown)
 {
-    vida.Open(this, vidaMaxima);
-    barraCooldown.Open(coolDown, this->box.RectCenterX(), this->box.RectCenterY());
+//    vida.Open(this, vidaMaxima);
+//    barraCooldown.Open(coolDown, this->box.RectCenterX(), this->box.RectCenterY());
     this->defesa = defesa;
     this->ataque = ataque;
     this->range = range;
@@ -13,9 +13,9 @@ void Ally::SetStatus(int vidaMaxima, float ataque, int range, float defesa, int 
 }
 
 //gerencia as modificacoes e os estados  do ally
-void Ally::UpdateAlly(float dt)
+void Ally::Update(float dt)
 {
-    StateMachine(dt);
+        StateMachine(dt);
     Input(dt);
     IdentifyOpponent();
     CloseEnemiesUpdate();
@@ -42,19 +42,19 @@ void Ally::Input(float dt)
                         vidaAtual += 5;
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_q) == true){
-                        barraCooldown.SetTimer(this->coolDown);
+                        //barraCooldown.SetTimer(this->coolDown);
                     }
     }
     if(InputManager::GetInstance().IsMouseDown(LEFT_MOUSE_BUTTON) == true &&
        box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                     InputManager::GetInstance().GetMouseY() + Camera::pos.y) == true){
-                        if( inputTimer.Get() > 0.3 && barraCooldown.IsFull()){
+                        /*if( inputTimer.Get() > 0.3 && barraCooldown.IsFull()){
                             if(menuAberto == true){
                                 menuAberto = false;
                             }
                             //cout << this->nome << ": estou sendo selecionado para andar!" << endl;
                             charState = AGUARDANDO_ANDAR;
-                        }else inputTimer.Update(dt);
+                        }else inputTimer.Update(dt);*/
     }
     //if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON) == true)
     if(InputManager::GetInstance().MouseRelease(LEFT_MOUSE_BUTTON) == true){
@@ -90,10 +90,10 @@ void Ally::Input(float dt)
 //                       charState = AGUARDANDO_ANDAR;
 //                       break;
                 case(1):
-                        cout << "esse botao pede para usar especial" << endl;
+                        /*cout << "esse botao pede para usar especial" << endl;
                         if(barraCooldown.IsFull()){
                             charState = AGUARDANDO_ALVO;
-                        }
+                        }*/
                         break;
                 case(2):
                        cout << "esse botao pede para usar item" << endl;
@@ -134,7 +134,7 @@ void Ally::StateMachine(float dt)
             alvoEspecial = EncontrarRobo();
             if(alvoEspecial != NULL){
                 charState = ESPECIAL;
-                barraCooldown.Esvazia();
+                //barraCooldown.Esvazia();
             }
             if(InputManager::GetInstance().MousePress(SDL_BUTTON_RIGHT) == true){
                 charState = REPOUSO;
@@ -181,7 +181,7 @@ void Ally::StateMachine(float dt)
                             while(path.empty() == false) path.pop();
                             charState = REPOUSO;
                     }
-                    barraCooldown.Esvazia();
+                    //barraCooldown.Esvazia();
             }
             break;
     }
@@ -228,11 +228,12 @@ Ally* Ally::EncontrarRobo()
 
 //verifica se ally esta morto
 bool Ally::IsDead(){
-
+/*
     if(vida.GetVida() <= 0){
         if(Camera::GetFocus() == this) Camera::Unfollow();
         return true;
     }
+    */
     return false;
 }
 
@@ -329,6 +330,7 @@ void Ally::NotifyCollision(GameObject &other)
 //anima o personagem com seu ataque basico.
 void Ally::Atacar()
 {
+    /*
     if(closeEnemies.size() > 0){
         cout << this->nome <<": Yaah! >=O" << endl;
         Enemy* enemyTarget = (Enemy*) closeEnemies.begin()->first;
@@ -346,7 +348,7 @@ void Ally::Atacar()
             allyPosition = BACK;
         }
         OrientarSprite();
-    }
+    }*/
 }
 
 //gerencia o ally em seu modo de defesa.
@@ -463,7 +465,7 @@ void Ally::Abrir_Menu(){
     Sprite botao2(BOTAO2);
     Sprite botao3(BOTAO3);
     Sprite botao4(BOTAO4);
-
+    /*
     StillAnimation* botaoAnim = new StillAnimation(box.RectCenterX() + cos(angulo*M_PI/180)*offSet,
                                                    box.RectCenterY() + sin(angulo*M_PI/180)*offSet,
                                                    rotation, botao, 50, false);
@@ -487,6 +489,7 @@ void Ally::Abrir_Menu(){
                                                    rotation, botao4, 50, false);
     buttonArray.emplace_back(*botaoAnim4);
     angulo += 90;
+    */
 }
 
 bool Ally::IsLider()
@@ -519,12 +522,12 @@ bool Ally::AreaMapa()
 
 int Ally::GetVida()
 {
-    return vida.GetVida();
+    return 1;//vida.GetVida();
 }
 
 float Ally::GetPorcentagemVida()
 {
-    return vida.GetPorcentagemVida();
+    return 100;//vida.GetPorcentagemVida();
 }
 
 
@@ -534,13 +537,13 @@ CharacterPosition Ally::GetAllyPosition()
 }
 
 void Ally::Curar(int cura){
-    int vidaNova = vida.GetVida() + cura;
-    vida.SetVida(vidaNova);
+    /*int vidaNova = vida.GetVida() + cura;
+    vida.SetVida(vidaNova);*/
 }
 
 bool Ally::VidaCheia(){
-    if(vida.IsFull() == true){
+    /*if(vida.IsFull() == true){
         return true;
-    }
-    return false;
+    }*/
+    return true;
 }

@@ -96,7 +96,7 @@ void CharacterState::Input()
         if(inicio.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                           InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
             requestDelete = true;
-            StageState* state = new StageState(characters);
+            StageState* state = new StageState();//new StageState(characters);
             Game::GetInstance().Push(state);
         }
 

@@ -59,6 +59,6 @@ void State::RenderArray()
 {
     for(unsigned int i = 0; i < objectArray.size(); i++){
               if( objectArray[i]->IsDead() == true) continue;
-              objectArray[i]->Render(Camera::pos.x, Camera::pos.y);//linha alterada
+              objectArray[i]->Render();
     }
 }

@@ -9,7 +9,8 @@
 #include "Collision.h"
 
 using std::vector;
-using std::unique_ptr;
+using std::shared_ptr;
+//using std::unique_ptr;
 
 class State
 {
@@ -27,7 +28,7 @@ class State
         bool requestQuit;
         virtual void UpdateArray(float dt);
         virtual void RenderArray();
-        vector<unique_ptr<GameObject>> objectArray;
+        vector<shared_ptr<GameObject>> objectArray;
         bool wait;
     private:
 };

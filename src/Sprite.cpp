@@ -1,4 +1,5 @@
 #include "../include/Sprite.h"
+#include "Game.h"
 
 //#define DEBUG
 #ifdef DEBUG
@@ -90,6 +91,7 @@ Sprite::~Sprite()
 
 void Sprite::Open(string file)
 {
+    path = file;
     if ( assetTable.find(file) != assetTable.end()){//existe uma textura com esse endereco
             texture = assetTable.find(file)->second;//usa ela pr?pria
     }else{//se n?o existe ainda
@@ -117,7 +119,6 @@ void Sprite::Open(string file)
 
 void Sprite::SetClip(int x, int y, int w, int h)
 {
-    /* Seta clipRect com os par?metros dados. */
     clipRect.x = x;
     clipRect.y = y;
     clipRect.w = w;
@@ -175,8 +176,6 @@ float Sprite::GetScaleY()
 
 void Sprite::Update (float dt)
 {
-    //cout << "currentFrame: " << currentFrame << endl;
-    //cout << "currentLine: " << currentLine << endl;
     timeElapsed.Update(dt);
     if(timeElapsed.Get() > frameTime){
         ++currentFrame;
@@ -222,4 +221,7 @@ void Sprite::SetSpriteSheet(int animationLines, int maxFrameCount)
 {
     this->animationLines = animationLines;
     this->maxFrameCount = maxFrameCount;
+
+    this->clipRect.w = dimensions.w/maxFrameCount;
+    this->clipRect.h = dimensions.h/animationLines;
 }

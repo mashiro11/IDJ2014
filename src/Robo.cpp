@@ -1,27 +1,26 @@
 #include "../include/Robo.h"
 
-Robo::Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string nome)
+Robo::Robo(float x, float y, TileMap* mapRef, bool lider, string spritePath, string nome)
 {
-    //ver a proporзгo do personagem em relaзao ao tile do mundopara aplicar na posicao certa
-    sp = sprite;
+
     tileNumber = 1;
-    sp.SetScaleX((float) tileNumber);
-    sp.SetScaleY((float) tileNumber);
+    //sp.SetScaleX((float) tileNumber);
+    //sp.SetScaleY((float) tileNumber);
+    sp.Open(spritePath);
     sp.SetSpriteSheet(4, 4);
     sp.SetAnimation(0, 4);
     sp.SetFrameTime(4.0 * 1.0/24.0);
 
+
     this->lider = lider;
     this->nome = nome;
 
-    cout << "ate aqui tudo bem" << endl;
     mapReference = mapRef;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
     box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x,tileNumber) );
     box.SetRectCenterY( mapReference->MapPositionToPixelPosition(y,tileNumber) );
     currentPosition.SetPoint( x, y );
-    cout << "posicao inicial de " << this->nome << ": " << currentPosition.x << ", " << currentPosition.y << endl;
 
     this->rotation = 0;
 
@@ -32,11 +31,8 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string 
     //mapReference->At(x, y).state = ALLY;
     //mapReference->At(x, y).occuper = this;
 
-    cout << "funcoes finais" << endl;
     mapReference->SetTileState(currentPosition, ALLY, tileNumber);
-    cout << "sanduiche" << endl;
     mapReference->SetTileOccuper(currentPosition, this, tileNumber);
-    cout << "fim do construtor" << endl;
 }
 
 Robo::~Robo()
@@ -47,13 +43,14 @@ Robo::~Robo()
 
 void Robo::Update(float dt)
 {
+
     if(charState != INATIVO){
-        UpdateAlly(dt);
-        barraCooldown.Update(dt);
-        barraCooldown.SetX(box.RectCenterX());
-        barraCooldown.SetY(box.RectCenterY());
+        Ally::Update(dt);
+        //barraCooldown.Update(dt);
+        //barraCooldown.SetX(box.RectCenterX());
+        //barraCooldown.SetY(box.RectCenterY());
     }
-    if(IsDead() == true){
+    /*if(IsDead() == true){
         cout << this->nome <<": Fui destruido!! Noooooooo.... D: " << endl;
         mapReference->At( currentPosition.x, currentPosition.y ).state = FREE;
         mapReference->At( currentPosition.x , currentPosition.y ).occuper = NULL;
@@ -63,11 +60,12 @@ void Robo::Update(float dt)
     vida.Update();
     vida.SetX(box.RectCenterX());
     vida.SetY(box.RectCenterY());
-
+    */
 }
 
-void Robo::Render(int cameraX, int cameraY){
-    sp.Render(box.x - cameraX, box.y - cameraY);
+void Robo::Render(){
+    sp.Render(box.x - Camera::pos.x, box.y - Camera::pos.y);
+    /*
     if(menuAberto){
         int offSet = 100;
         int angulo = 90;
@@ -81,6 +79,7 @@ void Robo::Render(int cameraX, int cameraY){
         barraCooldown.Render(cameraX, cameraY);
         vida.Render(cameraX, cameraY);
     }
+    */
 }
 
 bool Robo::Is(string type){
@@ -92,6 +91,7 @@ bool Robo::Is(string type){
 
 bool Robo::Ejetar()
 {
+    /*
     Piloto* piloto = pilotoArray.back();
     if(piloto->Ejetar() == true){
         pilotoArray.pop_back();
@@ -102,24 +102,27 @@ bool Robo::Ejetar()
         }
         return true;
     }
+    */
     return false;
 }
 
 void Robo::InserePiloto(Piloto *piloto)
 {
-    pilotoArray.push_back(piloto);
+    //pilotoArray.push_back(piloto);
 }
 
 
 void Robo::Morrer()
 {
+    /*
     for(int i = 0; i < pilotoArray.size(); i++){
         pilotoArray[i]->Morrer();
-    }
+    }*/
 }
 
 bool Robo::Embarcar(Ally *alvo)
 {
+    /*
     if(pilotoArray.size() < 2){
         if(charState == INATIVO){
             charState = REPOUSO;
@@ -129,15 +132,17 @@ bool Robo::Embarcar(Ally *alvo)
         return true;
     }else{
         return false;
-    }
+    }*/
 }
 
 void Robo::Danificar(float dano)
 {
+    /*
     Sprite hit(HIT);
     Game::GetInstance().GetCurrentState().AddObject(new StillAnimation(box.RectCenterX() + 10,
                                                                        box.RectCenterY() - 25, rotation, hit, 0.5, true));
     int vidaNova = vida.GetVida();
     vidaNova -= dano - defesa/10;
     vida.SetVida(vidaNova);
+    */
 }

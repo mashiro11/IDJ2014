@@ -1,8 +1,15 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
-
-#include "../include/Rect.h"
+/*
+    STD classes
+*/
 #include <string>
+
+/*
+    Game classes
+*/
+#include "../include/Rect.h"
+#include "Sprite.h"
 
 using std::string;
 
@@ -12,7 +19,7 @@ class GameObject
         GameObject();
         virtual ~GameObject();
         virtual void Update(float dt) = 0;
-        virtual void Render(int cameraX, int cameraY) = 0;//linha alterada: tratando de face e alien
+        virtual void Render() = 0;
         virtual bool IsDead() = 0;
         virtual int GetHitPoint(){return vidaAtual;};
         virtual int GetLife(){return vidaMaxima;};
@@ -29,6 +36,7 @@ class GameObject
         int vidaAtual;
         int vidaMaxima;
     private:
+        Sprite sp;
         /* vazio */
 };
 

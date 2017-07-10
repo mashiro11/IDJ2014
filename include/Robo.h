@@ -1,14 +1,20 @@
 #ifndef ROBO_H
 #define ROBO_H
+
+#include <iostream>
+#include <string>
+
 #include "Ally.h"
 #include "Piloto.h"
-#include <iostream>
+#include "Camera.h"
+
+using std::string;
 
 class Robo: public Ally{
 public:
-    Robo(float x, float y, TileMap* mapRef, bool lider, Sprite sprite, string nome);
+    Robo(float x, float y, TileMap* mapRef, bool lider, string spritePath, string nome);
     ~Robo();
-    void Render(int cameraX, int cameraY);
+    void Render();
     bool Is(string type);
     bool Ejetar();
     void Update(float dt);

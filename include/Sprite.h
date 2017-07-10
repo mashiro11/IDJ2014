@@ -10,9 +10,8 @@
 	#include<SDL2/SDL_image.h>
 #endif
 
-#include "Game.h"
 #include "Timer.h"
-
+#include <string>
 #include <unordered_map>
 
 using std::string;
@@ -63,6 +62,7 @@ class Sprite
         int currentFrame;
         Timer timeElapsed;
         float frameTime;
+        string path;
 };
 
 #endif // SPRITE_H

@@ -6,7 +6,6 @@
 #include <list>
 
 #include "GameObject.h"
-#include "Sprite.h"
 #include "StillAnimation.h"
 #include "BarraVida.h"
 #include "TileMap.h"
@@ -15,6 +14,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "BarraCooldown.h"
+#include "InputManager.h"
 
 #include "resources_path.h"
 
@@ -29,8 +29,8 @@ public:
 
     //Ally();
     ~Ally(){};
-    void Update(float dt) = 0;
-    virtual void Render(int cameraX, int cameraY) = 0;
+    void Update(float dt);
+    virtual void Render() = 0;
 
     void StateMachine(float dt);
     void Input(float dt);
@@ -70,7 +70,6 @@ public:
     bool IsLeader();
 
 protected:
-    void UpdateAlly(float dt);
     bool lider;
     CharacterPosition allyPosition;
     vector<StillAnimation> buttonArray;
@@ -91,11 +90,10 @@ protected:
     //float ataque;//poder de ataque
     //float defesa;//poder de defesa
     //int range;//alcance de ataque
-    BarraVida vida;
-    BarraCooldown barraCooldown;
+    //BarraVida vida;
+    //BarraCooldown barraCooldown;
     //int distance;//quantas células do grid pode andar
     //alcance de ataque
-    int bolinha;
 private:
 };
 

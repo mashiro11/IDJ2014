@@ -10,7 +10,7 @@
 #include "MultiTileSet.h"
 #include "Point.h"
 #include "TileInfo.h"
-
+#include "Camera.h"
 
 using std::vector;
 using std::ifstream;

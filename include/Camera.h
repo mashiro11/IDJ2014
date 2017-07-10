@@ -6,7 +6,7 @@
 #include "Game.h"//antiga GameBase -> Game (T4)
 #include "Point.h"
 #include "InputManager.h"
-
+class GameObject;
 class Camera
 {
     public:

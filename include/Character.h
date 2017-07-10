@@ -21,6 +21,7 @@ using std::queue;
 using std::string;
 using std::unordered_map;
 using std::stringstream;
+using std::stack;
 
 enum CharacterPosition{FRONT, BACK, LEFT, RIGHT};
 enum CharState{ATACANDO, DEFENDENDO, INATIVO, MOVENDO,
