@@ -47,10 +47,8 @@
 			<Add directory="../../../../../SDL2/SDL2-2.0.4/i686-w64-mingw32/lib" />
 		</Linker>
 		<Unit filename="include/Ally.h" />
-		<Unit filename="include/BlockTileSet.h" />
 		<Unit filename="include/Camera.h" />
 		<Unit filename="include/Character.h" />
-		<Unit filename="include/CharacterData.h" />
 		<Unit filename="include/Collision.h" />
 		<Unit filename="include/Game.h" />
 		<Unit filename="include/GameObject.h" />
@@ -58,6 +56,7 @@
 		<Unit filename="include/MoveManager.h" />
 		<Unit filename="include/MultiTileSet.h" />
 		<Unit filename="include/Music.h" />
+		<Unit filename="include/OptionsState.h" />
 		<Unit filename="include/Point.h" />
 		<Unit filename="include/Rect.h" />
 		<Unit filename="include/Robo.h" />
@@ -76,9 +75,11 @@
 		<Unit filename="src/Camera.cpp" />
 		<Unit filename="src/Character.cpp" />
 		<Unit filename="src/Collision.cpp" />
+		<Unit filename="src/EndState.cpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/GameObject.cpp" />
 		<Unit filename="src/InputManager.cpp" />
+		<Unit filename="src/Menu.cpp" />
 		<Unit filename="src/MoveManager.cpp" />
 		<Unit filename="src/MultiTileSet.cpp" />
 		<Unit filename="src/Music.cpp" />
@@ -89,6 +90,7 @@
 		<Unit filename="src/Sprite.cpp" />
 		<Unit filename="src/StageState.cpp" />
 		<Unit filename="src/State.cpp" />
+		<Unit filename="src/State.cpp.save-failed" />
 		<Unit filename="src/Text.cpp" />
 		<Unit filename="src/TileInfo.cpp" />
 		<Unit filename="src/TileMap.cpp" />
