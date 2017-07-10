@@ -6,7 +6,7 @@ InfoMenu::InfoMenu(float x, float y):
 {
     sp.Open(INFO_MENU_FILE);
 
-    box.x = x;// - sp.GetWidth();
+    box.x = x;// - sp.GetWidth();;
     box.y = y;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
