@@ -95,6 +95,7 @@ protected:
     BarraCooldown barraCooldown;
     //int distance;//quantas células do grid pode andar
     //alcance de ataque
+    int bolinha;
 private:
 };
 
