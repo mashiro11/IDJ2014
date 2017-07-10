@@ -1,15 +1,13 @@
 #include "../include/Robo.h"
 
-Robo::Robo(float x, float y, TileMap* mapRef, bool lider, string spritePath, string nome)
+Robo::Robo(float x, float y, TileMap* mapRef, bool lider, string nome)
 {
 
     tileNumber = 1;
-    //sp.SetScaleX((float) tileNumber);
-    //sp.SetScaleY((float) tileNumber);
-    sp.Open(spritePath);
-    sp.SetSpriteSheet(4, 4);
-    sp.SetAnimation(0, 4);
-    sp.SetFrameTime(4.0 * 1.0/24.0);
+    sp.Open(ROBO_SP1);
+    sp.SetSpriteSheet(ROBO_SHEET_LINES, ROBO_SHEET_FRAMES);
+    sp.SetAnimation(0, ROBO_SHEET_FRAMES);
+    sp.SetFrameTime(ROBO_SHEET_FRAME_TIME);
 
 
     this->lider = lider;

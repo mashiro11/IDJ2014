@@ -30,7 +30,7 @@ tileMap(STAGE_TILEMAP_FILE, &tileSet)
     chessPosition.SetText(aux.str());
     tileNumber = 1;
     showDebug = false;
-    AddObject(new Robo(1, 1,&tileMap, true, ROBO_SP1 , "Joao"));
+    AddObject(new Robo(1, 1,&tileMap, true , "Joao"));
 }
 
 StageState::~StageState()

@@ -31,7 +31,6 @@ void TileMap::Load(string file)
     fscanf(arquivo, "%d", &mapDepth);
     fscanf(arquivo, "%*c");
     tileMatrix.resize( mapDepth * mapHeight * mapWidth , -1);
-    cout << "width: " << mapWidth << " height: " << mapHeight << " depth: " << mapDepth << endl;
     int num;
     for(int k = 0, l = 0; k < mapDepth; k++){
         for(int i = 0; i < mapWidth; i++){
