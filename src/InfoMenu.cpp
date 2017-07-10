@@ -78,39 +78,11 @@ void InfoMenu::InsereBotao(Ally* objeto){
     if(objeto->Is("Robo")){
         if(objeto->GetNome() == "Robotinic"){
             caminho = MENU_ROBO_ICON1;
-        }else if(objeto->GetNome() == "Roboboy"){
-            caminho = MENU_ROBO_ICON2;
-        }else if(objeto->GetNome() == "Blitzcrank"){
-            caminho = MENU_ROBO_ICON3;
-        }else if(objeto->GetNome() == "OptimusPrime"){
-            caminho = MENU_ROBO_ICON4;
-        }else if(objeto->GetNome() == "Bamboubi"){
-            caminho = MENU_ROBO_ICON5;
-        }else if(objeto->GetNome() == "Walle"){
-            caminho = MENU_ROBO_ICON6;
-        }else if(objeto->GetNome() == "Gurren"){
-            caminho = MENU_ROBO_ICON7;
-        }else if(objeto->GetNome() == "ApoloBR"){
-            caminho = MENU_ROBO_ICON8;
         }
     }else if(objeto->Is("Piloto")){
         if(objeto->GetNome() == "Joao"){
             caminho = MENU_PEN_ICON1;
-        }else if(objeto->GetNome() == "Joana"){
-            caminho = MENU_PEN_ICON2;
-        }else if(objeto->GetNome() == "Jose"){
-            caminho = MENU_PEN_ICON3;
-        }else if(objeto->GetNome() == "Josea"){
-            caminho = MENU_PEN_ICON4;
-        }else if(objeto->GetNome() == "Mario"){
-            caminho = MENU_PEN_ICON5;
-        }else if(objeto->GetNome() == "Maria"){
-            caminho = MENU_PEN_ICON6;
-        }else if(objeto->GetNome() == "Batata"){
-            caminho = MENU_PEN_ICON7;
-        }else if(objeto->GetNome() == "Digglet"){
-            caminho = MENU_PEN_ICON8;
-   }
+        }
     }
 
     Sprite botao(caminho);
