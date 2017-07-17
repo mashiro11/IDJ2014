@@ -33,13 +33,13 @@ void Ally::Input(float dt)
     if(box.IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                     InputManager::GetInstance().GetMouseY() + Camera::pos.y) == true){
                     if(InputManager::GetInstance().KeyPress(SDLK_d) == true ){
-                        vidaAtual = 0;
+                        //vidaAtual = 0;
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_t) == true ){
-                        vidaAtual -= 5;
+                        //vidaAtual -= 5;
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_h) == true ){
-                        vidaAtual += 5;
+                        //vidaAtual += 5;
                     }
                     if(InputManager::GetInstance().KeyPress(SDLK_q) == true){
                         //barraCooldown.SetTimer(this->coolDown);

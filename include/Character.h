@@ -11,7 +11,7 @@
 #include "GameObject.h"
 #include "Sprite.h"
 #include "StillAnimation.h"
-#include "BarraVida.h"
+#include "Bar.h"
 #include "TileMap.h"
 #include "Timer.h"
 

@@ -1,6 +1,6 @@
 #include "../include/StageState.h"
 
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
     #define DEBUG_PRINT(x) do{cout << x << endl;}while(0)
 #else
@@ -14,6 +14,7 @@ tileSet(STAGE_TILE_W_H,STAGE_TILE_W_H, STAGE_TILESET_FILE),
 backGroundMusic(STAGE_BACKGROUND_MUSIC_FILE),
 tileMap(STAGE_TILEMAP_FILE, &tileSet)
 {
+    DEBUG_PRINT("StageState::StageState()-inicio");
     backGroundMusic.Play(-1);
     stringstream aux;
     Point position = tileMap.PixelToChessPosition(InputManager::GetInstance().GetMouseX(),
@@ -31,6 +32,7 @@ tileMap(STAGE_TILEMAP_FILE, &tileSet)
     tileNumber = 1;
     showDebug = false;
     AddObject(new Robo(1, 1,&tileMap, true , "Joao"));
+    DEBUG_PRINT("StageState::StageState()-fim");
 }
 
 StageState::~StageState()

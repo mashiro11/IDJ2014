@@ -1,19 +1,28 @@
 #include "../include/Robo.h"
 
+#define DEBUG
+#ifdef DEBUG
+    #define DEBUG_PRINT(x) do{ cout << x <<  endl; }while(0)
+#else
+    #define DEBUG_PRINT(x)
+#endif // DEBUG
+
 Robo::Robo(float x, float y, TileMap* mapRef, bool lider, string nome)
 {
-
+    DEBUG_PRINT("Robo::Robo()-inicio");
+    mapReference = mapRef;
     tileNumber = 1;
     sp.Open(ROBO_SP1);
     sp.SetSpriteSheet(ROBO_SHEET_LINES, ROBO_SHEET_FRAMES);
     sp.SetAnimation(0, ROBO_SHEET_FRAMES);
     sp.SetFrameTime(ROBO_SHEET_FRAME_TIME);
+    components.push_back(new Bar(200, mapReference->MapPositionToPixelPosition(x,tileNumber),
+                                      mapReference->MapPositionToPixelPosition(y,tileNumber) ));
 
 
     this->lider = lider;
     this->nome = nome;
 
-    mapReference = mapRef;
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
     box.SetRectCenterX( mapReference->MapPositionToPixelPosition(x,tileNumber) );
@@ -31,6 +40,7 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, string nome)
 
     mapReference->SetTileState(currentPosition, ALLY, tileNumber);
     mapReference->SetTileOccuper(currentPosition, this, tileNumber);
+    DEBUG_PRINT("Robo::Robo()-fim");
 }
 
 Robo::~Robo()
@@ -41,13 +51,13 @@ Robo::~Robo()
 
 void Robo::Update(float dt)
 {
-
     if(charState != INATIVO){
         Ally::Update(dt);
         //barraCooldown.Update(dt);
         //barraCooldown.SetX(box.RectCenterX());
         //barraCooldown.SetY(box.RectCenterY());
     }
+
     /*if(IsDead() == true){
         cout << this->nome <<": Fui destruido!! Noooooooo.... D: " << endl;
         mapReference->At( currentPosition.x, currentPosition.y ).state = FREE;
@@ -62,7 +72,11 @@ void Robo::Update(float dt)
 }
 
 void Robo::Render(){
+    DEBUG_PRINT("Robo::Render()-inicio");
     sp.Render(box.x - Camera::pos.x, box.y - Camera::pos.y);
+    for(unsigned int i = 0; i < components.size(); i++){
+        components[i]->Render();
+    }
     /*
     if(menuAberto){
         int offSet = 100;
@@ -78,6 +92,7 @@ void Robo::Render(){
         vida.Render(cameraX, cameraY);
     }
     */
+    DEBUG_PRINT("Robo::Render()-fim");
 }
 
 bool Robo::Is(string type){
@@ -144,3 +159,7 @@ void Robo::Danificar(float dano)
     vida.SetVida(vidaNova);
     */
 }
+
+#ifdef DEBUG
+    #undef DEBUG
+#endif
