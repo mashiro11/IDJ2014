@@ -47,9 +47,12 @@
 			<Add directory="../../../../../SDL2/SDL2-2.0.4/i686-w64-mingw32/lib" />
 		</Linker>
 		<Unit filename="include/Ally.h" />
+		<Unit filename="include/Bar.h" />
 		<Unit filename="include/Camera.h" />
 		<Unit filename="include/Character.h" />
 		<Unit filename="include/Collision.h" />
+		<Unit filename="include/Component.h" />
+		<Unit filename="include/ComponentType.h" />
 		<Unit filename="include/Game.h" />
 		<Unit filename="include/GameObject.h" />
 		<Unit filename="include/InputManager.h" />
@@ -71,10 +74,12 @@
 		<Unit filename="include/Timer.h" />
 		<Unit filename="include/resources_path.h" />
 		<Unit filename="src/Ally.cpp" />
+		<Unit filename="src/Bar.cpp" />
 		<Unit filename="src/BlockTileSet.cpp" />
 		<Unit filename="src/Camera.cpp" />
 		<Unit filename="src/Character.cpp" />
 		<Unit filename="src/Collision.cpp" />
+		<Unit filename="src/Component.cpp" />
 		<Unit filename="src/EndState.cpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/GameObject.cpp" />
