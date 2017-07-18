@@ -16,9 +16,6 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, string nome)
     sp.SetSpriteSheet(ROBO_SHEET_LINES, ROBO_SHEET_FRAMES);
     sp.SetAnimation(0, ROBO_SHEET_FRAMES);
     sp.SetFrameTime(ROBO_SHEET_FRAME_TIME);
-    components.push_back(new Bar(200, mapReference->MapPositionToPixelPosition(x,tileNumber),
-                                      mapReference->MapPositionToPixelPosition(y,tileNumber) ));
-
 
     this->lider = lider;
     this->nome = nome;
@@ -40,6 +37,10 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, string nome)
 
     mapReference->SetTileState(currentPosition, ALLY, tileNumber);
     mapReference->SetTileOccuper(currentPosition, this, tileNumber);
+
+    components.push_back(new Bar(200, *this));//mapReference->MapPositionToPixelPosition(x,tileNumber),
+                                             //mapReference->MapPositionToPixelPosition(y,tileNumber) ));
+
     DEBUG_PRINT("Robo::Robo()-fim");
 }
 
