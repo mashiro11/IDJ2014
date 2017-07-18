@@ -20,8 +20,7 @@ public:
     int GetPoints();
     float GetPercentPoints();
     bool IsFull();
-    void SetRefilAuto(bool refilAuto);
-    void SetRefilPace(int refilPace);
+    void SetRefilAuto(int refilPace);
     //void Open(GameObject* alvo, int vidaMaxima);
 //    bool IsDead();
 //    void SetVida(int vidaNova);
@@ -32,6 +31,7 @@ public:
 protected:
 
 private:
+    GameObject& associated;
     Rect box;
     Sprite fluid;
     Sprite frame;

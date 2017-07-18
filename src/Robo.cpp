@@ -1,6 +1,6 @@
 #include "../include/Robo.h"
 
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
     #define DEBUG_PRINT(x) do{ cout << x <<  endl; }while(0)
 #else
@@ -40,6 +40,11 @@ Robo::Robo(float x, float y, TileMap* mapRef, bool lider, string nome)
 
     components.push_back(new Bar(200, *this));//mapReference->MapPositionToPixelPosition(x,tileNumber),
                                              //mapReference->MapPositionToPixelPosition(y,tileNumber) ));
+    Bar *newBar = new Bar(200, *this);
+    newBar->SetY(10);
+    newBar->SetRefilAuto(3);
+    newBar->SetPoints(0);
+    components.push_back(newBar);
 
     DEBUG_PRINT("Robo::Robo()-fim");
 }
@@ -57,6 +62,9 @@ void Robo::Update(float dt)
         //barraCooldown.Update(dt);
         //barraCooldown.SetX(box.RectCenterX());
         //barraCooldown.SetY(box.RectCenterY());
+    }
+    for(unsigned int i = 0; i < components.size(); i++){
+        components[i]->Update(dt);
     }
 
     /*if(IsDead() == true){

@@ -7,11 +7,16 @@
     #define DEBUG_PRINT(x)
 #endif // DEBUG
 
-Bar::Bar(int points, GameObject &associated): fluid(BARRA_VIDA), frame(BARRA_VIDA_MOLDURA)
+Bar::Bar(int points, GameObject &associated):
+    currPoints(points),
+    maxPoints(points),
+    fluid(BARRA_VIDA),
+    frame(BARRA_VIDA_MOLDURA),
+    associated(associated)
 {
     DEBUG_PRINT("Bar::Bar()-inicio");
-    box.x = associated.box.x;
-    box.y = associated.box.y;
+    box.x = this->associated.box.x;
+    box.y = this->associated.box.y;
     maxPoints = currPoints = points;
     box.w = frame.GetWidth();
     box.h = frame.GetHeight();
@@ -52,11 +57,11 @@ void Bar::Render()
 }
 
 void Bar::SetX(float x){
-    box.SetRectCenterX(x);
+    box.x = x;
 }
 
 void Bar::SetY(float y){
-    box.SetRectCenterY(y);
+    box.y = y + associated.box.y;
 }
 
 void Bar::SetPoints(int points)
@@ -85,11 +90,8 @@ bool Bar::IsFull(){
     return false;
 }
 
-void Bar::SetRefilAuto(bool refilAuto){
-    this->refilAuto = refilAuto;
-}
-
-void Bar::SetRefilPace(int refilPace){
+void Bar::SetRefilAuto(int refilPace){
+    this->refilAuto = true;
     this->refilPace = refilPace;
 }
 
