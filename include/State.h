@@ -27,7 +27,6 @@ class State
         bool requestDelete;
         bool requestQuit;
         virtual void UpdateArray(float dt);
-        virtual void RenderArray();
         vector<shared_ptr<GameObject>> objectArray;
         bool wait;
     private:

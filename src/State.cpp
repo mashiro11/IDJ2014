@@ -54,11 +54,3 @@ void State::UpdateArray(float dt)
         requestQuit = true;
     }
 }
-
-void State::RenderArray()
-{
-    for(unsigned int i = 0; i < objectArray.size(); i++){
-              if( objectArray[i]->IsDead() == true) continue;
-              objectArray[i]->Render();
-    }
-}

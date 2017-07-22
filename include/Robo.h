@@ -14,23 +14,20 @@ using std::string;
 #define ROBO_SHEET_FRAMES       4
 #define ROBO_SHEET_FRAME_TIME   4.0*1.0/24.0
 
-class Robo: public Ally{
+class Robo: public GameObject{
 public:
-    Robo(float x, float y, TileMap* mapRef, bool lider, string nome);
+    Robo(float x, float y, string nome);
     ~Robo();
+    void Update(float dt);
     void Render();
     bool Is(string type);
-    bool Ejetar();
-    void Update(float dt);
-    bool Embarcar(Ally* alvo);
-    void InserePiloto(Piloto* piloto);
-    void Morrer();
-    void Danificar(float dano);
+    bool IsDead();
+    void NotifyCollision(GameObject& other);
 
 protected:
-    /*vazio*/
 private:
-    std::vector<Piloto*> pilotoArray;
+    Sprite sp;
+    string nome;
 };
 
 #endif // ROBO_H

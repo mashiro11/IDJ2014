@@ -18,10 +18,10 @@ Sprite::Sprite()
 {
     texture = NULL;
 
-    dimensions.h = 0;
-    dimensions.w = 0;
-    dimensions.x = 0;
-    dimensions.y = 0;
+    frame.h = 0;
+    frame.w = 0;
+    frame.x = 0;
+    frame.y = 0;
 
     clipRect.h = 0;
     clipRect.w = 0;
@@ -36,17 +36,18 @@ Sprite::Sprite()
     animationLines = 1;
     currentLine = 0;
     currentFrame = 0;
-    frameTime = 1;
+    frameTime.Set(1);
+    angle = 0;
 }
 
 Sprite::Sprite(string file, int maxFrameCount, int animationLines, float frameTime)
 {
     texture = NULL;
 
-    dimensions.h = 0;
-    dimensions.w = 0;
-    dimensions.x = 0;
-    dimensions.y = 0;
+    frame.h = 0;
+    frame.w = 0;
+    frame.x = 0;
+    frame.y = 0;
 
     clipRect.h = 0;
     clipRect.w = 0;
@@ -58,7 +59,7 @@ Sprite::Sprite(string file, int maxFrameCount, int animationLines, float frameTi
 
     this->maxFrameCount = maxFrameCount;
     this->animationLines = animationLines; //alterar depois
-    this->frameTime = frameTime;
+    this->frameTime.Set(frameTime);
     currentFrame = 0;
     frameCount = 1;
     currentLine = 0;
@@ -107,14 +108,14 @@ void Sprite::Open(string file)
         #endif // DEBUG
     }
 
-    int erro = SDL_QueryTexture(texture, NULL, NULL, &dimensions.w, &dimensions.h);
+    int erro = SDL_QueryTexture(texture, NULL, NULL, &frame.w, &frame.h);
     if(erro){//se houve um erro
         cout << SDL_GetError() << endl;
         cout << "Erro em Sprite::Open(): SDL_QueryTexture() retornou diferente de zero" << endl;
     }
     //cout << "currentFrame: " << currentFrame << endl;
     //cout << "currentLine: " << currentLine << endl;
-    SetClip( currentFrame , currentLine , dimensions.w/maxFrameCount, dimensions.h/animationLines);
+    SetClip( currentFrame , currentLine , frame.w/maxFrameCount, frame.h/animationLines);
 }
 
 void Sprite::SetClip(int x, int y, int w, int h)
@@ -125,15 +126,15 @@ void Sprite::SetClip(int x, int y, int w, int h)
     clipRect.h = h;
 }
 
-void Sprite::Render(int x, int y, float angle, bool centered)
+void Sprite::Render()
 {
-    SDL_Rect dimCopy;
-    dimCopy.x = x ;//+ clipRect.w * scaleX;
-    dimCopy.y = y ;//+ clipRect.y * scaleY;
-    dimCopy.w = clipRect.w * scaleX;
-    dimCopy.h = clipRect.h * scaleY;
-    SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dimCopy,
-                     angle, NULL, SDL_FLIP_NONE);
+    SDL_Rect frameRelative;
+    frameRelative.x = frame.x - Camera::pos.x;
+    frameRelative.y = frame.y - Camera::pos.y;
+
+    frameRelative.w = clipRect.w * scaleX;
+    frameRelative.h = clipRect.h * scaleY;
+    SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &frameRelative, angle, NULL, SDL_FLIP_NONE);
 }
 
 void Sprite::Clear()
@@ -146,12 +147,12 @@ void Sprite::Clear()
 
 int Sprite::GetWidth()
 {
-    return scaleX * dimensions.w/maxFrameCount;
+    return scaleX * frame.w/maxFrameCount;
 }
 
 int Sprite::GetHeight()
 {
-    return scaleY * dimensions.h/animationLines;
+    return scaleY * frame.h/animationLines;
 }
 
 void Sprite::SetScaleX (float scale)
@@ -176,16 +177,16 @@ float Sprite::GetScaleY()
 
 void Sprite::Update (float dt)
 {
-    timeElapsed.Update(dt);
-    if(timeElapsed.Get() > frameTime){
+    frameTime.Update(dt);
+    if(frameTime.TimeUp()){
         ++currentFrame;
-        timeElapsed.Restart();
+        frameTime.Restart();
     }
     if(currentFrame >= frameCount) currentFrame = 0;
-    SetClip(currentFrame * dimensions.w/maxFrameCount,
-            currentLine * dimensions.h/animationLines,
-            dimensions.w/maxFrameCount,
-            dimensions.h/animationLines);
+    SetClip(currentFrame * frame.w/maxFrameCount,
+            currentLine * frame.h/animationLines,
+            frame.w/maxFrameCount,
+            frame.h/animationLines);
 }
 
 void Sprite::SetFrame (int frame)
@@ -202,7 +203,7 @@ void Sprite::SetFrameCount (int frameCount)
 
 void Sprite::SetFrameTime (float frameTime)
 {
-    this->frameTime = frameTime;
+    this->frameTime.Set(frameTime);
 }
 
 int Sprite::GetFrameCount()
@@ -214,7 +215,7 @@ void Sprite::SetAnimation(int line, int frameCount)
 {
     currentLine = line;
     this->frameCount = frameCount;
-    SetClip(0, currentLine * dimensions.h/animationLines, clipRect.w, clipRect.h);
+    SetClip(0, currentLine * frame.h/animationLines, clipRect.w, clipRect.h);
 }
 
 void Sprite::SetSpriteSheet(int animationLines, int maxFrameCount)
@@ -222,6 +223,6 @@ void Sprite::SetSpriteSheet(int animationLines, int maxFrameCount)
     this->animationLines = animationLines;
     this->maxFrameCount = maxFrameCount;
 
-    this->clipRect.w = dimensions.w/maxFrameCount;
-    this->clipRect.h = dimensions.h/animationLines;
+    this->clipRect.w = frame.w/maxFrameCount;
+    this->clipRect.h = frame.h/animationLines;
 }

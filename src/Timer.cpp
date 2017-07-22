@@ -2,26 +2,33 @@
 
 Timer::Timer()
 {
-    time = 0;
+    time = currTime = 0;
+    timeUp = false;
 }
 
 void Timer::Update (float dt)
 {
-    time += dt;
+    if(!timeUp) currTime -= dt;
+    if(currTime < 0) timeUp = true;
 }
 
 void Timer::Restart ()
 {
-    time = 0;
+    currTime = time;
+    timeUp = false;
 }
 
-float Timer::Get()
+double Timer::Get()
 {
-    return time;
+    return currTime;
 }
 
-void Timer::Set(float value)
+void Timer::Set(double value)
 {
     this->time = value;
+}
+
+bool Timer::TimeUp(){
+    return timeUp;
 }
 

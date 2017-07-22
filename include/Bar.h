@@ -3,6 +3,7 @@
 #include "StillAnimation.h"
 #include "resources_path.h"
 #include "Camera.h"
+#include "Timer.h"
 
 class Bar: public Component
 {
@@ -20,7 +21,8 @@ public:
     int GetPoints();
     float GetPercentPoints();
     bool IsFull();
-    void SetRefilAuto(int refilPace);
+    void SetRefilAuto(int refilPace, int time = 1);
+    void SetPosition(float x, float y);
     //void Open(GameObject* alvo, int vidaMaxima);
 //    bool IsDead();
 //    void SetVida(int vidaNova);
@@ -39,6 +41,7 @@ private:
     int currPoints;
     bool refilAuto;
     int refilPace;
+    Timer timer;
 };
 
 #endif // BAR_H

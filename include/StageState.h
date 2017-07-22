@@ -30,16 +30,10 @@ class StageState : public State
 
     protected:
     private:
-        InfoMenu* infoMenu;
         void Input(float dt);
         Sprite bg;
-        BlockTileSet tileSet;
-        TileMap tileMap;
         Music backGroundMusic;
-        Text chessPosition;
-        int tileNumber;
         Timer vitoriaTime;
-        bool showDebug;
 };
 
 #endif // STAGESTATE_H

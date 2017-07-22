@@ -28,7 +28,7 @@ class Sprite
         ~Sprite();
         void Open(string file);
         void SetClip(int x, int y, int w, int h);
-        void Render(int x = 0, int y = 0, float angle = 0, bool centered = false);
+        void Render();
         int GetWidth();
         int GetHeight();
         bool IsOpen() {return (texture == NULL)? true: false;}
@@ -52,7 +52,7 @@ class Sprite
             /* nada */
     private:
         SDL_Texture* texture;
-        SDL_Rect dimensions, clipRect;
+        SDL_Rect frame, clipRect;
         float scaleX;
         float scaleY;
         int maxFrameCount;//guarda o maior numero de frames por animacao da spritesheet
@@ -60,9 +60,9 @@ class Sprite
         int currentLine;//guarda a linha de animacao em uso
         int animationLines;//guarda o total de linhas de animacao
         int currentFrame;
-        Timer timeElapsed;
-        float frameTime;
+        Timer frameTime;
         string path;
+        float angle;
 };
 
 #endif // SPRITE_H

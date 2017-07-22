@@ -34,7 +34,6 @@ class GameObject
     protected:
         vector<Component*> components;
     private:
-        Sprite sp;
 
 };
 

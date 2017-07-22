@@ -9,7 +9,8 @@ const int cameraSpeed = 100; //adicionado
 
 
 
-Point Camera::pos;
+Point Camera::pos(0,0);
+
 float Camera::speed;
 Point Camera::speedP;
 GameObject* Camera::focus;

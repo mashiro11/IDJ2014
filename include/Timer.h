@@ -9,11 +9,15 @@ class Timer
         //~Timer();
         void Update (float dt);
         void Restart ();
-        float Get();
-        void Set(float value);
+        double Get();
+        void Set(double value);
+        bool TimeUp();
     protected:
         /* vazio */
     private:
-        float time;
+        double time;
+        double currTime;
+        bool timeUp;
+
 };
 #endif // TIMER_H

@@ -33,10 +33,16 @@ void Bar::EarlyUpdate(float dt){
 
 void Bar::Update(float dt)
 {
-    //Nessas buscas que a barra de vida faz, dá erro quando o personagem morre!!
-    float porCento = 100*currPoints/maxPoints;
-    if(porCento > 100) porCento = 100;
-    fluid.SetClip(0, 0, box.w*porCento/100, box.h);
+    if(refilAuto){
+       timer.Update(dt);
+       if(timer.TimeUp() && currPoints < maxPoints){
+            timer.Restart();
+            currPoints += refilPace;
+            if(currPoints > maxPoints) currPoints = maxPoints;
+            cout << (currPoints/maxPoints) << endl;
+            fluid.SetClip(0, 0, box.w * ((float)currPoints/maxPoints), box.h);
+       }
+    }
 }
 
 void Bar::LateUpdate(float dt){
@@ -52,8 +58,8 @@ bool Bar::IsDead()
 
 void Bar::Render()
 {
-    fluid.Render(box.x - Camera::pos.x, box.y - Camera::pos.y);
-    frame.Render(box.x - Camera::pos.x, box.y - Camera::pos.y);
+    fluid.Render();
+    frame.Render();
 }
 
 void Bar::SetX(float x){
@@ -90,9 +96,15 @@ bool Bar::IsFull(){
     return false;
 }
 
-void Bar::SetRefilAuto(int refilPace){
+void Bar::SetRefilAuto(int refilPace, int time){
     this->refilAuto = true;
     this->refilPace = refilPace;
+    this->timer.Set(time);
+}
+
+void Bar::SetPosition(float x, float y){
+    if((int)x)this->box.x = this->associated.box.x + x;
+    if((int)y)this->box.y = this->associated.box.y + y;
 }
 
 #ifdef DEBUG
