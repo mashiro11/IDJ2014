@@ -7,16 +7,19 @@
     #define DEBUG_PRINT(x)
 #endif // DEBUG
 
-Bar::Bar(int points, GameObject &associated):
+Bar::Bar(int points, string frameFile, string fluidFile, GameObject &associated):
     currPoints(points),
     maxPoints(points),
-    fluid(BARRA_VIDA),
-    frame(BARRA_VIDA_MOLDURA),
+    fluid(fluidFile),
+    frame(frameFile),
     associated(associated)
 {
     DEBUG_PRINT("Bar::Bar()-inicio");
     box.x = this->associated.box.x;
     box.y = this->associated.box.y;
+    fluid.SetPosition(box.x, box.y);
+    frame.SetPosition(box.x, box.y);
+
     maxPoints = currPoints = points;
     box.w = frame.GetWidth();
     box.h = frame.GetHeight();
@@ -33,15 +36,15 @@ void Bar::EarlyUpdate(float dt){
 
 void Bar::Update(float dt)
 {
+    //DEBUG_PRINT("Bar::Update()-inicio");
     if(refilAuto){
-       timer.Update(dt);
-       if(timer.TimeUp() && currPoints < maxPoints){
-            timer.Restart();
-            currPoints += refilPace;
+        if(currPoints < maxPoints){
+            currPoints += refilPace*dt;
             if(currPoints > maxPoints) currPoints = maxPoints;
-            fluid.SetClip(0, 0, box.w * ((float)currPoints/maxPoints), box.h);
-       }
+            fluid.SetClip(0, 0, box.w * (currPoints/maxPoints), box.h);
+        }
     }
+    //DEBUG_PRINT("Bar::Update()-fim");
 }
 
 void Bar::LateUpdate(float dt){
@@ -63,10 +66,14 @@ void Bar::Render()
 
 void Bar::SetX(float x){
     box.x = x;
+    frame.SetPosition(box.x, box.y);
+    fluid.SetPosition(box.x, box.y);
 }
 
 void Bar::SetY(float y){
     box.y = y + associated.box.y;
+    frame.SetPosition(box.x, box.y);
+    fluid.SetPosition(box.x, box.y);
 }
 
 void Bar::SetPoints(int points)
@@ -89,21 +96,31 @@ float Bar::GetPercentPoints()
 }
 
 bool Bar::IsFull(){
-    if(currPoints/maxPoints == 1){
+    if(currPoints == maxPoints){
         return true;
     }
     return false;
 }
 
-void Bar::SetRefilAuto(int refilPace, int time){
+void Bar::SetRefilAuto(float time){
     this->refilAuto = true;
-    this->refilPace = refilPace;
-    this->timer.Set(time);
+    this->refilPace = maxPoints/time;
+    DEBUG_PRINT("refilPace: " << refilPace);
 }
 
 void Bar::SetPosition(float x, float y){
-    if((int)x)this->box.x = this->associated.box.x + x;
-    if((int)y)this->box.y = this->associated.box.y + y;
+    this->box.x = this->associated.box.x + x;
+    this->box.y = this->associated.box.y + y;
+    frame.SetPosition(box.x, box.y);
+    fluid.SetPosition(box.x, box.y);
+}
+
+int Bar::GetX(){
+    return box.x;
+}
+
+int Bar::GetY(){
+    return box.y;
 }
 
 #ifdef DEBUG

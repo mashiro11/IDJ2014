@@ -57,7 +57,6 @@ class Sprite
         float scaleX;
         float scaleY;
         int maxFrameCount;//guarda o maior numero de frames por animacao da spritesheet
-        int frameCount;//guarda o numero de frames da linha de animacao em uso
         int currentLine;//guarda a linha de animacao em uso
         int animationLines;//guarda o total de linhas de animacao
         int currentFrame;

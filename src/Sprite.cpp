@@ -33,10 +33,9 @@ Sprite::Sprite(string file, int x, int y, int maxFrameCount, int animationLines,
     angle = 0;
 
     this->maxFrameCount = maxFrameCount;
-    this->animationLines = animationLines; //alterar depois
+    this->animationLines = animationLines;
     this->frameTime.Set(frameTime);
     currentFrame = 0;
-    frameCount = 1;
     currentLine = 0;
 
     Open(file);
@@ -132,16 +131,19 @@ float Sprite::GetScaleY()
 
 void Sprite::Update (float dt)
 {
+    DEBUG_PRINT("Sprite::Update()-inicio");
     frameTime.Update(dt);
     if(frameTime.TimeUp()){
         ++currentFrame;
         frameTime.Restart();
     }
-    if(currentFrame >= frameCount) currentFrame = 0;
+    if(currentFrame >= maxFrameCount) currentFrame = 0;
+    DEBUG_PRINT("currentFrame: " <<  currentFrame);
     SetClip(currentFrame * frame.w/maxFrameCount,
             currentLine * frame.h/animationLines,
             frame.w/maxFrameCount,
             frame.h/animationLines);
+    DEBUG_PRINT("Sprite::Update()-fim");
 }
 
 void Sprite::SetFrame (int frame)
@@ -152,8 +154,7 @@ void Sprite::SetFrame (int frame)
 
 void Sprite::SetFrameCount (int frameCount)
 {
-    this->frameCount = frameCount;
-    //SetClip(clipRect.x, clipRect.y, GetWidth()/frameCount, clipRect.h);
+    this->maxFrameCount = frameCount;
 }
 
 void Sprite::SetFrameTime (float frameTime)
@@ -163,14 +164,13 @@ void Sprite::SetFrameTime (float frameTime)
 
 int Sprite::GetFrameCount()
 {
-    return frameCount;
+    return maxFrameCount;
 }
 
 void Sprite::SetAnimation(int line, int frameCount)
 {
     currentLine = line;
-    this->frameCount = frameCount;
-    SetClip(0, currentLine * frame.h/animationLines, clipRect.w, clipRect.h);
+    this->maxFrameCount = frameCount;
 }
 
 void Sprite::SetSpriteSheet(int animationLines, int maxFrameCount)
