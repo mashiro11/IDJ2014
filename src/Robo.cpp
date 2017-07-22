@@ -8,7 +8,7 @@
 #endif // DEBUG
 
 Robo::Robo(float x, float y, string nome):
-    sp(ROBO_SP1, ROBO_SHEET_FRAMES, ROBO_SHEET_LINES, ROBO_SHEET_FRAME_TIME)
+    sp(ROBO_SP1, x, y, ROBO_SHEET_FRAMES, ROBO_SHEET_LINES, ROBO_SHEET_FRAME_TIME)
 {
     DEBUG_PRINT("Robo::Robo()-inicio");
 

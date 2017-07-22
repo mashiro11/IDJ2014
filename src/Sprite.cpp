@@ -14,14 +14,14 @@
 
 
 unordered_map<string, SDL_Texture*> Sprite::assetTable;
-Sprite::Sprite()
+Sprite::Sprite(string file, int x, int y, int maxFrameCount, int animationLines, float frameTime)
 {
     texture = NULL;
 
     frame.h = 0;
     frame.w = 0;
-    frame.x = 0;
-    frame.y = 0;
+    frame.x = x;
+    frame.y = y;
 
     clipRect.h = 0;
     clipRect.w = 0;
@@ -30,32 +30,7 @@ Sprite::Sprite()
 
     scaleX = 1;
     scaleY = 1;
-
-    frameCount = 1;
-    maxFrameCount = 1;
-    animationLines = 1;
-    currentLine = 0;
-    currentFrame = 0;
-    frameTime.Set(1);
     angle = 0;
-}
-
-Sprite::Sprite(string file, int maxFrameCount, int animationLines, float frameTime)
-{
-    texture = NULL;
-
-    frame.h = 0;
-    frame.w = 0;
-    frame.x = 0;
-    frame.y = 0;
-
-    clipRect.h = 0;
-    clipRect.w = 0;
-    clipRect.x = 0;
-    clipRect.y = 0;
-
-    scaleX = 1;
-    scaleY = 1;
 
     this->maxFrameCount = maxFrameCount;
     this->animationLines = animationLines; //alterar depois
@@ -67,27 +42,7 @@ Sprite::Sprite(string file, int maxFrameCount, int animationLines, float frameTi
     Open(file);
 }
 
-//Sprite::Sprite(Sprite const &other)
-//{
-//    texture = other.texture;
-//    dimensions.x = 0;
-//    dimensions.y = 0;
-//    dimensions.w = GetWidth();
-//    dimensions.h = GetHeight();
-//
-//    //SetClip(0 ,0 ,GetWidth() ,GetHeight() );
-//
-//    scaleX = other.scaleX;
-//    scaleY = other.scaleY;
-//    frameCount = other.frameCount;
-//    currentFrame = other.currentFrame;
-//    timeElapsed = other.timeElapsed;
-//    frameTime = other.frameTime;
-//}
-
-Sprite::~Sprite()
-{
-    //Clear();
+Sprite::~Sprite(){
 }
 
 void Sprite::Open(string file)
@@ -225,4 +180,9 @@ void Sprite::SetSpriteSheet(int animationLines, int maxFrameCount)
 
     this->clipRect.w = frame.w/maxFrameCount;
     this->clipRect.h = frame.h/animationLines;
+}
+
+void Sprite::SetPosition(int x, int y){
+    frame.x = x;
+    frame.y = y;
 }

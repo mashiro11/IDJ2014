@@ -14,7 +14,7 @@ backGroundMusic(STAGE_BACKGROUND_MUSIC_FILE)
     DEBUG_PRINT("StageState::StageState()-inicio");
     backGroundMusic.Play(-1);
 
-    AddObject(new Robo(10*64, 19*64, "Joao"));//64 é o tamanho do tile
+    AddObject(new Robo(10, 10, "Joao"));//64 é o tamanho do tile
     DEBUG_PRINT("StageState::StageState()-fim");
 }
 
@@ -28,8 +28,12 @@ StageState::~StageState()
 void StageState::Update(float dt)
 {
     DEBUG_PRINT("StageState::Update()- inicio");
+    //Tranqueira-----
     Input(dt);
     stringstream aux;
+    //---------------
+
+
     for(int i = 0; i < objectArray.size(); i++){
         objectArray[i]->Update(dt);
     }

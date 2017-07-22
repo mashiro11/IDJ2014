@@ -23,7 +23,7 @@ class Sprite
 {
     public:
         Sprite();
-        Sprite(string file, int maxFrameCount = 1, int animationLines = 1, float frameTime = 1);
+        Sprite(string file, int x = 0, int y = 0, int maxFrameCount = 1, int animationLines = 1, float frameTime = 1);
         //Sprite(Sprite const &other);
         ~Sprite();
         void Open(string file);
@@ -36,6 +36,7 @@ class Sprite
         void SetScaleY (float scale);
         float GetScaleX ();
         float GetScaleY ();
+        void SetPosition(int x, int y);
 
         void Update (float dt);
         void SetFrame (int frame);

@@ -1,6 +1,5 @@
 #ifndef BAR_H
 #define BAR_H
-#include "StillAnimation.h"
 #include "resources_path.h"
 #include "Camera.h"
 #include "Timer.h"

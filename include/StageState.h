@@ -5,13 +5,8 @@
 #include "Game.h"
 #include "State.h"
 #include "Sprite.h"
-#include "BlockTileSet.h"
-#include "TileMap.h"
 #include "Music.h"
-#include "StateData.h"
-#include "EndState.h"
 #include "Text.h"
-#include "InfoMenu.h"
 #include "Robo.h"
 #include "resources_path.h"
 #define STAGE_TILE_W_H               64

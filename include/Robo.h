@@ -4,9 +4,9 @@
 #include <iostream>
 #include <string>
 
-#include "Ally.h"
-#include "Piloto.h"
 #include "Camera.h"
+#include "resources_path.h"
+#include "Bar.h"
 
 using std::string;
 

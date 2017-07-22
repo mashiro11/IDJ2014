@@ -39,7 +39,6 @@ void Bar::Update(float dt)
             timer.Restart();
             currPoints += refilPace;
             if(currPoints > maxPoints) currPoints = maxPoints;
-            cout << (currPoints/maxPoints) << endl;
             fluid.SetClip(0, 0, box.w * ((float)currPoints/maxPoints), box.h);
        }
     }
