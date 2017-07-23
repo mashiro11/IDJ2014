@@ -31,7 +31,7 @@ class Sprite
         void Render();
         int GetWidth();
         int GetHeight();
-        bool IsOpen() {return (texture == NULL)? true: false;}
+        bool IsOpen();
         void SetScaleX (float scale);
         void SetScaleY (float scale);
         float GetScaleX ();
@@ -45,6 +45,7 @@ class Sprite
         int GetFrameCount();
         void SetAnimation(int line, int frameCount);
         void SetSpriteSheet(int animationLines, int maxFrameCount);
+        void SetCameraRelative(bool cameraRelative);
 
         static void Clear();
         static unordered_map<string, SDL_Texture*> assetTable;
@@ -63,6 +64,7 @@ class Sprite
         Timer frameTime;
         string path;
         float angle;
+        bool cameraRelative;
 };
 
 #endif // SPRITE_H

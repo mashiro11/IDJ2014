@@ -35,7 +35,7 @@ void Menu::Update(float dt){
 
 void Menu::HandleInputs(){
     if(InputManager::GetInstance().MousePress(LEFT_MOUSE_BUTTON)){
-        for(int i = 0; i<options.size(); i++){
+        for(unsigned int i = 0; i<options.size(); i++){
             if(options[i]->IsInside(InputManager::GetInstance().GetMouseX() + Camera::pos.x,
                                     InputManager::GetInstance().GetMouseY() + Camera::pos.y)){
                 gotInput = true;

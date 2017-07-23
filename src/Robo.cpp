@@ -1,14 +1,14 @@
 #include "../include/Robo.h"
 
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
     #define DEBUG_PRINT(x) do{ cout << x <<  endl; }while(0)
 #else
     #define DEBUG_PRINT(x)
 #endif // DEBUG
 
-Robo::Robo(float x, float y, string nome):
-    sp(ROBO_SP1, x, y, ROBO_SHEET_FRAMES, ROBO_SHEET_LINES, ROBO_SHEET_FRAME_TIME)
+Robo::Robo(float x, float y, string file):
+    sp(file, x, y, ROBO_SHEET_FRAMES, ROBO_SHEET_LINES, ROBO_SHEET_FRAME_TIME)
 {
     DEBUG_PRINT("Robo::Robo()-inicio");
 

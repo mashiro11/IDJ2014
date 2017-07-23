@@ -9,7 +9,17 @@
 #include "Text.h"
 #include "Robo.h"
 #include "resources_path.h"
-#define STAGE_TILE_W_H               64
+#include "TileMap.h"
+
+#define STAGE_BACKGROUND_FILE   "resources/img/bg/ocean.jpg"
+
+#define STAGE_TILESET_FILE      "resources/img/tileset/tileset.jpg"
+#define STAGE_TILE_WIDTH          64
+#define STAGE_TILE_HEIGHT         64
+
+#define STAGE_TILEMAP_FILE           "resources/maps/tileMap20x20.txt"
+#define STAGE_BACKGROUND_MUSIC_FILE  "resources/audio/Tema_Boss_01.wav"
+
 
 using std::find;
 
@@ -29,6 +39,7 @@ class StageState : public State
         Sprite bg;
         Music backGroundMusic;
         Timer vitoriaTime;
+        TileMap tilemap;//verificar o que significa a warning reorder
 };
 
 #endif // STAGESTATE_H

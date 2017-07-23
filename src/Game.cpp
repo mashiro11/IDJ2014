@@ -10,7 +10,6 @@ Game::Game(string title, int width, int height)
     this->height = height;
     wait = false;
 
-    //caso não exista uma instância, cria a instância instance
     if (instance == NULL) instance = this;
 
     //SDL_Init retorna diferente de zero caso haja um erro.
@@ -42,7 +41,6 @@ Game::Game(string title, int width, int height)
     }
 
     //SDL_Window* SDL_CreateWindow(const char* title, int x, int y, int w, int h, Uint32 flags)
-    //title.c_str() retorna o valor de title convertido em string
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
     if(window == NULL){
         cout << endl << "Problema no construtor de Game: SDL_CreateWindow() retornou NULL" << endl;
@@ -55,7 +53,7 @@ Game::Game(string title, int width, int height)
         cout << endl << "Problema no construtor de Game: SDL_CreateRenderer() retornou NULL" << endl;
         cout << SDL_GetError() << endl;
     }
-    storedState = NULL;//é isso?
+    storedState = NULL;
 }
 
 Game::~Game()
@@ -80,46 +78,27 @@ void Game::Push(State* state)
 
 void Game::Run()
 {
-    //Prepara o PRIMEIRO STATE para dar inicio ao main game loop,
-    //afinal, game deve começar com um estado pré-definido.
     stateStack.push( storedState );
     storedState = NULL;
     while(stateStack.size() > 0){
         dt = CalculateDeltaTime();
-        SDL_Delay(20 + 33/(dt*1000));//será função de dt, ex: 10 + 33/(dt*1000)
-        #ifdef DEBUG
-        cout.precision(2);
-        cout << (int) 1/dt << "FPS - ";
-        cout.precision(5);
-        cout << "mouse: " << InputManager::GetInstance().GetMouseX();
-        cout << "x" << InputManager::GetInstance().GetMouseY();
-        cout << " camera: " << Camera::pos.x << "x" << Camera::pos.y << "               \r";
-        #endif // DEBUG
         InputManager::GetInstance().Update();
 
-        //...antes de chamar Update e Render do estado atual, devemos
-        //checar se uma troca de estado precisa ser feita.
-        //Primeiro, precisamos saber se o estado atual quer ser deletado - se
-        //sim, o desempilhamos. Depois, verificamos se storedState contem um
-        //novo estado, que empilhamos se existir. Há uma possibilidade de que a
-        //pilha esteja vazia depois destas mudanças. Nesse caso, o loop deve ser
-        //abortado.
-
-        //Como coloco um novo State em storedState?
-        //Essa pergunta ainda deve ser respondida para administrar os estados.
         if( stateStack.top()->RequestedQuit() == true ){
-                break;
+            break;
         }
         if( stateStack.top()->RequestedDelete() == true ){
-                stateStack.pop();
+            stateStack.pop();
         }
         if(storedState != NULL){
             stateStack.push( storedState );
             storedState = NULL;
         }
-        stateStack.top()->Update(dt);
-        stateStack.top()->Render();
-        SDL_RenderPresent(renderer);
+        if(stateStack.empty() == false){
+            stateStack.top()->Update(dt);
+            stateStack.top()->Render();
+            SDL_RenderPresent(renderer);
+        }
     }
 }
 

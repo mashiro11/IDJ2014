@@ -16,7 +16,7 @@ using std::string;
 
 class Robo: public GameObject{
 public:
-    Robo(float x, float y, string nome);
+    Robo(float x, float y, string file);
     ~Robo();
     void Update(float dt);
     void Render();

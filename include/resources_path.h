@@ -13,12 +13,6 @@
 #define TITLE_STATE_BACKGROUND  "resources/img/bg/screenSbuttons.png"
 #define TITLE_STATE_MUSIC       "resources/audio/Tema_01.wav"
 
-#define STAGE_BACKGROUND_FILE   "resources/img/bg/ocean.jpg"
-#define STAGE_TILESET_FILE      "resources/img/tileset/tileset.jpg"
-
-#define STAGE_TILEMAP_FILE           "resources/maps/tileMap20x20.txt"
-#define STAGE_BACKGROUND_MUSIC_FILE  "resources/audio/Tema_Boss_01.wav"
-
 #define BOTAO1 "resources/img/buttons/botao2andar.png"
 #define BOTAO2 "resources/img/buttons/botao2especial.png"
 #define BOTAO3 "resources/img/buttons/botaoItens.png"

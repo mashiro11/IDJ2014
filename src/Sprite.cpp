@@ -37,6 +37,7 @@ Sprite::Sprite(string file, int x, int y, int maxFrameCount, int animationLines,
     this->frameTime.Set(frameTime);
     currentFrame = 0;
     currentLine = 0;
+    cameraRelative = true;
 
     Open(file);
 }
@@ -49,17 +50,13 @@ void Sprite::Open(string file)
     path = file;
     if ( assetTable.find(file) != assetTable.end()){//existe uma textura com esse endereco
             texture = assetTable.find(file)->second;//usa ela pr?pria
-    }else{//se n?o existe ainda
-        texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str() );//carrega
+    }else{
+        texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str() );
         if(texture == NULL){
             cout << SDL_GetError() << endl;
             cout << "Erro em Sprite::Open() ao carregar textura: IMG_LoadTexture() retornou NULL" << endl;
         }
         assetTable.emplace(file, texture);//e adiciona na tabela
-        #ifdef DEBUG
-        cout << "Sprite: " << file << " carregado - ";
-        cout << "SpriteTableSize: " << assetTable.size() << endl;
-        #endif // DEBUG
     }
 
     int erro = SDL_QueryTexture(texture, NULL, NULL, &frame.w, &frame.h);
@@ -82,13 +79,20 @@ void Sprite::SetClip(int x, int y, int w, int h)
 
 void Sprite::Render()
 {
-    SDL_Rect frameRelative;
-    frameRelative.x = frame.x - Camera::pos.x;
-    frameRelative.y = frame.y - Camera::pos.y;
+    SDL_Rect frameOnScreen;
 
-    frameRelative.w = clipRect.w * scaleX;
-    frameRelative.h = clipRect.h * scaleY;
-    SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &frameRelative, angle, NULL, SDL_FLIP_NONE);
+    frameOnScreen.w = clipRect.w * scaleX;
+    frameOnScreen.h = clipRect.h * scaleY;
+
+    if(cameraRelative == true){
+        frameOnScreen.x = frame.x - Camera::pos.x;
+        frameOnScreen.y = frame.y - Camera::pos.y;
+    }else{
+        frameOnScreen.x = frame.x;
+        frameOnScreen.y = frame.y;
+    }
+    SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &frameOnScreen, angle, NULL, SDL_FLIP_NONE);
+
 }
 
 void Sprite::Clear()
@@ -186,3 +190,12 @@ void Sprite::SetPosition(int x, int y){
     frame.x = x;
     frame.y = y;
 }
+
+void Sprite::SetCameraRelative(bool cameraRelative){
+    this->cameraRelative = cameraRelative;
+}
+
+bool Sprite::IsOpen(){
+    return (texture != NULL);
+}
+
