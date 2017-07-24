@@ -1,6 +1,6 @@
 #include "../include/StageState.h"
 
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
     #define DEBUG_PRINT(x) do{cout << x << endl;}while(0)
 #else
@@ -29,7 +29,7 @@ StageState::~StageState()
 
 void StageState::Update(float dt)
 {
-    DEBUG_PRINT("StageState::Update()- inicio");
+    //DEBUG_PRINT("StageState::Update()- inicio");
     //Tranqueira-----
     Input(dt);
     stringstream aux;
@@ -40,19 +40,19 @@ void StageState::Update(float dt)
         (*it)->Update(dt);
     }
     Camera::Update(Game::GetInstance().GetDeltaTime());
-    DEBUG_PRINT("StageState::Update()- fim");
+    //DEBUG_PRINT("StageState::Update()- fim");
 }
 
 void StageState::Render()
 {
-    DEBUG_PRINT("StageState::Render()- inicio");
+    //DEBUG_PRINT("StageState::Render()- inicio");
     bg.Render();
     tilemap.Render();
 	for(unsigned int i = 0; i < objectArray.size(); i++){
 	    if( objectArray[i]->IsDead() == true) continue;
 	    objectArray[i]->Render();
     }
-	DEBUG_PRINT("StageState::Render()- fim");
+	//DEBUG_PRINT("StageState::Render()- fim");
 }
 
 void StageState::Input(float dt) {
@@ -68,6 +68,24 @@ void StageState::Input(float dt) {
     }
     if( InputManager::GetInstance().IsKeyDown(SDLK_KP_MINUS)){
         backGroundMusic.VolumeUpdate(+50);
+    }
+    if( InputManager::GetInstance().IsKeyDown(UP_ARROW_KEY) == true ){
+            if(Camera::pos.y > -tilemap.GetTileHeight()*2)//arbitrario por enquanto
+                Camera::pos.y -= CAMERA_SPEED;
+    }
+    if( InputManager::GetInstance().IsKeyDown(DOWN_ARROW_KEY) == true ){
+            if(Camera::pos.y + Game::GetInstance().GetWindowHeight() < tilemap.GetMapHeight() + tilemap.GetTileHeight()*2)
+                Camera::pos.y += CAMERA_SPEED;
+    }
+    if( InputManager::GetInstance().IsKeyDown(LEFT_ARROW_KEY) == true ){
+            if(Camera::pos.x > -tilemap.GetTileWidth()*2)//arbitrario por enquanto
+                Camera::pos.x -= CAMERA_SPEED;
+    }
+    if( InputManager::GetInstance().IsKeyDown(RIGHT_ARROW_KEY) == true ){
+            //arbitrario por enquanto
+            if(Camera::pos.x + Game::GetInstance().GetWindowWidth() < tilemap.GetMapWidth() + tilemap.GetTileWidth()*2)
+                Camera::pos.x += CAMERA_SPEED;
+
     }
 }
 

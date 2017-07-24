@@ -134,6 +134,14 @@ int TileMap::GetTileHeight(){
 		return this->tileHeight;
 }
 
+int TileMap::GetMapHeight(){
+    return tileHeight*mapWidth;
+}
+
+int TileMap::GetMapWidth(){
+    return tileWidth*mapHeight;
+}
+
 #ifdef DEBUG
     #undef DEBUG
 #endif // DEBUG

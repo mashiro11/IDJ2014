@@ -20,6 +20,8 @@
 #define STAGE_TILEMAP_FILE           "resources/maps/tileMap20x20.txt"
 #define STAGE_BACKGROUND_MUSIC_FILE  "resources/audio/Tema_Boss_01.wav"
 
+#define CAMERA_SPEED    1
+
 
 using std::find;
 

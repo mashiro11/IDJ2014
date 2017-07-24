@@ -29,6 +29,7 @@ void Camera::Unfollow ()
 
 void Camera::Update (float dt)
 {
+    /*
     speed = 1000*dt/4;
     if((InputManager::GetInstance().IsKeyDown(LEFT_ARROW_KEY))  ||
        (InputManager::GetInstance().IsKeyDown(RIGHT_ARROW_KEY)) ||
@@ -59,23 +60,12 @@ void Camera::Update (float dt)
             }
     }else{
         speed = 1/(dt*10);//arbitrário
-        if( InputManager::GetInstance().IsKeyDown(UP_ARROW_KEY) == true ){
-                pos.y -= speed;
-        }
-        if( InputManager::GetInstance().IsKeyDown(DOWN_ARROW_KEY) == true ){
-                pos.y += speed;
-        }
-        if( InputManager::GetInstance().IsKeyDown(LEFT_ARROW_KEY) == true ){
-                pos.x -= speed;
-        }
-        if( InputManager::GetInstance().IsKeyDown(RIGHT_ARROW_KEY) == true ){
-                pos.x += speed;
-        }
     }
     if(pos.x > MaxX) pos.x = MaxX;
     if(pos.x < MinX) pos.x = MinX;
     if(pos.y > MaxY) pos.y = MaxY;
     if(pos.y < MinY) pos.y = MinY;
+    */
 }
 
 GameObject* Camera::GetFocus()

@@ -37,6 +37,9 @@ public:
 	int GetTileWidth();
 	int GetTileHeight();
 
+	int GetMapHeight();
+	int GetMapWidth();
+
 private:
 	vector<int> tileMatrix;
 	int mapWidth;
