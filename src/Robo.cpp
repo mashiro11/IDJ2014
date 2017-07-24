@@ -8,11 +8,10 @@
 #endif // DEBUG
 
 Robo::Robo(float x, float y, string file):
-    sp(file, x, y, ROBO_SHEET_FRAMES, ROBO_SHEET_LINES, ROBO_SHEET_FRAME_TIME)
+    sp(file, x, y, ROBO_SHEET_FRAMES, ROBO_SHEET_LINES, ROBO_SHEET_FRAME_TIME),
+    selected(false)
 {
     DEBUG_PRINT("Robo::Robo()-inicio");
-
-    this->nome = nome;
 
     box.h = sp.GetHeight();
     box.w = sp.GetWidth();
@@ -34,6 +33,8 @@ Robo::Robo(float x, float y, string file):
     DEBUG_PRINT(coolDownBar->GetY() << "x" << coolDownBar->GetY());
     components.push_back(coolDownBar);
 
+    components.push_back(new Walkable(*this))
+
     DEBUG_PRINT("Robo::Robo()-fim");
 }
 
@@ -42,6 +43,7 @@ Robo::~Robo(){
 
 void Robo::Update(float dt){
     //DEBUG_PRINT("Robo::Update()-inicio");
+    sp.SetPosition(box.x, box.y);
     sp.Update(dt);
     for(unsigned int i = 0; i < components.size(); i++){
         components[i]->Update(dt);

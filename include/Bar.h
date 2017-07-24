@@ -27,6 +27,7 @@ public:
     bool IsFull();
     void SetRefilAuto(float time = 1);
     void SetPosition(float x, float y);
+    void Reposition();
     //void Open(GameObject* alvo, int vidaMaxima);
 //    bool IsDead();
 //    void SetVida(int vidaNova);
@@ -46,6 +47,8 @@ private:
     bool refilAuto;
     float refilPace;
     Timer timer;
+    int xRelative;
+    int yRelative;
 };
 
 #endif // BAR_H

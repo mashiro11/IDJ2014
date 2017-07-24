@@ -15,8 +15,8 @@ Bar::Bar(int points, string frameFile, string fluidFile, GameObject &associated)
     associated(associated)
 {
     DEBUG_PRINT("Bar::Bar()-inicio");
-    box.x = this->associated.box.x;
-    box.y = this->associated.box.y;
+    xRelative = this->associated.box.x;
+    yRelative = this->associated.box.y;
     fluid.SetPosition(box.x, box.y);
     frame.SetPosition(box.x, box.y);
 
@@ -37,6 +37,7 @@ void Bar::EarlyUpdate(float dt){
 void Bar::Update(float dt)
 {
     //DEBUG_PRINT("Bar::Update()-inicio");
+    Reposition();
     if(refilAuto){
         if(currPoints < maxPoints){
             currPoints += refilPace*dt;
@@ -109,8 +110,17 @@ void Bar::SetRefilAuto(float time){
 }
 
 void Bar::SetPosition(float x, float y){
-    this->box.x = this->associated.box.x + x;
-    this->box.y = this->associated.box.y + y;
+    xRelative = x;
+    yRelative = y;
+    box.x = xRelative + associated.box.x;
+    box.y = yRelative + associated.box.y;
+    frame.SetPosition(box.x, box.y);
+    fluid.SetPosition(box.x, box.y);
+}
+
+void Bar::Reposition(){
+    box.x = xRelative + associated.box.x;
+    box.y = yRelative + associated.box.y;
     frame.SetPosition(box.x, box.y);
     fluid.SetPosition(box.x, box.y);
 }

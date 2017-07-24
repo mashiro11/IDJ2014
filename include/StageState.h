@@ -35,6 +35,8 @@ class StageState : public State
         void Update(float dt);
         void Render();
 
+        void SetOnGrid(GameObject& gameObject, int x, int y);
+
     protected:
     private:
         void Input(float dt);

@@ -31,12 +31,6 @@ void Camera::Update (float dt)
 {
     /*
     speed = 1000*dt/4;
-    if((InputManager::GetInstance().IsKeyDown(LEFT_ARROW_KEY))  ||
-       (InputManager::GetInstance().IsKeyDown(RIGHT_ARROW_KEY)) ||
-       (InputManager::GetInstance().IsKeyDown(UP_ARROW_KEY))    ||
-       (InputManager::GetInstance().IsKeyDown(DOWN_ARROW_KEY))){
-                    focus = NULL;
-    }
     if(focus != NULL){
            //centraliza o foco na tela, movimento independe de dt, depende apenas do tamanho da tela
             //float angulo = atan2(focus->box.y - pos.y,focus->box.x - pos.x);
@@ -61,10 +55,6 @@ void Camera::Update (float dt)
     }else{
         speed = 1/(dt*10);//arbitrário
     }
-    if(pos.x > MaxX) pos.x = MaxX;
-    if(pos.x < MinX) pos.x = MinX;
-    if(pos.y > MaxY) pos.y = MaxY;
-    if(pos.y < MinY) pos.y = MinY;
     */
 }
 

@@ -55,6 +55,7 @@
 		<Unit filename="include/Game.h" />
 		<Unit filename="include/GameObject.h" />
 		<Unit filename="include/InputManager.h" />
+		<Unit filename="include/MapManager.h" />
 		<Unit filename="include/Music.h" />
 		<Unit filename="include/Point.h" />
 		<Unit filename="include/Rect.h" />
@@ -65,7 +66,6 @@
 		<Unit filename="include/State.h" />
 		<Unit filename="include/Text.h" />
 		<Unit filename="include/TileMap.h" />
-		<Unit filename="include/Tileset.h" />
 		<Unit filename="include/Timer.h" />
 		<Unit filename="include/resources_path.h" />
 		<Unit filename="src/Bar.cpp" />
@@ -75,6 +75,7 @@
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/GameObject.cpp" />
 		<Unit filename="src/InputManager.cpp" />
+		<Unit filename="src/MapManager.cpp" />
 		<Unit filename="src/Menu.cpp" />
 		<Unit filename="src/Music.cpp" />
 		<Unit filename="src/Point.cpp" />
@@ -87,7 +88,6 @@
 		<Unit filename="src/State.cpp.save-failed" />
 		<Unit filename="src/Text.cpp" />
 		<Unit filename="src/TileMap.cpp" />
-		<Unit filename="src/Tileset.cpp" />
 		<Unit filename="src/Timer.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>

@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "resources_path.h"
 #include "Bar.h"
+#include "Walkable.h"
 
 using std::string;
 
@@ -24,10 +25,11 @@ public:
     bool IsDead();
     void NotifyCollision(GameObject& other);
 
+
+    bool selected;
 protected:
 private:
     Sprite sp;
-    string nome;
 };
 
 #endif // ROBO_H

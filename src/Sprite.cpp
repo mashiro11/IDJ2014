@@ -198,4 +198,3 @@ void Sprite::SetCameraRelative(bool cameraRelative){
 bool Sprite::IsOpen(){
     return (texture != NULL);
 }
-

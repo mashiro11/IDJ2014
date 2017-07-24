@@ -16,7 +16,9 @@ StageState::StageState():
     bg.SetCameraRelative(false);
     backGroundMusic.Play(-1);
 
-    AddObject(new Robo(10, 10, ROBO_SP1));//64 é o tamanho do tile
+    GameObject* robo = new Robo(10, 10, ROBO_SP1);
+    SetOnGrid(*robo, 3 , 5);
+    AddObject(robo);//64 é o tamanho do tile
     DEBUG_PRINT("StageState::StageState()-fim");
 }
 
@@ -70,23 +72,30 @@ void StageState::Input(float dt) {
         backGroundMusic.VolumeUpdate(+50);
     }
     if( InputManager::GetInstance().IsKeyDown(UP_ARROW_KEY) == true ){
-            if(Camera::pos.y > -tilemap.GetTileHeight()*2)//arbitrario por enquanto
+            //arbitrario por enquanto
+            if(Camera::pos.y > -tilemap.GetTileHeight()*2)
                 Camera::pos.y -= CAMERA_SPEED;
     }
     if( InputManager::GetInstance().IsKeyDown(DOWN_ARROW_KEY) == true ){
+            //arbitrario por enquanto
             if(Camera::pos.y + Game::GetInstance().GetWindowHeight() < tilemap.GetMapHeight() + tilemap.GetTileHeight()*2)
                 Camera::pos.y += CAMERA_SPEED;
     }
     if( InputManager::GetInstance().IsKeyDown(LEFT_ARROW_KEY) == true ){
-            if(Camera::pos.x > -tilemap.GetTileWidth()*2)//arbitrario por enquanto
+            //arbitrario por enquanto
+            if(Camera::pos.x > -tilemap.GetTileWidth()*2)
                 Camera::pos.x -= CAMERA_SPEED;
     }
     if( InputManager::GetInstance().IsKeyDown(RIGHT_ARROW_KEY) == true ){
             //arbitrario por enquanto
             if(Camera::pos.x + Game::GetInstance().GetWindowWidth() < tilemap.GetMapWidth() + tilemap.GetTileWidth()*2)
                 Camera::pos.x += CAMERA_SPEED;
-
     }
+}
+
+void StageState::SetOnGrid(GameObject& gameObject, int x, int y){
+    gameObject.box.x = x * tilemap.GetTileWidth();
+    gameObject.box.y = y * tilemap.GetTileHeight();
 }
 
 #ifdef DEBUG

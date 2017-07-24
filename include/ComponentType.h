@@ -10,6 +10,7 @@
 enum ComponentType{
 	DRAG_AND_DROP=0,
 	BAR,
+	WALKABLE,
 	HIT_POINTS,
 	AI_GO_DOWN,
 	AI_GO_TO,
