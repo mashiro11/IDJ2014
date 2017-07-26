@@ -5,6 +5,7 @@
 #include <string>
 
 #include "Camera.h"
+#include "Component.h"
 #include "resources_path.h"
 #include "Bar.h"
 #include "Walkable.h"
@@ -15,21 +16,22 @@ using std::string;
 #define ROBO_SHEET_FRAMES       4
 #define ROBO_SHEET_FRAME_TIME   4.0*1.0/24.0
 
-class Robo: public GameObject{
+class Robo: public Component{//public GameObject{
 public:
-    Robo(float x, float y, string file);
+    Robo(float x, float y, string file, GameObject& associated);
     ~Robo();
     void Update(float dt);
     void Render();
-    bool Is(string type);
-    bool IsDead();
-    void NotifyCollision(GameObject& other);
+    bool Is(ComponentType type) const;
 
+    void EarlyUpdate(float dt);
+	void LateUpdate(float dt);
 
-    bool selected;
 protected:
 private:
-    Sprite sp;
+    GameObject& associated;
+    Sprite& sp;
+    bool selected;
 };
 
 #endif // ROBO_H

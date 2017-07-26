@@ -9,6 +9,9 @@
 */
 enum ComponentType{
 	DRAG_AND_DROP=0,
+	TILEMAP,
+	SPRITE,
+	ROBO,
 	BAR,
 	WALKABLE,
 	HIT_POINTS,

@@ -2,25 +2,27 @@
 
 #include "TileMap.h"
 
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
         #define DEBUG_PRINT(message) do{std::cout << message << std::endl;}while(0)
 #else
         #define DEBUG_PRINT(message)
 #endif //DEBUG
 
-TileMap::TileMap(string file, string tileSetFile, int tileWidth, int tileHeight):
-    tileSet(tileSetFile),
+TileMap::TileMap(string file, string tileSetFile, int tileWidth, int tileHeight, GameObject& associated):
+    associated(associated),
+    tileSet(* (new Sprite(associated, tileSetFile) )),
     tileWidth(tileWidth),
     tileHeight(tileHeight)
 {
     DEBUG_PRINT("TileMap::TileMap() - inicio");
+
     if(this->tileSet.IsOpen()){
 		this->rows = this->tileSet.GetHeight()/this->tileHeight;
 		this->columns = this->tileSet.GetWidth()/this->tileWidth;
 	}
 	Load(file);
-	PrintMap(); //para DEBUG
+	//PrintMap(); //para DEBUG
 	DEBUG_PRINT("TileMap::TileMap() - fim");
 }
 
@@ -42,11 +44,11 @@ void TileMap::PrintMap(){
 }
 
 void TileMap::Render(){
-	//DEBUG_PRINT("TileMap::Render() - inicio");
+	DEBUG_PRINT("TileMap::Render() - inicio");
 	for(int i = 0; i < this->mapDepth; i++){
 		RenderLayer(i);
 	}
-	//DEBUG_PRINT("TileMap::Render() - fim");
+	DEBUG_PRINT("TileMap::Render() - fim");
 }
 
 void TileMap::RenderLayer(int layer){
@@ -99,11 +101,9 @@ void TileMap::Load(string file){
             getline(arquivo, line);
             DEBUG_PRINT(line);
             for(int i = 0; i < this->mapWidth; i++){
-                DEBUG_PRINT("i-j-k: " << i << "x" << j << "x" << k);
-			    aux << line;
+                aux << line;
                 aux >> At(i,j,k);
                 At(i,j,k) -= 1;     //com o codigo dos tiles começando em 0, apagar essa linha
-                DEBUG_PRINT("valor: " << At(i,j,k));
                 if(aux.peek() == ',') aux.ignore();
 			}
 			aux.str(string());
@@ -142,6 +142,14 @@ int TileMap::GetMapWidth(){
     return tileWidth*mapHeight;
 }
 
+bool TileMap::Is(ComponentType type)const{
+    return (type == TILEMAP);
+}
+
+void TileMap::Update(float dt){
+    DEBUG_PRINT("COMP - TileMap::Update - inicio");
+    DEBUG_PRINT("COMP - TileMap::Update - fim");
+}
 #ifdef DEBUG
     #undef DEBUG
 #endif // DEBUG

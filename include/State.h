@@ -19,7 +19,7 @@ class State
         virtual ~State();
         virtual void Update(float dt) = 0;
         virtual void Render() = 0;
-        virtual void AddObject(GameObject* object);
+        virtual void AddObject(GameObject& object);
         bool RequestedDelete();
         bool RequestedQuit();
 

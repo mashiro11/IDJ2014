@@ -9,6 +9,7 @@
 
 #include "Sprite.h"
 #include "Camera.h"
+#include "Component.h"
 
 using std::cout;
 using std::endl;
@@ -18,15 +19,21 @@ using std::ifstream;
 using std::stringstream;
 using std::getline;
 
-class TileMap {
+class TileMap: public Component {
 public:
-	TileMap(std::string file, string tilesetFile, int tileWidth, int tileHeight);
+	TileMap(std::string file, string tilesetFile, int tileWidth, int tileHeight, GameObject& associated);
 	~TileMap();
 
 	void PrintMap();
 
     void Render();
 	void RenderLayer(int layer);
+
+	void EarlyUpdate(float dt){};
+	void Update(float dt);
+	void LateUpdate(float dt){};
+
+	bool Is(ComponentType type)const;
 
 	void Load(std::string file);
 	int& At(int x, int y, int z = 0);
@@ -41,13 +48,14 @@ public:
 	int GetMapWidth();
 
 private:
+    GameObject& associated;
 	vector<int> tileMatrix;
 	int mapWidth;
 	int mapHeight;
 	int mapDepth;
 
 
-	Sprite tileSet;
+	Sprite& tileSet;
 	int rows, columns;
 	int tileWidth, tileHeight;
 

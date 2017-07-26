@@ -13,12 +13,16 @@ class Walkable: public Component
 {
     public:
         Walkable(GameObject& associated);
+        ~Walkable();
         void Update(float dt);
 		bool Is(ComponentType type) const;
-		void Render(void){};
+		void Render(){};
 		void EarlyUpdate(float dt);
 		void LateUpdate(float dt);
-        ~Walkable();
+		void SetControlable(bool control);
+
+		int PixelToGrid(int x, int tileW);
+        void AddPath(int x, int y);
 
     protected:
 
@@ -26,6 +30,8 @@ class Walkable: public Component
         GameObject& associated;
         bool controlable;
         bool selected;
+        Point destination;
+        vector<Point*> pathPoints;
 };
 
 #endif // WALKABLE_H

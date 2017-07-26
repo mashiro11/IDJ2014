@@ -8,22 +8,25 @@
 #endif // DEBUG
 
 Bar::Bar(int points, string frameFile, string fluidFile, GameObject &associated):
-    currPoints(points),
+    associated(associated),
+    fluid(*(new Sprite(associated, fluidFile) ) ),
+    frame(*(new Sprite(associated, frameFile) ) ),
     maxPoints(points),
-    fluid(fluidFile),
-    frame(frameFile),
-    associated(associated)
+    currPoints(points),
+    refilAuto(false)
 {
     DEBUG_PRINT("Bar::Bar()-inicio");
     xRelative = this->associated.box.x;
     yRelative = this->associated.box.y;
+
     fluid.SetPosition(box.x, box.y);
     frame.SetPosition(box.x, box.y);
 
-    maxPoints = currPoints = points;
+    associated.AddComponent((Component&)fluid);
+    associated.AddComponent((Component&)frame);
+
     box.w = frame.GetWidth();
     box.h = frame.GetHeight();
-    refilAuto = false;
     DEBUG_PRINT("Bar::Bar()-fim");
 }
 
@@ -36,7 +39,7 @@ void Bar::EarlyUpdate(float dt){
 
 void Bar::Update(float dt)
 {
-    //DEBUG_PRINT("Bar::Update()-inicio");
+    DEBUG_PRINT("Bar::Update()-inicio");
     Reposition();
     if(refilAuto){
         if(currPoints < maxPoints){
@@ -45,7 +48,7 @@ void Bar::Update(float dt)
             fluid.SetClip(0, 0, box.w * (currPoints/maxPoints), box.h);
         }
     }
-    //DEBUG_PRINT("Bar::Update()-fim");
+    DEBUG_PRINT("Bar::Update()-fim");
 }
 
 void Bar::LateUpdate(float dt){
@@ -61,8 +64,8 @@ bool Bar::IsDead()
 
 void Bar::Render()
 {
-    fluid.Render();
-    frame.Render();
+    //fluid.Render();
+    //frame.Render();
 }
 
 void Bar::SetX(float x){

@@ -40,10 +40,12 @@ class StageState : public State
     protected:
     private:
         void Input(float dt);
-        Sprite bg;
+        //Sprite bg;
         Music backGroundMusic;
         Timer vitoriaTime;
-        TileMap tilemap;//verificar o que significa a warning reorder
+        TileMap& tilemap;//verificar o que significa a warning reorder
+        GameObject ambient;
+        GameObject robo;
 };
 
 #endif // STAGESTATE_H

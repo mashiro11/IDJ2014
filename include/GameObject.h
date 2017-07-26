@@ -22,18 +22,20 @@ class GameObject
 {
     public:
         GameObject();
-        virtual ~GameObject();
-        virtual void Update(float dt) = 0;
-        virtual void Render() = 0;
-        virtual bool IsDead() = 0;
-        virtual void NotifyCollision(GameObject& other) = 0;
-        virtual bool Is(string type) = 0;
+        ~GameObject();
+        void Update(float dt);
+        void Render();
+        bool IsDead();
+        void NotifyCollision(GameObject& other){};
+        //bool Is(string type);
         Rect box;
         float rotation;
+        void AddComponent(Component& comp);
+        //Sprite sp;
 
     protected:
-        vector<Component*> components;
     private:
+        vector<Component*> components;
 
 };
 

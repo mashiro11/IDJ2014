@@ -40,8 +40,11 @@ protected:
 private:
     GameObject& associated;
     Rect box;
-    Sprite fluid;
-    Sprite frame;
+    //Sprite fluid;
+    //Sprite frame;
+    Sprite& fluid;
+    Sprite& frame;
+
     int maxPoints;
     float currPoints;
     bool refilAuto;

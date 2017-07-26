@@ -4,17 +4,16 @@
 //#define DEBUG
 #ifdef DEBUG
         //se estiver definido debug, imprime os trecos
-        #define DEBUG_PRINT(message) do{std::cout << message << std::endl;}while(0);
-        #define DEBUG_ONLY(x) do{x;}while(0);
+        #define DEBUG_PRINT(message) do{std::cout << message << std::endl;}while(0)
 #else
         //caso contrario, recebe argumentos mas faz nada
         #define DEBUG_PRINT(message)
-        #define DEBUG_ONLY(x) //do{;}while(0)
 #endif //DEBUG
 
 
 unordered_map<string, SDL_Texture*> Sprite::assetTable;
-Sprite::Sprite(string file, int x, int y, int maxFrameCount, int animationLines, float frameTime)
+Sprite::Sprite(GameObject& associated, string file, int x, int y, int maxFrameCount, int animationLines, float frameTime):
+    associated(associated)
 {
     texture = NULL;
 
@@ -79,6 +78,7 @@ void Sprite::SetClip(int x, int y, int w, int h)
 
 void Sprite::Render()
 {
+    DEBUG_PRINT("file: " << path);
     SDL_Rect frameOnScreen;
 
     frameOnScreen.w = clipRect.w * scaleX;
@@ -135,19 +135,20 @@ float Sprite::GetScaleY()
 
 void Sprite::Update (float dt)
 {
-    DEBUG_PRINT("Sprite::Update()-inicio");
+    //DEBUG_PRINT("Sprite::Update()-inicio");
+    frame.x = associated.box.x;
+    frame.y = associated.box.y;
     frameTime.Update(dt);
     if(frameTime.TimeUp()){
         ++currentFrame;
         frameTime.Restart();
     }
     if(currentFrame >= maxFrameCount) currentFrame = 0;
-    DEBUG_PRINT("currentFrame: " <<  currentFrame);
     SetClip(currentFrame * frame.w/maxFrameCount,
             currentLine * frame.h/animationLines,
             frame.w/maxFrameCount,
             frame.h/animationLines);
-    DEBUG_PRINT("Sprite::Update()-fim");
+    //DEBUG_PRINT("Sprite::Update()-fim");
 }
 
 void Sprite::SetFrame (int frame)
@@ -191,6 +192,7 @@ void Sprite::SetPosition(int x, int y){
     frame.y = y;
 }
 
+
 void Sprite::SetCameraRelative(bool cameraRelative){
     this->cameraRelative = cameraRelative;
 }
@@ -198,3 +200,12 @@ void Sprite::SetCameraRelative(bool cameraRelative){
 bool Sprite::IsOpen(){
     return (texture != NULL);
 }
+
+void Sprite::EarlyUpdate(float dt){};
+
+void Sprite::LateUpdate(float dt){};
+
+bool Sprite::Is(ComponentType type)const{
+    return (type == SPRITE);
+}
+
