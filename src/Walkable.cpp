@@ -10,7 +10,8 @@
 
 Walkable::Walkable(GameObject& associated):
     associated(associated),
-    controlable(false)
+    controlable(false),
+    hasToWalk(false)
 {
     //ctor
 }
@@ -33,30 +34,35 @@ void Walkable::Update(float dt){
 
         //Quando soltar o botão do mouse, desmarca a seleção
         if(selected && InputManager::GetInstance().MouseRelease(SDL_BUTTON_LEFT)){
-           if(InputManager::GetInstance().IsMouseInside(associated.box)){
-                cout << "Apenas selecionado" << endl;
-                selected = false;
+           if(!InputManager::GetInstance().IsMouseInside(associated.box)){
+                hasToWalk = true;
            }
+           selected = false;
         }
 
-        while(!pathPoints.empty() ){
+        while( hasToWalk ){
                 cout << "Deveria andar" << endl;
                 cout << "Pontos: " << endl;
                 for(auto it = pathPoints.begin(); it != pathPoints.end(); it++){
                     cout << (*it)->x << "x" << (*it)->y << endl;
                 }
-                auto it = pathPoints.begin();
-                DEBUG_PRINT( (*it)->x  << "x" << (*it)->y );
 
-                if(associated.box.x != (*it)->x * associated.box.w) associated.box.x += 1;
+                auto it = pathPoints.begin();
+                if(associated.box.x < (*it)->x * associated.box.w) associated.box.x += 1;
+                else if(associated.box.x > (*it)->x * associated.box.w) associated.box.x -= 1;
                 else{
                     pathPoints.erase(pathPoints.begin());
+                    if(pathPoints.empty()){
+                        hasToWalk = false;
+                        break;
+                    }
                 }
-                if(associated.box.y != (*it)->y * associated.box.h) associated.box.y += 1;
+                if(associated.box.y < (*it)->y * associated.box.h) associated.box.y += 1;
+                else if(associated.box.y > (*it)->y * associated.box.h) associated.box.y -= 1;
                 else{
                     pathPoints.erase(pathPoints.begin());
+                    if(pathPoints.empty()) hasToWalk = false;
                 }
-                selected = false;
            }
     }
 }

@@ -32,6 +32,7 @@ class Walkable: public Component
         bool selected;
         Point destination;
         vector<Point*> pathPoints;
+        bool hasToWalk;
 };
 
 #endif // WALKABLE_H
